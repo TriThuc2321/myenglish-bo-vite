@@ -7,7 +7,6 @@
   "ignorePatterns": ["node_modules/**", "out/**"],
   "rules": {
     "no-console": ["error", { "allow": ["warn", "error", "info"] }],
-    "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "typescript/no-explicit-any": "off",
     "typescript/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],

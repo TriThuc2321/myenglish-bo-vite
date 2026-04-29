@@ -1,6 +1,7 @@
 import { Button, useTheme } from '@heroui/react';
 
-import { LogoIcon } from './assets/icons';
+import { SwitchLocale } from './components/layouts';
+
 function App() {
   const { theme, setTheme } = useTheme();
   return (
@@ -8,7 +9,7 @@ function App() {
       <Button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
         {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
       </Button>
-      <LogoIcon />
+      <SwitchLocale />
     </div>
   );
 }

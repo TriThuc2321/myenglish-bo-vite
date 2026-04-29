@@ -1,0 +1,1 @@
+export { SwitchLocale } from './switchLocale';

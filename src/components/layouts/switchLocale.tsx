@@ -1,8 +1,8 @@
 import { Button, Tooltip } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
 
-import { FlagUSIcon, FlagVNIcon } from '../../assets/icons';
-import { useLocale } from '../../providers/locale.provider';
+import { FlagUSIcon, FlagVNIcon } from '@/assets/icons';
+import { useLocale } from '@/providers/locale.provider';
 
 export function SwitchLocale() {
   const { locale, setLocale } = useLocale();

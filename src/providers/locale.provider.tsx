@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { type Locale } from '../i18n';
+import { type Locale } from '@/i18n';
 
 interface LocaleContextValue {
   locale: Locale;

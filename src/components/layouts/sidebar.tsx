@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoIosLogOut } from 'react-icons/io';
 import { LuChevronDown, LuChevronLeft } from 'react-icons/lu';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import logoHorizontalUrl from '@/assets/icons/logo-horizontal.svg?url';
 import logoUrl from '@/assets/icons/logo.svg?url';
@@ -177,7 +177,6 @@ const MenuItem = ({
   showFullMenu,
   subMenus,
 }: IMenuItem) => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const segment = getActiveSegment(pathname);
   const { t } = useTranslation();
@@ -199,11 +198,8 @@ const MenuItem = ({
   const label = `sidebar.${title}`;
 
   const baseButtonClassName = cn(
-    'flex w-full items-center justify-start gap-6 py-6 font-medium',
+    'flex w-full items-center justify-start gap-4 py-6 font-medium',
     {
-      // 'text-primary font-bold': isActive || isSubMenuActive,
-      // 'text-content2-foreground hover:text-primary/85':
-      //   !isActive && !isSubMenuActive,
       'justify-center': !showFullMenu,
     },
   );
@@ -259,16 +255,20 @@ const MenuItem = ({
   return (
     <div className="flex flex-col gap-1">
       <Button
-        className={baseButtonClassName}
+        className="w-full py-6"
         variant={isActive || isSubMenuActive ? 'danger-soft' : 'ghost'}
         isIconOnly={!showFullMenu}
-        onPress={() => {
-          navigate(navTarget);
-          handleOpen(false);
-        }}
+        onClick={() => handleOpen(false)}
       >
-        <Icon className="text-xl" />
-        {showFullMenu && <p className="flex-1 text-left text-sm">{t(label)}</p>}
+        <Link
+          className="flex w-full items-center justify-start gap-4 py-6 font-medium"
+          to={navTarget}
+        >
+          <Icon className="text-xl" />
+          {showFullMenu && (
+            <p className="flex-1 text-left text-sm">{t(label)}</p>
+          )}
+        </Link>
       </Button>
     </div>
   );
@@ -289,28 +289,26 @@ const SubMenuItem = ({
   handleOpen,
   currentSegment,
 }: ISubMenuItem) => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const isActive = route === currentSegment;
 
   return (
     <Button
-      className={cn(
-        'flex w-full items-center justify-start gap-4 py-5 font-medium',
-        {
-          'text-primary font-bold': isActive,
-          'text-content2-foreground hover:text-primary/85': !isActive,
-        },
-      )}
+      className={cn('w-full py-5', {
+        'text-primary font-bold': isActive,
+        'text-content2-foreground hover:text-primary/85': !isActive,
+      })}
       size="sm"
       variant={isActive ? 'danger-soft' : 'ghost'}
-      onPress={() => {
-        navigate(route);
-        handleOpen(false);
-      }}
+      onClick={() => handleOpen(false)}
     >
-      <Icon className="text-base" />
-      <p className="text-[13px]">{t(`sidebar.${title}`)}</p>
+      <Link
+        className="flex w-full items-center justify-start gap-4 font-medium"
+        to={route}
+      >
+        <Icon className="text-base" />
+        <p className="text-[13px]">{t(`sidebar.${title}`)}</p>
+      </Link>
     </Button>
   );
 };

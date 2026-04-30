@@ -1,0 +1,8 @@
+export { default as userApi } from './user';
+export { default as authApi } from './auth';
+export { default as testApi } from './test';
+export { default as testSectionApi } from './testSection';
+export { default as questionGroupApi } from './questionGroup';
+export { default as passageApi } from './passage';
+export { default as roleApi } from './role';
+export { default as permissionApi } from './permission';

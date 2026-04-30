@@ -1,4 +1,4 @@
-import { AbilityBuilder, createMongoAbility } from '@casl/ability';
+import { Toast } from '@heroui/react';
 import { StrictMode } from 'react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 
@@ -6,17 +6,7 @@ import './index.css';
 
 import '@/i18n';
 import Loader from '@/components/shared/Loader';
-import { AbilityContext } from '@/configs/casl/can.config';
-import { LocaleProvider } from '@/providers/locale.provider';
-import { ThemeProvider } from '@/providers/theme.provider';
-import { PermissionAction } from '@/types/auth';
-import { SubjectName } from '@/types/auth';
-
-const ability = (() => {
-  const { can, build } = new AbilityBuilder(createMongoAbility);
-  can(PermissionAction.Read, SubjectName.All);
-  return build();
-})();
+import { ReactQueryProvider, ThemeProvider, LocaleProvider } from '@/providers';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -47,13 +37,14 @@ export function HydrateFallback() {
 export default function Root() {
   return (
     <StrictMode>
-      <AbilityContext.Provider value={ability}>
-        <ThemeProvider>
-          <LocaleProvider>
+      <ThemeProvider>
+        <LocaleProvider>
+          <ReactQueryProvider>
             <Outlet />
-          </LocaleProvider>
-        </ThemeProvider>
-      </AbilityContext.Provider>
+            <Toast.Provider />
+          </ReactQueryProvider>
+        </LocaleProvider>
+      </ThemeProvider>
     </StrictMode>
   );
 }

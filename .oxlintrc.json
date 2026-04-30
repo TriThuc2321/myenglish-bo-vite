@@ -4,7 +4,12 @@
   "env": {
     "browser": true
   },
-  "ignorePatterns": ["node_modules/**", "out/**"],
+  "ignorePatterns": [
+    "node_modules/**",
+    "out/**",
+    ".react-router/**",
+    "build/**"
+  ],
   "rules": {
     "no-console": ["error", { "allow": ["warn", "error", "info"] }],
     "react/react-in-jsx-scope": "off",

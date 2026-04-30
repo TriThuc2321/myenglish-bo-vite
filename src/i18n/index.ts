@@ -11,6 +11,9 @@ export const LOCALES: Locale[] = ['en', 'vi'];
 const STORAGE_KEY = 'locale';
 
 function resolveInitialLocale(): Locale {
+  if (typeof window === 'undefined') {
+    return 'en';
+  }
   try {
     const stored = localStorage.getItem(STORAGE_KEY) as Locale | null;
     if (stored === 'en' || stored === 'vi') return stored;
@@ -34,15 +37,17 @@ i18n.use(initReactI18next).init({
   },
 });
 
-i18n.on('languageChanged', (lng) => {
-  try {
-    localStorage.setItem(STORAGE_KEY, lng);
-    document.documentElement.setAttribute('lang', lng);
-  } catch {
-    // ignore
-  }
-});
+if (typeof document !== 'undefined') {
+  i18n.on('languageChanged', (lng) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, lng);
+      document.documentElement.setAttribute('lang', lng);
+    } catch {
+      // ignore
+    }
+  });
 
-document.documentElement.setAttribute('lang', i18n.language);
+  document.documentElement.setAttribute('lang', i18n.language);
+}
 
 export default i18n;

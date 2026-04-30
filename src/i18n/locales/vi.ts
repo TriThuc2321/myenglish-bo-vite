@@ -32,6 +32,16 @@ const vi = {
     settings: 'Cài đặt',
     logout: 'Đăng xuất',
   },
+  sidebar: {
+    dashboard: 'Tổng quan',
+    students: 'Học viên',
+    teachers: 'Giáo viên',
+    tests: 'Bài kiểm tra',
+    passages: 'Đoạn văn',
+    questions: 'Câu hỏi',
+    users: 'Người dùng',
+    roles: 'Vai trò',
+  },
   auth: {
     login: 'Đăng nhập',
     logout: 'Đăng xuất',

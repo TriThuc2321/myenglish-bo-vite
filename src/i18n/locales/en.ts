@@ -32,6 +32,16 @@ const en = {
     settings: 'Settings',
     logout: 'Logout',
   },
+  sidebar: {
+    dashboard: 'Dashboard',
+    students: 'Students',
+    teachers: 'Teachers',
+    tests: 'Tests',
+    passages: 'Passages',
+    questions: 'Questions',
+    users: 'Users',
+    roles: 'Roles',
+  },
   auth: {
     login: 'Login',
     logout: 'Logout',

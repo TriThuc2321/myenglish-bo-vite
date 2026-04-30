@@ -2,20 +2,21 @@ import { Avatar, Button } from '@heroui/react';
 import { memo } from 'react';
 import { LuMenu } from 'react-icons/lu';
 
+import { useGetProfile } from '@/hooks/apis/users';
+
 import SwitchLocale from './switchLocale';
 
 type HeaderProps = {
   onChangeOpenSidebar: () => void;
 };
-
-const profile = {
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'john.doe@example.com',
-  avatar: 'https://github.com/shadcn.png',
-};
 function Header({ onChangeOpenSidebar }: HeaderProps) {
-  const { firstName, lastName, email, avatar } = profile || {};
+  const { data } = useGetProfile();
+  const { firstName, lastName, email, avatar } = data || {};
+  const fullName = [firstName, lastName].filter(Boolean).join(' ');
+  const fallbackName = fullName || email || 'MyEnglish User';
+  const firstInitial = firstName?.charAt(0) ?? '';
+  const lastInitial = lastName?.charAt(0) ?? '';
+  const fallbackInitials = (firstInitial + lastInitial || 'ME').toUpperCase();
 
   return (
     <div className="flex items-center justify-between">
@@ -36,16 +37,13 @@ function Header({ onChangeOpenSidebar }: HeaderProps) {
 
         <Button variant="ghost" className="h-12 pr-1 max-md:hidden">
           <div>
-            <p className="text-end text-sm font-semibold">
-              {firstName} {lastName}
-            </p>
-            <p className="text-xs text-gray-500">{email}</p>
+            <p className="text-end text-sm font-semibold">{fallbackName}</p>
+            <p className="text-xs text-gray-500">{email ?? ''}</p>
           </div>
           <Avatar className="rounded-2xl" variant="soft" color="accent">
-            <Avatar.Image alt="John Doe" src={avatar} />
+            <Avatar.Image alt={fallbackName} src={avatar} />
             <Avatar.Fallback className="rounded-2xl">
-              {firstName.charAt(0)}
-              {lastName.charAt(0)}
+              {fallbackInitials}
             </Avatar.Fallback>
           </Avatar>
         </Button>

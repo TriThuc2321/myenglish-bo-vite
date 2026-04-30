@@ -1,12 +1,23 @@
 import { Toast } from '@heroui/react';
 import { StrictMode } from 'react';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import {
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  type LinksFunction,
+} from 'react-router';
 
 import './index.css';
 
 import '@/i18n';
 import Loader from '@/components/shared/Loader';
 import { ReactQueryProvider, ThemeProvider, LocaleProvider } from '@/providers';
+
+export const links: LinksFunction = () => [
+  { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

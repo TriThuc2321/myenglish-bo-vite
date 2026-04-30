@@ -1,39 +1,30 @@
-import { Outlet } from 'react-router';
+import { Outlet, redirect } from 'react-router';
 
 import MainLayout from '@/components/layouts/mainLayout';
+import { REACT_QUERY_KEYS } from '@/constants/reactQuery';
 import { readShowFullMenuFromStorage } from '@/constants/storage';
-import { AccessProvider } from '@/providers';
-import { PermissionAction, SubjectName } from '@/types/auth';
-import { RoleStatus } from '@/types/role';
+import { useGetProfile } from '@/hooks/apis/users';
+import { AccessProvider, getQueryClient } from '@/providers';
+import { userApi } from '@/services/apis';
 
-const profile = {
-  id: '1',
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'john.doe@example.com',
-  avatar: 'https://github.com/shadcn.png',
-  role: {
-    id: 1,
-    name: 'Admin',
-    code: 'admin',
-    canAccessCms: true,
-    status: RoleStatus.ACTIVE,
-    permissions: [
-      {
-        action: PermissionAction.Manage,
-        subject: SubjectName.All,
-      },
-    ],
-    auditMetadata: {
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-  },
-};
+export async function clientLoader() {
+  try {
+    const queryClient = getQueryClient();
+    const profile = await queryClient.fetchQuery({
+      queryKey: [REACT_QUERY_KEYS.USER.PROFILE],
+      queryFn: userApi.getProfile,
+    });
+    return { profile };
+  } catch {
+    return redirect('/login');
+  }
+}
 
 export default function MainLayoutRoute() {
+  const { data } = useGetProfile();
+
   return (
-    <AccessProvider profile={profile}>
+    <AccessProvider profile={data}>
       <MainLayout initialShowFullMenu={readShowFullMenuFromStorage(true)}>
         <Outlet />
       </MainLayout>

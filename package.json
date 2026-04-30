@@ -6,7 +6,6 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "dev:ssl": "vite",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint && oxfmt",

@@ -1,6 +1,6 @@
 import { Button } from '@heroui/react';
 import { FaGoogle } from 'react-icons/fa';
-import { useNavigate, type MetaFunction } from 'react-router';
+import { type MetaFunction } from 'react-router';
 
 import { LogoIcon } from '@/assets/icons';
 import ENV from '@/configs/env.config';
@@ -13,9 +13,8 @@ export const meta: MetaFunction = () =>
   );
 
 export default function LoginPage() {
-  const navigate = useNavigate();
   const handleGoogleLogin = () => {
-    navigate(`${ENV.API_URL}/api/auth/google`);
+    window.location.href = `${ENV.API_URL}/api/auth/google`;
   };
 
   return (
@@ -34,7 +33,7 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <Button onClick={handleGoogleLogin} className="w-full border py-3">
+      <Button size="lg" onClick={handleGoogleLogin} className="w-full">
         <FaGoogle className="h-5 w-5 text-white" />
         Continue with Google
       </Button>

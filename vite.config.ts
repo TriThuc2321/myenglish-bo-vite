@@ -28,19 +28,28 @@ function stubWellKnownPlugin(): Plugin {
 const sslKeyPath = resolve(__dirname, 'backoffice.myenglish.com-key.pem');
 const sslCertPath = resolve(__dirname, 'backoffice.myenglish.com.pem');
 const hasSslFiles = existsSync(sslKeyPath) && existsSync(sslCertPath);
+const devServerPort = 5173;
 
-// https://vite.dev/config/
+const serverConfig = hasSslFiles
+  ? {
+      host: '0.0.0.0',
+      port: devServerPort,
+      strictPort: true,
+      https: {
+        key: readFileSync(sslKeyPath),
+        cert: readFileSync(sslCertPath),
+      },
+      hmr: {
+        protocol: 'wss',
+        host: 'backoffice.myenglish.com',
+        clientPort: devServerPort,
+      },
+    }
+  : undefined;
+
 export default defineConfig({
   plugins: [stubWellKnownPlugin(), reactRouter(), tailwindcss(), svgr()],
-  server: hasSslFiles
-    ? {
-        host: 'backoffice.myenglish.com',
-        https: {
-          key: readFileSync(sslKeyPath),
-          cert: readFileSync(sslCertPath),
-        },
-      }
-    : undefined,
+  server: serverConfig,
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

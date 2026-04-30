@@ -1,4 +1,10 @@
 import { Button } from '@heroui/react';
+import { type MetaFunction } from 'react-router';
+
+import { pageMeta } from '@/utils/metadata';
+
+export const meta: MetaFunction = () =>
+  pageMeta('Dashboard', 'Overview of your MyEnglish management workspace.');
 
 export default function DashboardPage() {
   return (

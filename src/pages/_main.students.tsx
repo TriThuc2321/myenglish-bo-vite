@@ -1,3 +1,13 @@
+import { type MetaFunction } from 'react-router';
+
+import { pageMeta } from '@/utils/metadata';
+
+export const meta: MetaFunction = () =>
+  pageMeta(
+    'Students',
+    'Manage student profiles, access, and learning activity in MyEnglish.',
+  );
+
 export default function StudentsPage() {
   return (
     <div>

@@ -1,3 +1,13 @@
+import { type MetaFunction } from 'react-router';
+
+import { pageMeta } from '@/utils/metadata';
+
+export const meta: MetaFunction = () =>
+  pageMeta(
+    'Tests',
+    'Create, publish, and manage English tests and sections in MyEnglish.',
+  );
+
 export default function TestsPage() {
   return (
     <div>

@@ -1,9 +1,16 @@
 import { Button } from '@heroui/react';
 import { FaGoogle } from 'react-icons/fa';
-import { useNavigate } from 'react-router';
+import { useNavigate, type MetaFunction } from 'react-router';
 
 import { LogoIcon } from '@/assets/icons';
 import ENV from '@/configs/env.config';
+import { pageMeta } from '@/utils/metadata';
+
+export const meta: MetaFunction = () =>
+  pageMeta(
+    'Login',
+    'Sign in with Google to access the MyEnglish management dashboard and tools.',
+  );
 
 export default function LoginPage() {
   const navigate = useNavigate();

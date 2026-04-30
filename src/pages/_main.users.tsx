@@ -1,3 +1,10 @@
+import { type MetaFunction } from 'react-router';
+
+import { pageMeta } from '@/utils/metadata';
+
+export const meta: MetaFunction = () =>
+  pageMeta('Users', 'Invite, edit, and manage user accounts in MyEnglish.');
+
 export default function UsersPage() {
   return (
     <div>

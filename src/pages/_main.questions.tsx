@@ -1,3 +1,13 @@
+import { type MetaFunction } from 'react-router';
+
+import { pageMeta } from '@/utils/metadata';
+
+export const meta: MetaFunction = () =>
+  pageMeta(
+    'Questions',
+    'Manage question banks, groups, and assessment items in MyEnglish.',
+  );
+
 export default function QuestionsPage() {
   return (
     <div>

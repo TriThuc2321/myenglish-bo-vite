@@ -1,3 +1,10 @@
+import { type MetaFunction } from 'react-router';
+
+import { pageMeta } from '@/utils/metadata';
+
+export const meta: MetaFunction = () =>
+  pageMeta('Roles', 'Configure roles and permissions for MyEnglish users.');
+
 export default function RolesPage() {
   return (
     <div>

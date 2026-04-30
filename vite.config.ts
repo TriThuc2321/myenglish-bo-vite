@@ -2,6 +2,7 @@ import type { Plugin } from 'vite';
 
 import { reactRouter } from '@react-router/dev/vite';
 import tailwindcss from '@tailwindcss/vite';
+import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
@@ -24,9 +25,22 @@ function stubWellKnownPlugin(): Plugin {
   };
 }
 
+const sslKeyPath = resolve(__dirname, 'backoffice.myenglish.com-key.pem');
+const sslCertPath = resolve(__dirname, 'backoffice.myenglish.com.pem');
+const hasSslFiles = existsSync(sslKeyPath) && existsSync(sslCertPath);
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [stubWellKnownPlugin(), reactRouter(), tailwindcss(), svgr()],
+  server: hasSslFiles
+    ? {
+        host: 'backoffice.myenglish.com',
+        https: {
+          key: readFileSync(sslKeyPath),
+          cert: readFileSync(sslCertPath),
+        },
+      }
+    : undefined,
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

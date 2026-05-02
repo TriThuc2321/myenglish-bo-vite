@@ -10,6 +10,7 @@ export const createEditPassageSchema = yup.object().shape({
   markedBy: yup
     .string()
     .oneOf(Object.values(MarkedBy))
+    .default(MarkedBy.NONE)
     .required(VALIDATION_MESSAGE.REQUIRED),
   status: yup
     .string()

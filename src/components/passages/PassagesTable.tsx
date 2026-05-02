@@ -12,73 +12,61 @@ import { useTranslation } from 'react-i18next';
 import { LuEye, LuPencil, LuTrash2 } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 
-import type { Role } from '@/types/role';
+import type { Passage } from '@/types/passage';
 
 import AuditItem from '@/components/shared/AuditItem';
 import MyButton from '@/components/shared/Button';
 import FooterTable from '@/components/shared/table/FooterTable';
 import TanstackTable from '@/components/shared/table/TanstackTable';
 import ConfirmWrapper from '@/configs/ConfirmWrapper';
-import { useDeleteRole } from '@/hooks/apis/roles';
+import { useDeletePassage } from '@/hooks/apis/passages';
 import { PermissionAction, SubjectName } from '@/types/auth';
-import { RoleStatus } from '@/types/role';
 import { toSortDescriptor, toSortingState } from '@/utils/table';
 
-const statusColorMap: Record<RoleStatus, 'success' | 'danger' | 'default'> = {
-  [RoleStatus.ACTIVE]: 'success',
-  [RoleStatus.INACTIVE]: 'danger',
-  [RoleStatus.DELETED]: 'default',
-};
+import { statusColorMap } from './constants';
 
-const columnHelper = createColumnHelper<Role>();
+const columnHelper = createColumnHelper<Passage>();
 
-interface RolesTableProps {
-  data: Role[];
+interface PassagesTableProps {
+  data: Passage[];
   isLoading?: boolean;
   page?: number;
   take?: number;
   total?: number;
 }
 
-export default function RolesTable({
+export default function PassagesTable({
   data,
   isLoading,
   page,
   take,
   total,
-}: RolesTableProps) {
+}: PassagesTableProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { mutate: deleteRole, isPending: isDeleting } = useDeleteRole();
+  const { mutate: deletePassage, isPending: isDeleting } = useDeletePassage();
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('name', { header: t('roles.table.name') }),
-      columnHelper.accessor('code', { header: t('roles.table.code') }),
-      columnHelper.accessor('status', {
-        header: t('roles.table.status'),
-        cell: (info) => (
-          <Chip
-            color={statusColorMap[info.getValue()]}
-            size="sm"
-            variant="soft"
-          >
-            <Chip.Label>{info.getValue()}</Chip.Label>
-          </Chip>
-        ),
+      columnHelper.accessor('title', { header: t('passages.table.title') }),
+      columnHelper.accessor('subtitle', {
+        header: t('passages.table.subtitle'),
       }),
-      columnHelper.accessor('canAccessCms', {
-        header: t('roles.table.cmsAccess'),
-        cell: (info) => (
-          <Chip
-            color={info.getValue() ? 'success' : 'default'}
-            size="sm"
-            variant="soft"
-          >
-            {info.getValue() ? t('common.yes') : t('common.no')}
-          </Chip>
-        ),
+      columnHelper.accessor('markedBy', {
+        header: t('passages.table.markedBy'),
+      }),
+      columnHelper.accessor('status', {
+        header: t('passages.table.status'),
+        cell: (info) => {
+          const value = info.getValue();
+          if (!value) return '-';
+          return (
+            <Chip color={statusColorMap[value]} size="sm" variant="soft">
+              <Chip.Label>{value}</Chip.Label>
+            </Chip>
+          );
+        },
       }),
       columnHelper.accessor('auditMetadata', {
         id: 'createdBy',
@@ -109,35 +97,35 @@ export default function RolesTable({
           <div className="flex items-center gap-2">
             <MyButton
               I={PermissionAction.Read}
-              a={SubjectName.Roles}
+              a={SubjectName.Passages}
               isIconOnly
-              size="sm"
               variant="outline"
-              onPress={() => navigate(`/roles/${row.original.id}`)}
+              size="sm"
+              onPress={() => navigate(`/passages/${row.original.id}`)}
             >
               <LuEye className="size-4" />
             </MyButton>
             <MyButton
               I={PermissionAction.Update}
-              a={SubjectName.Roles}
+              a={SubjectName.Passages}
               isIconOnly
               size="sm"
               variant="outline"
-              onPress={() => navigate(`/roles/${row.original.id}/edit`)}
+              onPress={() => navigate(`/passages/${row.original.id}/edit`)}
             >
               <LuPencil className="size-4" />
             </MyButton>
             <ConfirmWrapper
-              title={t('roles.deleteTitle')}
-              description={t('roles.deleteConfirm', {
-                name: row.original.name,
+              title={t('passages.deleteTitle')}
+              description={t('passages.deleteConfirm', {
+                name: row.original.title,
               })}
               confirmText={t('common.delete')}
-              onConfirm={() => deleteRole([row.original.id])}
+              onConfirm={() => deletePassage([row.original.id])}
             >
               <MyButton
                 I={PermissionAction.Delete}
-                a={SubjectName.Roles}
+                a={SubjectName.Passages}
                 isIconOnly
                 size="sm"
                 variant="outline"
@@ -150,7 +138,7 @@ export default function RolesTable({
         ),
       }),
     ],
-    [t, navigate, deleteRole, isDeleting],
+    [t, navigate, deletePassage, isDeleting],
   );
 
   const table = useReactTable({
@@ -170,7 +158,7 @@ export default function RolesTable({
       table={table}
       sortDescriptor={sortDescriptor}
       onSortChange={(d) => setSorting(toSortingState(d))}
-      ariaLabel="Roles table"
+      ariaLabel="Passages table"
       isLoading={isLoading}
       footer={<FooterTable page={page} take={take} total={total} />}
     />

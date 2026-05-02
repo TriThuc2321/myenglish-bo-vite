@@ -333,7 +333,7 @@ Generate a TanStack Table with:
 - A `status` column with `Chip` using `statusColorMap`
 - All other fields as simple accessor columns
 - Two audit columns using the shared `AuditItem` component from `@/components/shared/AuditItem`:
-  - `createdBy` — `columnHelper.accessor('auditMetadata', { id: 'createdBy', header: t('common.createdBy'), cell: ... })` rendering `<AuditItem user={audit?.createdBy} dateTime={audit?.createdAt} email={audit?.createdBy?.email} />`, returns `'-'` when both are absent
+  - `createdBy` — `columnHelper.accessor('auditMetadata', { id: 'createdBy', header: t('common.createdBy'), cell: ... })` rendering `<AuditItem user={audit?.createdBy} dateTime={audit?.createdAt} />`, returns `'-'` when both are absent
   - `updatedBy` — same pattern with `updatedBy` / `updatedAt`
 - An `actions` column with view/edit/delete `MyButton`s using `PermissionAction` and `SubjectName.<SubjectName>`
 - `FooterTable` and `TanstackTable` exactly as in `RolesTable`

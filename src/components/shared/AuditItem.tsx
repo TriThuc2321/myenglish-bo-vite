@@ -10,10 +10,9 @@ import Loader from './Loader';
 type AuditItemProps = Partial<{
   user?: User;
   dateTime: string;
-  email?: string;
 }>;
 
-export default function AuditItem({ user, dateTime, email }: AuditItemProps) {
+export default function AuditItem({ user, dateTime }: AuditItemProps) {
   const { firstName, lastName, avatar } = user ?? {};
   const fullName = [firstName, lastName].filter(Boolean).join(' ');
 
@@ -26,7 +25,7 @@ export default function AuditItem({ user, dateTime, email }: AuditItemProps) {
       }
     >
       <div className="flex min-w-max items-center gap-3">
-        <Avatar className="rounded-2xl" variant="soft" color="accent">
+        <Avatar className="rounded-2xl" size="sm" variant="soft" color="accent">
           <Avatar.Image alt={fullName} src={avatar} />
           <Avatar.Fallback className="rounded-2xl">
             {fullName?.charAt(0) ?? ''}
@@ -37,7 +36,6 @@ export default function AuditItem({ user, dateTime, email }: AuditItemProps) {
           <p className="text-left text-xs">
             {formatDateTime(dateTime, 'MM/DD/YYYY HH:mm')}
           </p>
-          {email && <p className="text-xs">{email}</p>}
         </div>
       </div>
     </Suspense>

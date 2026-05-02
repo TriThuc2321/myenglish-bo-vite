@@ -104,6 +104,7 @@ export interface IGetDisplayRange {
 export enum MarkedBy {
   ALPHABET = 'ALPHABET',
   NUMBER = 'NUMBER',
+  NONE = 'NONE',
 }
 
 export enum Status {

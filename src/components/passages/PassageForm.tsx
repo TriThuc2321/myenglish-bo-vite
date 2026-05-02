@@ -1,0 +1,244 @@
+import {
+  Button,
+  FieldError,
+  Input,
+  Label,
+  ListBox,
+  Select,
+  TextArea,
+  TextField,
+} from '@heroui/react';
+import { Controller, useFieldArray, type UseFormReturn } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { LuPlus, LuTrash2 } from 'react-icons/lu';
+
+import type { CreateEditPassageFormData } from '@/schemas/passage';
+
+import { MarkedBy, Status } from '@/types/common';
+
+type PassageFormProps = {
+  form: UseFormReturn<CreateEditPassageFormData>;
+  onSubmit: (data: CreateEditPassageFormData) => void;
+  isSubmitting?: boolean;
+  onCancel?: () => void;
+};
+
+const PassageForm = ({
+  form,
+  onSubmit,
+  isSubmitting,
+  onCancel,
+}: PassageFormProps) => {
+  const { t } = useTranslation();
+
+  const statusItems = [
+    { label: t('common.active'), value: Status.PUBLISHED },
+    { label: t('common.inactive'), value: Status.DRAFT },
+  ];
+
+  const markedByItems = [
+    { label: t('passages.form.markedBy.alphabet'), value: MarkedBy.ALPHABET },
+    { label: t('passages.form.markedBy.number'), value: MarkedBy.NUMBER },
+    { label: t('passages.form.markedBy.none'), value: MarkedBy.NONE },
+  ];
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = form;
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'paragraphs',
+  });
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mx-auto flex w-full max-w-3xl flex-col gap-4"
+    >
+      <Controller
+        name="title"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            fullWidth
+            name={field.name}
+            value={field.value ?? ''}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            isInvalid={!!errors.title}
+          >
+            <Label>{t('passages.form.title')}</Label>
+            <Input
+              ref={field.ref}
+              variant="secondary"
+              placeholder={t('passages.form.title')}
+            />
+            <FieldError>{errors.title?.message}</FieldError>
+          </TextField>
+        )}
+      />
+      <Controller
+        name="subtitle"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            fullWidth
+            name={field.name}
+            value={field.value ?? ''}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            isInvalid={!!errors.subtitle}
+          >
+            <Label>{t('passages.form.subtitle')}</Label>
+            <Input
+              ref={field.ref}
+              variant="secondary"
+              placeholder={t('passages.form.subtitle')}
+            />
+            <FieldError>{errors.subtitle?.message}</FieldError>
+          </TextField>
+        )}
+      />
+      <Controller
+        name="markedBy"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder={t('passages.form.markedBy.label')}
+            variant="secondary"
+            fullWidth
+            selectedKey={field.value}
+            onSelectionChange={(key) => {
+              if (key == null) return;
+              field.onChange(key as MarkedBy);
+            }}
+            isInvalid={!!errors.markedBy}
+          >
+            <Label>{t('passages.form.markedBy.label')}</Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                {markedByItems.map((item) => (
+                  <ListBox.Item
+                    key={item.value}
+                    id={item.value}
+                    textValue={item.label}
+                  >
+                    {item.label}
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+            <FieldError>{errors.markedBy?.message}</FieldError>
+          </Select>
+        )}
+      />
+      <Controller
+        name="status"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder={t('passages.form.status')}
+            variant="secondary"
+            fullWidth
+            selectedKey={field.value}
+            onSelectionChange={(key) => {
+              if (key == null) return;
+              field.onChange(key as Status);
+            }}
+            isInvalid={!!errors.status}
+          >
+            <Label>{t('passages.form.status')}</Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                {statusItems.map((item) => (
+                  <ListBox.Item
+                    key={item.value}
+                    id={item.value}
+                    textValue={item.label}
+                  >
+                    {item.label}
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+            <FieldError>{errors.status?.message}</FieldError>
+          </Select>
+        )}
+      />
+
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <Label>{t('passages.form.paragraphs')}</Label>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onPress={() => append({ content: '' })}
+          >
+            <LuPlus className="size-4" />
+            {t('passages.form.addParagraph')}
+          </Button>
+        </div>
+        {fields.map((field, index) => (
+          <div key={field.id} className="flex items-start gap-2">
+            <Controller
+              name={`paragraphs.${index}.content`}
+              control={control}
+              render={({ field: f }) => (
+                <TextField
+                  fullWidth
+                  name={f.name}
+                  value={f.value ?? ''}
+                  onChange={f.onChange}
+                  onBlur={f.onBlur}
+                  isInvalid={!!errors.paragraphs?.[index]?.content}
+                >
+                  <TextArea ref={f.ref} variant="secondary" rows={5} />
+                  <FieldError>
+                    {errors.paragraphs?.[index]?.content?.message}
+                  </FieldError>
+                </TextField>
+              )}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              isIconOnly
+              size="sm"
+              onPress={() => remove(index)}
+              className="mt-1"
+            >
+              <LuTrash2 className="text-danger size-4" />
+            </Button>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-end gap-2">
+        {onCancel && (
+          <Button type="button" variant="outline" onPress={onCancel}>
+            {t('common.cancel')}
+          </Button>
+        )}
+        <Button type="submit" variant="primary" isPending={isSubmitting}>
+          {t('common.save')}
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default PassageForm;

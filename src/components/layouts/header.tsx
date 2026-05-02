@@ -5,6 +5,7 @@ import { LuMenu } from 'react-icons/lu';
 import { useGetProfile } from '@/hooks/apis/users';
 
 import SwitchLocale from './switchLocale';
+import ThemeSwitch from './switchTheme';
 
 type HeaderProps = {
   onChangeOpenSidebar: () => void;
@@ -34,6 +35,7 @@ function Header({ onChangeOpenSidebar }: HeaderProps) {
 
       <div className="flex items-center gap-2">
         <SwitchLocale />
+        <ThemeSwitch />
 
         <Button variant="ghost" className="h-12 pr-1 max-md:hidden">
           <div>

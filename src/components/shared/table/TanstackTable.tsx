@@ -32,7 +32,7 @@ function TanstackTable<T>({
   isLoading,
   emptyContent = 'No data found',
   footer,
-  maxHeight = 'calc(100vh - 300px)',
+  maxHeight = 'calc(100vh - 260px)',
 }: TanstackTableProps<T>) {
   const rows = table.getRowModel().rows;
 
@@ -95,6 +95,9 @@ function TanstackTable<T>({
           <Spinner />
         </div>
       )}
+
+      {isLoading && rows.length === 0 && <div className="h-40" />}
+
       {!isLoading && rows.length === 0 && (
         <div className="text-muted flex justify-center py-8 text-sm">
           {emptyContent}

@@ -20,7 +20,7 @@ export default function SwitchLocale() {
 
   return (
     <Dropdown>
-      <Button variant="tertiary" isIconOnly className="rounded-xl">
+      <Button variant="tertiary" isIconOnly className="rounded-full">
         {locale === LOCALE.VI ? (
           <FlagVNIcon className={iconClasses} />
         ) : (
@@ -28,7 +28,7 @@ export default function SwitchLocale() {
         )}
       </Button>
 
-      <Dropdown.Popover>
+      <Dropdown.Popover placement="bottom end">
         <Dropdown.Menu aria-label="Switch locale">
           <Dropdown.Item
             id={LOCALE.VI}

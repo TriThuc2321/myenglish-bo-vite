@@ -2,13 +2,13 @@ import { Breadcrumbs, Card } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, type MetaFunction } from 'react-router';
 
-import { EditRole } from '@/components/roles';
+import { ViewRole } from '@/components/roles';
 import { pageMeta } from '@/utils/metadata';
 
 export const meta: MetaFunction = () =>
-  pageMeta('Edit Role', 'Edit role details and permissions.');
+  pageMeta('Role Detail', 'View role details and permissions.');
 
-export default function EditRolePage() {
+export default function ViewRolePage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
 
@@ -20,11 +20,11 @@ export default function EditRolePage() {
         >
           {t('sidebar.roles')}
         </Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('roles.editTitle')}</Breadcrumbs.Item>
+        <Breadcrumbs.Item>{t('roles.detailTitle')}</Breadcrumbs.Item>
       </Breadcrumbs>
 
       <Card className="mx-auto w-full max-w-3xl">
-        <Card.Content>{id && <EditRole id={id} />}</Card.Content>
+        <Card.Content>{id && <ViewRole id={id} />}</Card.Content>
       </Card>
     </div>
   );

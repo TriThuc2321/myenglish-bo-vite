@@ -62,11 +62,11 @@ export default function Sidebar({
     <>
       <div
         className={cn(
-          'bg-background md:transition-width border-border absolute left-[-300px] z-10 flex h-full flex-col border-r p-2 transition-transform duration-300 max-md:max-h-[calc(100vh-32px)] lg:relative lg:left-0',
+          'bg-surface md:transition-width border-border absolute -left-75 z-10 flex h-full flex-col rounded-r-3xl border-r p-2 transition-transform duration-300 max-md:max-h-[calc(100vh-32px)] lg:relative lg:left-0',
           {
             'left-4': isOpen,
-            'w-[76px]': !showFullMenu,
-            'w-[240px] min-w-[240px]': showFullMenu,
+            'w-19': !showFullMenu,
+            'w-60 min-w-60': showFullMenu,
           },
         )}
       >
@@ -86,12 +86,9 @@ export default function Sidebar({
         <Link className="block" to="/">
           <img
             alt="Logo horizontal"
-            className={cn(
-              'mx-auto mt-6 block h-auto w-[180px] object-contain',
-              {
-                hidden: !showFullMenu,
-              },
-            )}
+            className={cn('mx-auto mt-6 block h-auto w-45 object-contain', {
+              hidden: !showFullMenu,
+            })}
             draggable={false}
             height={32}
             src={logoHorizontalUrl}

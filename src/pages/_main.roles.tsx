@@ -1,15 +1,68 @@
-import { type MetaFunction } from 'react-router';
+import { Input, Label, TextField } from '@heroui/react';
+import { useState } from 'react';
+import { LuPlus } from 'react-icons/lu';
+import { useNavigate, type MetaFunction } from 'react-router';
+import { useSearchParams } from 'react-router';
 
+import { RolesTable } from '@/components/roles';
+import MyButton from '@/components/shared/Button';
+import { useDebounce } from '@/hooks';
+import { useGetRoles } from '@/hooks/apis/roles';
+import { PermissionAction, SubjectName } from '@/types/auth';
 import { pageMeta } from '@/utils/metadata';
 
 export const meta: MetaFunction = () =>
   pageMeta('Roles', 'Configure roles and permissions for MyEnglish users.');
 
 export default function RolesPage() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const page = Number(searchParams.get('page') ?? 1);
+  const take = Number(searchParams.get('take') ?? 10);
+
+  const [search, setSearch] = useState(searchParams.get('search') ?? '');
+  const debouncedSearch = useDebounce(search, 500);
+
+  const { data, isLoading } = useGetRoles({
+    page,
+    take,
+    keyword: debouncedSearch || undefined,
+  });
+
+  const roles = data?.data ?? [];
+  const total = data?.meta?.totalCount ?? 0;
+
   return (
-    <div>
-      <h1 className="text-2xl font-bold">Roles</h1>
-      <p className="text-default-500 mt-2">Placeholder page.</p>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-end justify-between gap-3">
+        <TextField
+          value={search}
+          onChange={setSearch}
+          aria-label="Search roles"
+        >
+          <Label>Search</Label>
+          <Input className="ml-0.5" placeholder="Name or code..." />
+        </TextField>
+
+        <MyButton
+          I={PermissionAction.Create}
+          a={SubjectName.Roles}
+          variant="primary"
+          onPress={() => navigate('/roles/create')}
+        >
+          <LuPlus className="size-4" />
+          Create Role
+        </MyButton>
+      </div>
+
+      <RolesTable
+        data={roles}
+        isLoading={isLoading}
+        page={page}
+        take={take}
+        total={total}
+      />
     </div>
   );
 }

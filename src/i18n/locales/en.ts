@@ -22,6 +22,8 @@ const en = {
     inactive: 'Inactive',
     createdAt: 'Created at',
     updatedAt: 'Updated at',
+    createdBy: 'Created by',
+    updatedBy: 'Updated by',
   },
   nav: {
     dashboard: 'Dashboard',

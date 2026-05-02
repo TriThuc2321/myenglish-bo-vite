@@ -22,6 +22,8 @@ const vi = {
     inactive: 'Không hoạt động',
     createdAt: 'Ngày tạo',
     updatedAt: 'Ngày cập nhật',
+    createdBy: 'Tạo bởi',
+    updatedBy: 'Cập nhật bởi',
   },
   nav: {
     dashboard: 'Tổng quan',

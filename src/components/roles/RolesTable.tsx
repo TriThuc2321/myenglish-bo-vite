@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router';
 
 import type { Role } from '@/types/role';
 
+import AuditItem from '@/components/shared/AuditItem';
 import MyButton from '@/components/shared/Button';
 import FooterTable from '@/components/shared/table/FooterTable';
 import TanstackTable from '@/components/shared/table/TanstackTable';
@@ -79,11 +80,41 @@ export default function RolesTable({
           </Chip>
         ),
       }),
+      columnHelper.accessor('auditMetadata', {
+        id: 'createdBy',
+        header: t('common.createdBy'),
+        cell: (info) => {
+          const audit = info.getValue();
+          if (!audit?.createdBy && !audit?.createdAt) return '-';
+          return (
+            <AuditItem
+              user={audit?.createdBy}
+              dateTime={audit?.createdAt}
+              email={audit?.createdBy?.email}
+            />
+          );
+        },
+      }),
+      columnHelper.accessor('auditMetadata', {
+        id: 'updatedBy',
+        header: t('common.updatedBy'),
+        cell: (info) => {
+          const audit = info.getValue();
+          if (!audit?.updatedBy && !audit?.updatedAt) return '-';
+          return (
+            <AuditItem
+              user={audit?.updatedBy}
+              dateTime={audit?.updatedAt}
+              email={audit?.updatedBy?.email}
+            />
+          );
+        },
+      }),
       columnHelper.display({
         id: 'actions',
         header: t('common.actions'),
         cell: ({ row }) => (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0.5">
             <MyButton
               I={PermissionAction.Read}
               a={SubjectName.Roles}
@@ -127,7 +158,7 @@ export default function RolesTable({
         ),
       }),
     ],
-    [navigate, deleteRole, isDeleting],
+    [t, navigate, deleteRole, isDeleting],
   );
 
   const table = useReactTable({

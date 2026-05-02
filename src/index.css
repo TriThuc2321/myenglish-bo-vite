@@ -34,16 +34,16 @@
   --segment: oklch(100% 0 27.99);
   --segment-foreground: oklch(21.03% 0 27.99);
   --separator: oklch(92% 0 27.99);
-  --success: oklch(0.5148 0.1337 146.82);
-  --success-foreground: oklch(98% 0.0134 146.82);
+  --success: oklch(73.31% 0.1932 150.75);
+  --success-foreground: oklch(15% 0.03 150.75);
   --surface: oklch(100% 0 27.99);
   --surface-foreground: oklch(21.03% 0 27.99);
   --surface-secondary: oklch(95.24% 0 27.99);
   --surface-secondary-foreground: oklch(21.03% 0 27.99);
   --surface-tertiary: oklch(93.73% 0 27.99);
   --surface-tertiary-foreground: oklch(21.03% 0 27.99);
-  --warning: oklch(0.561 0.116571 78.9352);
-  --warning-foreground: oklch(98% 0.0117 78.94);
+  --warning: oklch(78.48% 0.159 72.51);
+  --warning-foreground: oklch(15% 0.03 72.51);
 
   /* Border Radius */
   --radius: 0.25rem;
@@ -58,13 +58,13 @@
 [data-theme='dark'] {
   color-scheme: dark;
   /* Theme Colors (Dark Mode) */
-  --accent: oklch(58.14% 0.2349 27.99);
+  --accent: oklch(48.094% 0.18947 27.004);
   --accent-foreground: oklch(99.11% 0 0);
   --background: oklch(0.2774 0.0183 274.127);
   --border: oklch(28% 0 27.99);
   --danger: oklch(0.4964 0.1994 28.56);
   --danger-foreground: oklch(98% 0.0199 28.56);
-  --default: oklch(27.4% 0 27.99);
+  --default: oklch(28.679% 0.02065 273.088);
   --default-foreground: oklch(99.11% 0 0);
   --field-background: oklch(21.03% 0 27.99);
   --field-foreground: oklch(99.11% 0 27.99);
@@ -78,14 +78,14 @@
   --segment: oklch(39.64% 0 27.99);
   --segment-foreground: oklch(99.11% 0 27.99);
   --separator: oklch(25% 0 27.99);
-  --success: oklch(0.7677 0.1899 148.1);
-  --success-foreground: oklch(15% 0.05 148.1);
+  --success: oklch(73.31% 0.1932 150.75);
+  --success-foreground: oklch(15% 0.03 150.75);
   --surface: oklch(0.3386 0.0316 273.688);
   --surface-foreground: oklch(99.11% 0 27.99);
-  --surface-secondary: oklch(25.7% 0 27.99);
+  --surface-secondary: oklch(28.679% 0.02065 273.088);
   --surface-secondary-foreground: oklch(99.11% 0 27.99);
   --surface-tertiary: oklch(27.21% 0 27.99);
   --surface-tertiary-foreground: oklch(99.11% 0 27.99);
-  --warning: oklch(0.8239 0.153 74.6);
-  --warning-foreground: oklch(15% 0.0459 74.6);
+  --warning: oklch(78.48% 0.159 72.51);
+  --warning-foreground: oklch(15% 0.03 72.51);
 }

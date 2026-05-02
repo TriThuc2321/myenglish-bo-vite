@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LuPencil, LuTrash2 } from 'react-icons/lu';
+import { LuEye, LuPencil, LuTrash2 } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 
 import type { Role } from '@/types/role';
@@ -84,6 +84,16 @@ export default function RolesTable({
         header: t('common.actions'),
         cell: ({ row }) => (
           <div className="flex items-center gap-2">
+            <MyButton
+              I={PermissionAction.Read}
+              a={SubjectName.Roles}
+              isIconOnly
+              size="sm"
+              variant="ghost"
+              onPress={() => navigate(`/roles/${row.original.id}`)}
+            >
+              <LuEye className="size-4" />
+            </MyButton>
             <MyButton
               I={PermissionAction.Update}
               a={SubjectName.Roles}

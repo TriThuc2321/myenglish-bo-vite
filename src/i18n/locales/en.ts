@@ -64,6 +64,7 @@ const en = {
   roles: {
     createTitle: 'Create Role',
     editTitle: 'Edit Role',
+    detailTitle: 'Role Detail',
     pageDescription: 'Configure roles and permissions for system users.',
     createDescription: 'Define a new role with custom permissions.',
     editDescription: 'Update role details and permission settings.',

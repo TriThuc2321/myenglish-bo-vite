@@ -64,6 +64,7 @@ const vi = {
   roles: {
     createTitle: 'Tạo vai trò',
     editTitle: 'Chỉnh sửa vai trò',
+    detailTitle: 'Chi tiết vai trò',
     pageDescription: 'Cấu hình vai trò và quyền hạn cho người dùng hệ thống.',
     createDescription: 'Định nghĩa vai trò mới với các quyền tùy chỉnh.',
     editDescription: 'Cập nhật thông tin vai trò và cài đặt quyền hạn.',

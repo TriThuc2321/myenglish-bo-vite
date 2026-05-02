@@ -5,13 +5,11 @@ import type { CreateEditRoleFormData } from '@/schemas/role';
 
 import { createEditRoleSchema } from '@/schemas/role';
 
-interface IUseCreateEditRoleForm {
+interface UseCreateEditRoleFormOptions {
   defaultValues?: Partial<CreateEditRoleFormData>;
 }
 
-const useCreateEditRoleForm = (
-  prop: IUseCreateEditRoleForm = { defaultValues: undefined },
-) =>
+const useCreateEditRoleForm = (prop: UseCreateEditRoleFormOptions = {}) =>
   useForm<CreateEditRoleFormData>({
     resolver: yupResolver(createEditRoleSchema),
     defaultValues: prop.defaultValues,

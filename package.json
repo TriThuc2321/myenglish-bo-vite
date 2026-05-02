@@ -8,7 +8,7 @@
     "dev": "react-router dev",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "lint": "oxlint && oxfmt",
+    "lint": "oxlint && oxfmt && typecheck",
     "lint-staged": "npx lint-staged",
     "lint:check": "oxlint && oxfmt --check",
     "prepare": "husky",

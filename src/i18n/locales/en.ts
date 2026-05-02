@@ -71,6 +71,14 @@ const en = {
     createButton: 'Create Role',
     deleteTitle: 'Delete role',
     deleteConfirm: 'Are you sure you want to delete "{{name}}"?',
+    toast: {
+      createSuccess: 'Role created successfully',
+      createError: 'Failed to create role',
+      updateSuccess: 'Role updated successfully',
+      updateError: 'Failed to update role',
+      deleteSuccess: 'Role deleted successfully',
+      deleteError: 'Failed to delete role',
+    },
     table: {
       name: 'Name',
       code: 'Code',

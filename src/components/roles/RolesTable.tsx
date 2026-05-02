@@ -1,4 +1,3 @@
-import type { SortDescriptor } from '@heroui/react';
 import type { SortingState } from '@tanstack/react-table';
 
 import { Chip } from '@heroui/react';
@@ -22,30 +21,13 @@ import ConfirmWrapper from '@/configs/ConfirmWrapper';
 import { useDeleteRole } from '@/hooks/apis/roles';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { RoleStatus } from '@/types/role';
+import { toSortDescriptor, toSortingState } from '@/utils/table';
 
 const statusColorMap: Record<RoleStatus, 'success' | 'danger' | 'default'> = {
   [RoleStatus.ACTIVE]: 'success',
   [RoleStatus.INACTIVE]: 'danger',
   [RoleStatus.DELETED]: 'default',
 };
-
-function toSortDescriptor(sorting: SortingState): SortDescriptor | undefined {
-  const first = sorting[0];
-  if (!first) return undefined;
-  return {
-    column: first.id,
-    direction: first.desc ? 'descending' : 'ascending',
-  };
-}
-
-function toSortingState(descriptor: SortDescriptor): SortingState {
-  return [
-    {
-      id: descriptor.column as string,
-      desc: descriptor.direction === 'descending',
-    },
-  ];
-}
 
 const columnHelper = createColumnHelper<Role>();
 

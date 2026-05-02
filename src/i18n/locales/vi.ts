@@ -71,6 +71,14 @@ const vi = {
     createButton: 'Tạo vai trò',
     deleteTitle: 'Xóa vai trò',
     deleteConfirm: 'Bạn có chắc chắn muốn xóa "{{name}}" không?',
+    toast: {
+      createSuccess: 'Tạo vai trò thành công',
+      createError: 'Tạo vai trò thất bại',
+      updateSuccess: 'Cập nhật vai trò thành công',
+      updateError: 'Cập nhật vai trò thất bại',
+      deleteSuccess: 'Xóa vai trò thành công',
+      deleteError: 'Xóa vai trò thất bại',
+    },
     table: {
       name: 'Tên',
       code: 'Mã',

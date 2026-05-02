@@ -5,7 +5,7 @@ import defineAbilityFor from '@/configs/casl/permissions.config';
 
 type AccessProviderProps = {
   children: React.ReactNode;
-  profile: User;
+  profile?: User;
 };
 
 export function AccessProvider({ children, profile }: AccessProviderProps) {

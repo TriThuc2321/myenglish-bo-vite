@@ -82,75 +82,45 @@ const PermissionSelectorContent = ({
 }: PermissionSelectorContentProps) => {
   const { t } = useTranslation();
   const [selected, setSelected] = useState<number[]>(value || []);
-  const [groupSelected, setGroupSelected] = useState<string[]>([]);
   const [isDisableAll, setDisableAll] = useState<boolean>(false);
 
-  const handleSingleSelect = (newValue: number[], groupName: string) => {
-    const groupValues = permissionGroups[groupName] ?? [];
-    const groupIds = groupValues.map((permission) => permission.id);
-    const isGroupSelected = groupIds.every((id) => newValue.includes(id));
+  const groupSelected = useMemo(
+    () =>
+      Object.entries(permissionGroups)
+        .filter(([, perms]) => perms.every((p) => selected.includes(p.id)))
+        .map(([key]) => key),
+    [permissionGroups, selected],
+  );
 
+  const handleSingleSelect = (newValue: number[]) => {
     setSelected(newValue);
     onChange(newValue);
-    setGroupSelected((prev) =>
-      isGroupSelected
-        ? [...prev, groupName]
-        : prev.filter((name) => name !== groupName),
-    );
   };
 
   const handleGroupSelect = (isSelected: boolean, groupName: string) => {
-    const groupValues = permissionGroups[groupName] ?? [];
-    const groupIds = groupValues.map((permission) => permission.id);
-
-    const newSelectedValues = isSelected
+    const groupIds = (permissionGroups[groupName] ?? []).map((p) => p.id);
+    const newSelected = isSelected
       ? Array.from(new Set([...selected, ...groupIds]))
       : selected.filter((id) => !groupIds.includes(id));
 
-    setSelected(newSelectedValues);
-
-    setGroupSelected((prev) =>
-      isSelected
-        ? [...prev, groupName]
-        : prev.filter((name) => name !== groupName),
-    );
-
-    onChange(newSelectedValues);
+    setSelected(newSelected);
+    onChange(newSelected);
   };
 
   const handleSelectAll = (isSelected: boolean, id: number) => {
-    if (isSelected) {
-      setGroupSelected([]);
-      setSelected([id]);
-      onChange([id]);
-    } else {
-      setSelected([]);
-      onChange([]);
-    }
-
+    const newSelected = isSelected ? [id] : [];
+    setSelected(newSelected);
+    onChange(newSelected);
     setDisableAll(isSelected);
   };
 
   useEffect(() => {
     setSelected(value || []);
-
     const isFullPermission = fullPermissionId
-      ? value?.includes(fullPermissionId)
+      ? (value?.includes(fullPermissionId) ?? false)
       : false;
-
-    setDisableAll(!!isFullPermission);
-
-    if (!isFullPermission) {
-      const selectedGroups = Object.entries(permissionGroups)
-        .filter(([_, perms]) =>
-          perms.every((permission) => value?.includes(permission.id)),
-        )
-        .map(([groupName]) => groupName);
-      setGroupSelected(selectedGroups);
-    } else {
-      setGroupSelected([]);
-    }
-  }, [value, fullPermissionId, permissionGroups]);
+    setDisableAll(isFullPermission);
+  }, [value, fullPermissionId]);
 
   return (
     <>
@@ -185,8 +155,8 @@ const PermissionSelectorContent = ({
         <Accordion allowsMultipleExpanded className="w-full">
           {Object.entries(permissionGroups).map(([key, values]) => {
             const isIndeterminate =
-              values.some((permission) => selected.includes(permission.id)) &&
-              !values.every((permission) => selected.includes(permission.id));
+              values.some((p) => selected.includes(p.id)) &&
+              !values.every((p) => selected.includes(p.id));
 
             return (
               <Accordion.Item key={key} id={key}>
@@ -224,9 +194,7 @@ const PermissionSelectorContent = ({
                     <CheckboxGroup
                       isDisabled={isDisableAll}
                       value={selected.map(String)}
-                      onChange={(next) =>
-                        handleSingleSelect(next.map(Number), key)
-                      }
+                      onChange={(next) => handleSingleSelect(next.map(Number))}
                     >
                       {values.map(({ id, action }) => (
                         <Checkbox
@@ -265,7 +233,6 @@ const groupPermission = (permissions?: Permission[]) => {
       acc[subject] = [];
     }
     acc[subject].push(permission);
-
     return acc;
   }, {} as GroupedPermissions);
 };

@@ -8,7 +8,7 @@ export const createEditRoleSchema = yup.object().shape({
   name: yup.string().required(VALIDATION_MESSAGE.REQUIRED),
   code: yup.string().required(VALIDATION_MESSAGE.REQUIRED),
   status: yup
-    .string()
+    .mixed<RoleStatus>()
     .oneOf(Object.values(RoleStatus))
     .required(VALIDATION_MESSAGE.REQUIRED),
   canAccessCms: yup.boolean().required(VALIDATION_MESSAGE.REQUIRED),

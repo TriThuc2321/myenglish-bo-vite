@@ -2,8 +2,7 @@ import { Card, Input, Label, TextField } from '@heroui/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuPlus } from 'react-icons/lu';
-import { useNavigate, type MetaFunction } from 'react-router';
-import { useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams, type MetaFunction } from 'react-router';
 
 import { RolesTable } from '@/components/roles';
 import MyButton from '@/components/shared/Button';

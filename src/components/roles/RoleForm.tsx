@@ -21,14 +21,20 @@ type RoleFormProps = {
   form: UseFormReturn<CreateEditRoleFormData>;
   onSubmit: (data: CreateEditRoleFormData) => void;
   isSubmitting?: boolean;
+  onCancel?: () => void;
 };
 
-const RoleForm = ({ form, onSubmit, isSubmitting }: RoleFormProps) => {
+const RoleForm = ({
+  form,
+  onSubmit,
+  isSubmitting,
+  onCancel,
+}: RoleFormProps) => {
   const { t } = useTranslation();
 
   const statusItems = [
-    { label: t('status.active'), value: RoleStatus.ACTIVE },
-    { label: t('status.inactive'), value: RoleStatus.INACTIVE },
+    { label: t('common.active'), value: RoleStatus.ACTIVE },
+    { label: t('common.inactive'), value: RoleStatus.INACTIVE },
   ];
 
   const {
@@ -54,8 +60,8 @@ const RoleForm = ({ form, onSubmit, isSubmitting }: RoleFormProps) => {
             onBlur={field.onBlur}
             isInvalid={!!errors.name}
           >
-            <Label>{t('form.name')}</Label>
-            <Input ref={field.ref} />
+            <Label>{t('roles.form.name')}</Label>
+            <Input ref={field.ref} variant="secondary" />
             <FieldError>{errors.name?.message}</FieldError>
           </TextField>
         )}
@@ -72,8 +78,8 @@ const RoleForm = ({ form, onSubmit, isSubmitting }: RoleFormProps) => {
             onBlur={field.onBlur}
             isInvalid={!!errors.code}
           >
-            <Label>{t('form.code')}</Label>
-            <Input ref={field.ref} />
+            <Label>{t('roles.form.code')}</Label>
+            <Input ref={field.ref} variant="secondary" />
             <FieldError>{errors.code?.message}</FieldError>
           </TextField>
         )}
@@ -83,6 +89,7 @@ const RoleForm = ({ form, onSubmit, isSubmitting }: RoleFormProps) => {
         control={control}
         render={({ field }) => (
           <Select
+            variant="secondary"
             fullWidth
             selectedKey={field.value}
             onSelectionChange={(key) => {
@@ -91,7 +98,7 @@ const RoleForm = ({ form, onSubmit, isSubmitting }: RoleFormProps) => {
             }}
             isInvalid={!!errors.status}
           >
-            <Label>{t('form.status')}</Label>
+            <Label>{t('roles.form.status')}</Label>
             <Select.Trigger>
               <Select.Value />
               <Select.Indicator />
@@ -127,7 +134,7 @@ const RoleForm = ({ form, onSubmit, isSubmitting }: RoleFormProps) => {
               <Switch.Thumb />
             </Switch.Control>
             <Switch.Content>
-              <Label className="text-sm">{t('form.canAccessCms')}</Label>
+              <Label className="text-sm">{t('roles.form.canAccessCms')}</Label>
             </Switch.Content>
           </Switch>
         )}
@@ -135,8 +142,13 @@ const RoleForm = ({ form, onSubmit, isSubmitting }: RoleFormProps) => {
 
       <PermissionSelector control={control} />
       <div className="flex justify-end gap-2">
+        {onCancel && (
+          <Button type="button" variant="outline" onPress={onCancel}>
+            {t('common.cancel')}
+          </Button>
+        )}
         <Button type="submit" variant="primary" isPending={isSubmitting}>
-          {t('save')}
+          {t('common.save')}
         </Button>
       </div>
     </form>

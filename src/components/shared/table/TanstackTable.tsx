@@ -42,7 +42,7 @@ function TanstackTable<T>({
         className="overflow-auto [&_.table-root]:grid-cols-[auto] [&_.table-root]:overflow-visible [&_table]:min-w-max [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-20"
         style={{ maxHeight }}
       >
-        <Table>
+        <Table variant="secondary">
           <Table.Content
             aria-label={ariaLabel}
             sortDescriptor={sortDescriptor}

@@ -9,6 +9,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LuPencil, LuTrash2 } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 
@@ -63,16 +64,17 @@ export default function RolesTable({
   take,
   total,
 }: RolesTableProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { mutate: deleteRole, isPending: isDeleting } = useDeleteRole();
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('name', { header: 'Name' }),
-      columnHelper.accessor('code', { header: 'Code' }),
+      columnHelper.accessor('name', { header: t('roles.table.name') }),
+      columnHelper.accessor('code', { header: t('roles.table.code') }),
       columnHelper.accessor('status', {
-        header: 'Status',
+        header: t('roles.table.status'),
         cell: (info) => (
           <Chip
             color={statusColorMap[info.getValue()]}
@@ -84,20 +86,20 @@ export default function RolesTable({
         ),
       }),
       columnHelper.accessor('canAccessCms', {
-        header: 'CMS Access',
+        header: t('roles.table.cmsAccess'),
         cell: (info) => (
           <Chip
             color={info.getValue() ? 'success' : 'default'}
             size="sm"
             variant="soft"
           >
-            {info.getValue() ? 'Yes' : 'No'}
+            {info.getValue() ? t('common.yes') : t('common.no')}
           </Chip>
         ),
       }),
       columnHelper.display({
         id: 'actions',
-        header: 'Actions',
+        header: t('common.actions'),
         cell: ({ row }) => (
           <div className="flex items-center gap-2">
             <MyButton
@@ -111,10 +113,12 @@ export default function RolesTable({
               <LuPencil className="size-4" />
             </MyButton>
             <ConfirmWrapper
-              title="Delete role"
-              description={`Are you sure you want to delete "${row.original.name}"?`}
-              confirmText="Delete"
-              onConfirm={() => deleteRole([String(row.original.id)])}
+              title={t('roles.deleteTitle')}
+              description={t('roles.deleteConfirm', {
+                name: row.original.name,
+              })}
+              confirmText={t('common.delete')}
+              onConfirm={() => deleteRole([row.original.id])}
             >
               <MyButton
                 I={PermissionAction.Delete}

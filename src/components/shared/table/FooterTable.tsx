@@ -33,6 +33,7 @@ const FooterTable = ({ page = 1, total = 0, take = 10 }: FooterTableProps) => {
   return (
     <div className="flex w-full items-center justify-end gap-2">
       <Select
+        variant="secondary"
         className="w-20"
         value={take.toString()}
         onChange={(key) => key && onRowsPerPageChange(key as string)}

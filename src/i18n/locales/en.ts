@@ -61,6 +61,31 @@ const en = {
     vi: 'Vietnamese',
     toggle: 'Switch language',
   },
+  roles: {
+    createTitle: 'Create Role',
+    editTitle: 'Edit Role',
+    pageDescription: 'Configure roles and permissions for system users.',
+    createDescription: 'Define a new role with custom permissions.',
+    editDescription: 'Update role details and permission settings.',
+    searchPlaceholder: 'Name or code...',
+    createButton: 'Create Role',
+    deleteTitle: 'Delete role',
+    deleteConfirm: 'Are you sure you want to delete "{{name}}"?',
+    table: {
+      name: 'Name',
+      code: 'Code',
+      status: 'Status',
+      cmsAccess: 'CMS Access',
+    },
+    form: {
+      name: 'Name',
+      code: 'Code',
+      status: 'Status',
+      canAccessCms: 'Can access CMS',
+      permissions: 'Permissions',
+      fullPermissions: 'Full permissions',
+    },
+  },
 } as const;
 
 export default en;

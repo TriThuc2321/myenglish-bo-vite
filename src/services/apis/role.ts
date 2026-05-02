@@ -17,7 +17,7 @@ const roleApi = {
     axiosInstance.post('/cms-roles', payload),
   edit: ({ id, ...payload }: EditRolePayload): Promise<Role> =>
     axiosInstance.patch(`/cms-roles/${id}`, payload),
-  delete: (ids: string[]): Promise<Message> =>
+  delete: (ids: number[]): Promise<Message> =>
     axiosInstance.delete('/cms-roles', { data: { ids } }),
 };
 

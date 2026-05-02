@@ -155,11 +155,12 @@ const PermissionSelectorContent = ({
   return (
     <>
       <label className="mb-2 block text-sm font-medium">
-        {t('form.permissions')}
+        {t('roles.form.permissions')}
       </label>
       <div className="w-full">
         {fullPermissionId != null && (
           <Checkbox
+            variant="secondary"
             id={`full-permissions-${fullPermissionId}`}
             className="py-3"
             isSelected={isDisableAll}
@@ -175,7 +176,7 @@ const PermissionSelectorContent = ({
                 htmlFor={`full-permissions-${fullPermissionId}`}
                 className="text-base font-semibold capitalize"
               >
-                Full permissions
+                {t('roles.form.fullPermissions')}
               </Label>
             </Checkbox.Content>
           </Checkbox>
@@ -196,6 +197,7 @@ const PermissionSelectorContent = ({
                       onPointerDown={(e) => e.stopPropagation()}
                     >
                       <Checkbox
+                        variant="secondary"
                         aria-label={`Select all ${key.replaceAll('_', ' ')}`}
                         isIndeterminate={isIndeterminate}
                         isSelected={groupSelected.includes(key)}
@@ -227,7 +229,11 @@ const PermissionSelectorContent = ({
                       }
                     >
                       {values.map(({ id, action }) => (
-                        <Checkbox key={id} value={String(id)}>
+                        <Checkbox
+                          key={id}
+                          value={String(id)}
+                          variant="secondary"
+                        >
                           <Checkbox.Control>
                             <Checkbox.Indicator />
                           </Checkbox.Control>

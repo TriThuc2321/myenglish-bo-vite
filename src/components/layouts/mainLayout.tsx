@@ -19,7 +19,7 @@ export default function MainLayout({
   const onChangeOpenSidebar = useCallback(() => setIsOpen((prev) => !prev), []);
 
   return (
-    <div className="flex h-screen w-full flex-col overflow-hidden pl-0 md:flex-row">
+    <div className="bg-background flex h-screen w-full flex-col overflow-hidden pl-0 md:flex-row">
       <Sidebar
         isOpen={isOpen}
         handleOpen={handleSetIsOpen}

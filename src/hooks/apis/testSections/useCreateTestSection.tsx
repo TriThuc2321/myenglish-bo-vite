@@ -1,7 +1,6 @@
 import { toast } from '@heroui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { TOAST_CONFIG } from '@/configs/common';
 import { REACT_QUERY_KEYS } from '@/constants/reactQuery';
 import { testSectionApi } from '@/services/apis';
 
@@ -21,7 +20,6 @@ const useCreateTestSection = () => {
     onError: (err) => {
       toast.danger('Create test section failed', {
         description: err.message,
-        timeout: TOAST_CONFIG.timeout,
       });
     },
   });

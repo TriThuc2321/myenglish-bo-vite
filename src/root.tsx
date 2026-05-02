@@ -52,7 +52,7 @@ export default function Root() {
         <LocaleProvider>
           <ReactQueryProvider>
             <Outlet />
-            <Toast.Provider />
+            <Toast.Provider placement="top end" />
           </ReactQueryProvider>
         </LocaleProvider>
       </ThemeProvider>

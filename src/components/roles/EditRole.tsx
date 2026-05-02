@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import type { CreateEditRoleFormData } from '@/schemas/role';
@@ -22,51 +22,33 @@ const EditRole = ({ id }: EditRoleProps) => {
   const { data: roleData, isLoading: isLoadingRole } = useGetRoleById(id);
   const { data: allPermissions } = useGetPermissions();
 
-  // Map permissions to permission IDs
-  const permissionIds = useMemo(() => {
-    if (!roleData?.permissions || !allPermissions) return [];
-
-    // Match role permissions with full permission list to get IDs
-    return allPermissions
-      .filter((permission) =>
-        roleData.permissions.some(
-          (rp) =>
-            rp.action === permission.action &&
-            rp.subject === permission.subject,
-        ),
-      )
-      .map((p) => p.id);
-  }, [roleData?.permissions, allPermissions]);
-
   const form = useCreateEditRoleForm({
     defaultValues: {
-      name: roleData?.name ?? '',
-      code: roleData?.code ?? '',
-      status: roleData?.status ?? RoleStatus.ACTIVE,
-      canAccessCms: roleData?.canAccessCms ?? false,
+      name: '',
+      code: '',
+      status: RoleStatus.ACTIVE,
+      canAccessCms: false,
       permissionIds: [],
     },
   });
 
-  // Update form when permission IDs are calculated
   useEffect(() => {
-    if (permissionIds.length > 0) {
-      form.setValue('permissionIds', permissionIds);
-    }
-  }, [permissionIds, form]);
-
-  // Update form when role data changes
-  useEffect(() => {
-    if (roleData) {
-      form.reset({
-        name: roleData.name,
-        code: roleData.code,
-        status: roleData.status,
-        canAccessCms: roleData.canAccessCms,
-        permissionIds,
-      });
-    }
-  }, [roleData, permissionIds, form]);
+    if (!roleData || !allPermissions) return;
+    const mappedIds = allPermissions
+      .filter((p) =>
+        roleData.permissions.some(
+          (rp) => rp.action === p.action && rp.subject === p.subject,
+        ),
+      )
+      .map((p) => p.id);
+    form.reset({
+      name: roleData.name,
+      code: roleData.code,
+      status: roleData.status,
+      canAccessCms: roleData.canAccessCms,
+      permissionIds: mappedIds,
+    });
+  }, [roleData, allPermissions]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = async (payload: CreateEditRoleFormData) => {
     try {
@@ -81,7 +63,14 @@ const EditRole = ({ id }: EditRoleProps) => {
     return <RoleSkeleton />;
   }
 
-  return <RoleForm form={form} onSubmit={onSubmit} isSubmitting={isEditing} />;
+  return (
+    <RoleForm
+      form={form}
+      onSubmit={onSubmit}
+      isSubmitting={isEditing}
+      onCancel={() => navigate('/roles')}
+    />
+  );
 };
 
 export default EditRole;

@@ -61,6 +61,31 @@ const vi = {
     vi: 'Tiếng Việt',
     toggle: 'Chuyển ngôn ngữ',
   },
+  roles: {
+    createTitle: 'Tạo vai trò',
+    editTitle: 'Chỉnh sửa vai trò',
+    pageDescription: 'Cấu hình vai trò và quyền hạn cho người dùng hệ thống.',
+    createDescription: 'Định nghĩa vai trò mới với các quyền tùy chỉnh.',
+    editDescription: 'Cập nhật thông tin vai trò và cài đặt quyền hạn.',
+    searchPlaceholder: 'Tên hoặc mã...',
+    createButton: 'Tạo vai trò',
+    deleteTitle: 'Xóa vai trò',
+    deleteConfirm: 'Bạn có chắc chắn muốn xóa "{{name}}" không?',
+    table: {
+      name: 'Tên',
+      code: 'Mã',
+      status: 'Trạng thái',
+      cmsAccess: 'Truy cập CMS',
+    },
+    form: {
+      name: 'Tên',
+      code: 'Mã',
+      status: 'Trạng thái',
+      canAccessCms: 'Có thể truy cập CMS',
+      permissions: 'Quyền hạn',
+      fullPermissions: 'Toàn bộ quyền hạn',
+    },
+  },
 } as const;
 
 export default vi;

@@ -7,4 +7,5 @@ export const VALIDATION_MESSAGE = {
   INVALID_EMAIL: 'Invalid email',
   INVALID_PHONE: 'Invalid phone number',
   INVALID_URL: 'Invalid URL',
+  MUST_BE_PAST_DATE: 'Date must be in the past',
 };

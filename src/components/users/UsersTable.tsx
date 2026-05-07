@@ -1,6 +1,6 @@
 import type { SortingState } from '@tanstack/react-table';
 
-import { Chip } from '@heroui/react';
+import { Avatar, Chip } from '@heroui/react';
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -12,67 +12,114 @@ import { useTranslation } from 'react-i18next';
 import { LuEye, LuPencil, LuTrash2 } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 
-import type { Passage } from '@/types/passage';
+import type { User } from '@/types/user';
 
-import AuditItem from '@/components/shared/AuditItem';
 import MyButton from '@/components/shared/Button';
 import FooterTable from '@/components/shared/table/FooterTable';
 import TanstackTable from '@/components/shared/table/TanstackTable';
 import ConfirmWrapper from '@/configs/ConfirmWrapper';
-import { useDeletePassage } from '@/hooks/apis/passages';
+import { useDeleteUser } from '@/hooks/apis/users';
 import { PermissionAction, SubjectName } from '@/types/auth';
+import { Gender } from '@/types/common';
+import { formatDateTime } from '@/utils/datetime';
 import { toSortDescriptor, toSortingState } from '@/utils/table';
 
-import { statusColorMap } from './constants';
+import AuditItem from '../shared/AuditItem';
 
-const columnHelper = createColumnHelper<Passage>();
+const columnHelper = createColumnHelper<User>();
 
-interface PassagesTableProps {
-  data: Passage[];
+interface UsersTableProps {
+  data: User[];
   isLoading?: boolean;
   page?: number;
   take?: number;
   total?: number;
 }
 
-export default function PassagesTable({
+export default function UsersTable({
   data,
   isLoading,
   page,
   take,
   total,
-}: PassagesTableProps) {
+}: UsersTableProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { mutate: deletePassage, isPending: isDeleting } = useDeletePassage();
+  const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('title', {
-        enableSorting: false,
-        header: t('passages.table.title'),
-      }),
-      columnHelper.accessor('subtitle', {
-        enableSorting: false,
-        header: t('passages.table.subtitle'),
-      }),
-      columnHelper.accessor('markedBy', {
-        enableSorting: false,
-        header: t('passages.table.markedBy'),
-      }),
-      columnHelper.accessor('status', {
-        enableSorting: false,
-        header: t('passages.table.status'),
+      columnHelper.display({
+        id: 'user',
+        header: t('cmsUsers.table.email'),
         cell: (info) => {
-          const value = info.getValue();
-          if (!value) return '-';
+          const { firstName, lastName, email, avatar } = info.row.original;
+          const fullName = [firstName, lastName].filter(Boolean).join(' ');
+          const firstInitial = firstName?.charAt(0) ?? '';
+          const lastInitial = lastName?.charAt(0) ?? '';
+          const fallbackInitials = (
+            firstInitial + lastInitial || 'ME'
+          ).toUpperCase();
+          const fallbackName = fullName || email || 'MyEnglish User';
+
           return (
-            <Chip color={statusColorMap[value]} size="sm" variant="soft">
-              <Chip.Label>{value}</Chip.Label>
-            </Chip>
+            <div className="flex gap-2">
+              <Avatar className="rounded-2xl" variant="soft" color="accent">
+                <Avatar.Image alt={fallbackName} src={avatar} />
+                <Avatar.Fallback className="rounded-2xl">
+                  {fallbackInitials}
+                </Avatar.Fallback>
+              </Avatar>
+              <div>
+                <p className="text-sm font-semibold">{fallbackName}</p>
+                <p className="text-xs text-gray-500">{email ?? ''}</p>
+              </div>
+            </div>
           );
         },
+      }),
+      columnHelper.accessor('role', {
+        enableSorting: false,
+        header: t('cmsUsers.table.role'),
+        cell: (info) => info.getValue()?.name ?? '-',
+      }),
+      columnHelper.accessor('phone', {
+        enableSorting: false,
+        header: t('cmsUsers.table.phone'),
+        cell: (info) => info.getValue() ?? '-',
+      }),
+      columnHelper.accessor('dateOfBirth', {
+        enableSorting: false,
+        header: t('cmsUsers.table.dateOfBirth'),
+        cell: (info) => formatDateTime(info.getValue()),
+      }),
+      columnHelper.accessor('gender', {
+        enableSorting: false,
+        header: t('cmsUsers.table.gender'),
+        cell: (info) => {
+          const gender = info.getValue();
+          if (!gender) return '-';
+          const map: Record<Gender, string> = {
+            [Gender.MALE]: t('cmsUsers.form.genderMale'),
+            [Gender.FEMALE]: t('cmsUsers.form.genderFemale'),
+            [Gender.OTHER]: t('cmsUsers.form.genderOther'),
+          };
+          return map[gender] ?? gender;
+        },
+      }),
+      columnHelper.accessor('emailVerified', {
+        enableSorting: false,
+        header: t('cmsUsers.table.emailVerified'),
+        cell: (info) => (
+          <Chip
+            color={info.getValue() ? 'success' : 'default'}
+            size="sm"
+            variant="soft"
+          >
+            {info.getValue() ? t('common.yes') : t('common.no')}
+          </Chip>
+        ),
       }),
       columnHelper.accessor('auditMetadata', {
         enableSorting: false,
@@ -105,35 +152,35 @@ export default function PassagesTable({
           <div className="flex items-center gap-2">
             <MyButton
               I={PermissionAction.Read}
-              a={SubjectName.Passages}
+              a={SubjectName.Users}
               isIconOnly
-              variant="outline"
               size="sm"
-              onPress={() => navigate(`/passages/${row.original.id}`)}
+              variant="outline"
+              onPress={() => navigate(`/users/${row.original.id}`)}
             >
               <LuEye className="size-4" />
             </MyButton>
             <MyButton
               I={PermissionAction.Update}
-              a={SubjectName.Passages}
+              a={SubjectName.Users}
               isIconOnly
               size="sm"
               variant="outline"
-              onPress={() => navigate(`/passages/${row.original.id}/edit`)}
+              onPress={() => navigate(`/users/${row.original.id}/edit`)}
             >
               <LuPencil className="size-4" />
             </MyButton>
             <ConfirmWrapper
-              title={t('passages.deleteTitle')}
-              description={t('passages.deleteConfirm', {
-                name: row.original.title,
+              title={t('cmsUsers.deleteTitle')}
+              description={t('cmsUsers.deleteConfirm', {
+                name: row.original.email,
               })}
               confirmText={t('common.delete')}
-              onConfirm={() => deletePassage([row.original.id])}
+              onConfirm={() => deleteUser([row.original.id])}
             >
               <MyButton
                 I={PermissionAction.Delete}
-                a={SubjectName.Passages}
+                a={SubjectName.Users}
                 isIconOnly
                 size="sm"
                 variant="outline"
@@ -146,7 +193,7 @@ export default function PassagesTable({
         ),
       }),
     ],
-    [t, navigate, deletePassage, isDeleting],
+    [t, navigate, deleteUser, isDeleting],
   );
 
   const table = useReactTable({
@@ -166,7 +213,7 @@ export default function PassagesTable({
       table={table}
       sortDescriptor={sortDescriptor}
       onSortChange={(d) => setSorting(toSortingState(d))}
-      ariaLabel="Passages table"
+      ariaLabel="CMS Users table"
       isLoading={isLoading}
       footer={<FooterTable page={page} take={take} total={total} />}
     />

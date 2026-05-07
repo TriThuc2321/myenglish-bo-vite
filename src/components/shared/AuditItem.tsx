@@ -6,6 +6,7 @@ import type { User } from '@/types/user';
 import { formatDateTime } from '@/utils/datetime';
 
 import Loader from './Loader';
+import RenderIf from './RenderIf';
 
 type AuditItemProps = Partial<{
   user?: User;
@@ -25,12 +26,19 @@ export default function AuditItem({ user, dateTime }: AuditItemProps) {
       }
     >
       <div className="flex min-w-max items-center gap-3">
-        <Avatar className="rounded-2xl" size="sm" variant="soft" color="accent">
-          <Avatar.Image alt={fullName} src={avatar} />
-          <Avatar.Fallback className="rounded-2xl">
-            {fullName?.charAt(0) ?? ''}
-          </Avatar.Fallback>
-        </Avatar>
+        <RenderIf condition={!!avatar && !!fullName}>
+          <Avatar
+            className="rounded-2xl"
+            size="sm"
+            variant="soft"
+            color="accent"
+          >
+            <Avatar.Image alt={fullName} src={avatar} />
+            <Avatar.Fallback className="rounded-2xl">
+              {fullName?.charAt(0) ?? ''}
+            </Avatar.Fallback>
+          </Avatar>
+        </RenderIf>
         <div className="flex flex-col">
           <p className="text-left">{fullName}</p>
           <p className="text-left text-xs">

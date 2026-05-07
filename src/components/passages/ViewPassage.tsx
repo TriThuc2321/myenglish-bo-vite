@@ -8,6 +8,7 @@ import { useGetPassageById } from '@/hooks/apis/passages';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { MarkedBy } from '@/types/common';
 
+import AuditItem from '../shared/AuditItem';
 import { statusColorMap } from './constants';
 import PassageSkeleton from './Skeleton';
 
@@ -15,7 +16,7 @@ type ViewPassageProps = {
   id: string;
 };
 
-const getParagraphPrefix = (index: number, markedBy: MarkedBy) => {
+const getParagraphPrefix = (index: number, markedBy?: MarkedBy) => {
   if (markedBy === MarkedBy.ALPHABET) {
     return `${String.fromCharCode(65 + index)}.`;
   }
@@ -69,6 +70,22 @@ const ViewPassage = ({ id }: ViewPassageProps) => {
             </Chip>
           </div>
         )}
+      </div>
+
+      <div>
+        <span className="text-sm font-bold">{t('common.createdBy')}</span>
+        <AuditItem
+          user={passage.auditMetadata?.createdBy}
+          dateTime={passage.auditMetadata?.createdAt}
+        />
+      </div>
+
+      <div>
+        <span className="text-sm font-bold">{t('common.updatedBy')}</span>
+        <AuditItem
+          user={passage.auditMetadata?.updatedBy}
+          dateTime={passage.auditMetadata?.updatedAt}
+        />
       </div>
 
       {passage.paragraphs && passage.paragraphs.length > 0 && (

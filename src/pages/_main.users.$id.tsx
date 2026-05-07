@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router';
 
-export default function CmsUsersLayout() {
+export default function CmsUserDetailLayout() {
   return <Outlet />;
 }

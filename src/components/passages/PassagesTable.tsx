@@ -157,6 +157,9 @@ export default function PassagesTable({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     manualPagination: true,
+    initialState: {
+      columnPinning: { right: ['actions'] },
+    },
   });
 
   const sortDescriptor = useMemo(() => toSortDescriptor(sorting), [sorting]);

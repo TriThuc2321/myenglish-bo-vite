@@ -174,7 +174,7 @@ const UserForm = ({
           <DatePicker
             className="w-full"
             name={field.name}
-            value={field.value ? parseDate(field.value) : null}
+            value={field.value ? parseDate(field.value.split('T')[0]) : null}
             onChange={(date: DateValue | null) =>
               field.onChange(date?.toString() ?? undefined)
             }

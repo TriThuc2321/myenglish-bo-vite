@@ -49,38 +49,54 @@ function TanstackTable<T>({
             onSortChange={onSortChange}
           >
             <Table.Header>
-              {table.getHeaderGroups()[0]!.headers.map((header, i) => (
-                <Table.Column
-                  key={header.id}
-                  id={header.id}
-                  allowsSorting={header.column.getCanSort()}
-                  isRowHeader={i === 0}
-                >
-                  {({ sortDirection }) => (
-                    <span className="flex items-center justify-between gap-1">
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                      {header.column.getCanSort() && (
-                        <SortIcon direction={sortDirection} />
-                      )}
-                    </span>
-                  )}
-                </Table.Column>
-              ))}
+              {table.getHeaderGroups()[0]!.headers.map((header, i) => {
+                const isPinnedRight = header.column.getIsPinned() === 'right';
+                return (
+                  <Table.Column
+                    key={header.id}
+                    id={header.id}
+                    allowsSorting={header.column.getCanSort()}
+                    isRowHeader={i === 0}
+                    className={cn(
+                      isPinnedRight &&
+                        'sticky right-0 z-30 shadow-[-4px_0_8px_-4px_rgba(0,0,0,0.1)]',
+                    )}
+                  >
+                    {({ sortDirection }) => (
+                      <span className="flex items-center justify-between gap-1">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {header.column.getCanSort() && (
+                          <SortIcon direction={sortDirection} />
+                        )}
+                      </span>
+                    )}
+                  </Table.Column>
+                );
+              })}
             </Table.Header>
             <Table.Body>
               {rows.map((row) => (
-                <Table.Row key={row.id} id={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <Table.Cell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </Table.Cell>
-                  ))}
+                <Table.Row key={row.id} id={row.id} className="group">
+                  {row.getVisibleCells().map((cell) => {
+                    const isPinnedRight = cell.column.getIsPinned() === 'right';
+                    return (
+                      <Table.Cell
+                        key={cell.id}
+                        className={cn(
+                          isPinnedRight &&
+                            'bg-surface group-hover:bg-default sticky right-0 z-10 shadow-[-4px_0_8px_-4px_rgba(0,0,0,0.1)]',
+                        )}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </Table.Cell>
+                    );
+                  })}
                 </Table.Row>
               ))}
             </Table.Body>

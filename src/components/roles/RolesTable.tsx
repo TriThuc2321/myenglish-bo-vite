@@ -54,10 +54,17 @@ export default function RolesTable({
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('name', { header: t('roles.table.name') }),
-      columnHelper.accessor('code', { header: t('roles.table.code') }),
+      columnHelper.accessor('name', {
+        header: t('roles.table.name'),
+        enableSorting: false,
+      }),
+      columnHelper.accessor('code', {
+        header: t('roles.table.code'),
+        enableSorting: false,
+      }),
       columnHelper.accessor('status', {
         header: t('roles.table.status'),
+        enableSorting: false,
         cell: (info) => (
           <Chip
             color={statusColorMap[info.getValue()]}
@@ -70,6 +77,7 @@ export default function RolesTable({
       }),
       columnHelper.accessor('canAccessCms', {
         header: t('roles.table.cmsAccess'),
+        enableSorting: false,
         cell: (info) => (
           <Chip
             color={info.getValue() ? 'success' : 'default'}
@@ -83,6 +91,7 @@ export default function RolesTable({
       columnHelper.accessor('auditMetadata', {
         id: 'createdBy',
         header: t('common.createdBy'),
+        enableSorting: false,
         cell: (info) => {
           const audit = info.getValue();
           if (!audit?.createdBy && !audit?.createdAt) return '-';
@@ -94,6 +103,7 @@ export default function RolesTable({
       columnHelper.accessor('auditMetadata', {
         id: 'updatedBy',
         header: t('common.updatedBy'),
+        enableSorting: false,
         cell: (info) => {
           const audit = info.getValue();
           if (!audit?.updatedBy && !audit?.updatedAt) return '-';

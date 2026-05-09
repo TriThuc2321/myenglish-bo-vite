@@ -3,12 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { LuPencil } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 
+import type { Gender } from '@/types/common';
+
 import MyButton from '@/components/shared/Button';
 import { useGetUserById } from '@/hooks/apis/users';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { formatDateTime } from '@/utils/datetime';
 
 import AuditItem from '../shared/AuditItem';
+import GenderChip from '../shared/GenderChip';
 
 type ViewUserProps = {
   id: string;
@@ -88,7 +91,7 @@ const ViewUser = ({ id }: ViewUserProps) => {
 
       <div className="flex flex-col gap-1">
         <span className="text-sm font-bold">{t('cmsUsers.form.gender')}</span>
-        <span className="text-base">{user.gender}</span>
+        <GenderChip gender={user.gender as Gender} />
       </div>
 
       <div className="col-span-2 flex flex-col gap-1">

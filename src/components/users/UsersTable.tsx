@@ -20,11 +20,11 @@ import TanstackTable from '@/components/shared/table/TanstackTable';
 import ConfirmWrapper from '@/configs/ConfirmWrapper';
 import { useDeleteUser } from '@/hooks/apis/users';
 import { PermissionAction, SubjectName } from '@/types/auth';
-import { Gender } from '@/types/common';
 import { formatDateTime } from '@/utils/datetime';
 import { toSortDescriptor, toSortingState } from '@/utils/table';
 
 import AuditItem from '../shared/AuditItem';
+import GenderChip from '../shared/GenderChip';
 
 const columnHelper = createColumnHelper<User>();
 
@@ -100,12 +100,8 @@ export default function UsersTable({
         cell: (info) => {
           const gender = info.getValue();
           if (!gender) return '-';
-          const map: Record<Gender, string> = {
-            [Gender.MALE]: t('cmsUsers.form.genderMale'),
-            [Gender.FEMALE]: t('cmsUsers.form.genderFemale'),
-            [Gender.OTHER]: t('cmsUsers.form.genderOther'),
-          };
-          return map[gender] ?? gender;
+
+          return <GenderChip gender={gender} />;
         },
       }),
       columnHelper.accessor('emailVerified', {

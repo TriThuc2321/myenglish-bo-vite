@@ -1,5 +1,4 @@
-import { Accordion, Chip, Skeleton, Spinner } from '@heroui/react';
-import { Button } from '@heroui/react';
+import { Accordion, Button, Chip, Spinner } from '@heroui/react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuPencil } from 'react-icons/lu';
@@ -8,10 +7,13 @@ import { useNavigate } from 'react-router';
 import type { Permission } from '@/types/permission';
 
 import MyButton from '@/components/shared/Button';
+import DetailField, { InfoCard } from '@/components/shared/DetailField';
 import { useGetPermissions } from '@/hooks/apis/permissions';
 import { useGetRoleById } from '@/hooks/apis/roles';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { RoleStatus } from '@/types/role';
+
+import Loader from '../shared/Loader';
 
 type ViewRoleProps = {
   id: string;
@@ -44,7 +46,6 @@ const ViewRole = ({ id }: ViewRoleProps) => {
 
   const permissionGroups = useMemo(() => {
     const groups = groupPermission(allPermissions);
-    delete groups['all'];
     return groups;
   }, [allPermissions]);
 
@@ -60,12 +61,8 @@ const ViewRole = ({ id }: ViewRoleProps) => {
 
   if (isLoading) {
     return (
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
-        <Skeleton className="h-14 w-full rounded-lg" />
-        <Skeleton className="h-14 w-full rounded-lg" />
-        <Skeleton className="h-14 w-full rounded-lg" />
-        <Skeleton className="h-14 w-full rounded-lg" />
-        <Skeleton className="h-32 w-full rounded-lg" />
+      <div className="flex h-[360px] items-center justify-center">
+        <Loader />
       </div>
     );
   }
@@ -73,31 +70,18 @@ const ViewRole = ({ id }: ViewRoleProps) => {
   if (!role) return null;
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('roles.form.name')}</span>
-        <span className="text-base">{role.name}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('roles.form.code')}</span>
-        <span className="text-base">{role.code}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('roles.form.status')}</span>
-        <div>
+    <div className="flex flex-col gap-4">
+      <InfoCard title={t('common.basicInfo')}>
+        <DetailField label={t('roles.form.name')}>{role.name}</DetailField>
+        <DetailField label={t('roles.form.code')}>
+          <span className="text-sm">{role.code}</span>
+        </DetailField>
+        <DetailField label={t('roles.form.status')}>
           <Chip color={statusColorMap[role.status]} size="sm" variant="soft">
             <Chip.Label>{role.status}</Chip.Label>
           </Chip>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">
-          {t('roles.form.canAccessCms')}
-        </span>
-        <div>
+        </DetailField>
+        <DetailField label={t('roles.form.canAccessCms')}>
           <Chip
             color={role.canAccessCms ? 'success' : 'default'}
             size="sm"
@@ -107,13 +91,12 @@ const ViewRole = ({ id }: ViewRoleProps) => {
               {role.canAccessCms ? t('common.yes') : t('common.no')}
             </Chip.Label>
           </Chip>
-        </div>
-      </div>
+        </DetailField>
+      </InfoCard>
 
-      <div className="col-span-2 flex flex-col gap-2">
-        <span className="text-sm font-bold">{t('roles.form.permissions')}</span>
+      <InfoCard title={t('roles.form.permissions')} columns={1}>
         {!allPermissions ? (
-          <div className="flex justify-center py-4">
+          <div className="flex justify-center py-6">
             <Spinner />
           </div>
         ) : (
@@ -126,8 +109,8 @@ const ViewRole = ({ id }: ViewRoleProps) => {
               return (
                 <Accordion.Item key={subject} id={subject}>
                   <Accordion.Heading>
-                    <Accordion.Trigger className="flex w-full items-center gap-2 py-2">
-                      <span className="min-w-0 flex-1 text-start text-base font-semibold capitalize">
+                    <Accordion.Trigger className="flex w-full items-center gap-2 py-2.5">
+                      <span className="text-default-800 min-w-0 flex-1 text-start text-sm font-medium capitalize">
                         {subject.replaceAll('_', ' ')}
                       </span>
                       <Chip size="sm" variant="soft">
@@ -139,11 +122,16 @@ const ViewRole = ({ id }: ViewRoleProps) => {
                     </Accordion.Trigger>
                   </Accordion.Heading>
                   <Accordion.Panel>
-                    <Accordion.Body className="ml-2 flex flex-wrap gap-2 pb-3">
+                    <Accordion.Body className="flex flex-wrap gap-1.5 pb-3 pl-2">
                       {perms
                         .filter((p) => rolePermissionIds.has(p.id))
                         .map((p) => (
-                          <Chip key={p.id} size="sm" variant="soft">
+                          <Chip
+                            key={p.id}
+                            size="sm"
+                            variant="soft"
+                            color="success"
+                          >
                             <Chip.Label className="capitalize">
                               {p.action}
                             </Chip.Label>
@@ -156,9 +144,9 @@ const ViewRole = ({ id }: ViewRoleProps) => {
             })}
           </Accordion>
         )}
-      </div>
+      </InfoCard>
 
-      <div className="col-span-2 flex justify-end gap-2">
+      <div className="flex justify-end gap-2 pt-1">
         <Button variant="outline" onPress={() => navigate('/roles')}>
           {t('common.back')}
         </Button>

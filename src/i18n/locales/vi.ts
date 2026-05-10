@@ -24,6 +24,10 @@ const vi = {
     updatedAt: 'Ngày cập nhật',
     createdBy: 'Tạo bởi',
     updatedBy: 'Cập nhật bởi',
+    verified: 'Đã xác thực',
+    unverified: 'Chưa xác thực',
+    audit: 'Thông tin chỉnh sửa',
+    basicInfo: 'Thông tin cơ bản',
   },
   nav: {
     dashboard: 'Tổng quan',

@@ -24,6 +24,10 @@ const en = {
     updatedAt: 'Updated at',
     createdBy: 'Created by',
     updatedBy: 'Updated by',
+    verified: 'Verified',
+    unverified: 'Unverified',
+    audit: 'Audit',
+    basicInfo: 'Basic Information',
   },
   nav: {
     dashboard: 'Dashboard',

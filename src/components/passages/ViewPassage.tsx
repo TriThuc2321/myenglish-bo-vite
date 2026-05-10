@@ -4,6 +4,7 @@ import { LuPencil } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 
 import MyButton from '@/components/shared/Button';
+import DetailField, { InfoCard } from '@/components/shared/DetailField';
 import { useGetPassageById } from '@/hooks/apis/passages';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { MarkedBy } from '@/types/common';
@@ -39,28 +40,19 @@ const ViewPassage = ({ id }: ViewPassageProps) => {
   if (!passage) return null;
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('passages.form.title')}</span>
-        <span className="text-base">{passage.title ?? '-'}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('passages.form.subtitle')}</span>
-        <span className="text-base">{passage.subtitle ?? '-'}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">
-          {t('passages.form.markedBy.label')}
-        </span>
-        <span className="text-base">{passage.markedBy ?? '-'}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('passages.form.status')}</span>
-        {passage.status && (
-          <div>
+    <div className="flex flex-col gap-4">
+      <InfoCard title={t('common.basicInfo')}>
+        <DetailField label={t('passages.form.title')}>
+          {passage.title ?? ''}
+        </DetailField>
+        <DetailField label={t('passages.form.subtitle')}>
+          {passage.subtitle ?? ''}
+        </DetailField>
+        <DetailField label={t('passages.form.markedBy.label')}>
+          {passage.markedBy ?? ''}
+        </DetailField>
+        <DetailField label={t('passages.form.status')}>
+          {passage.status ? (
             <Chip
               color={statusColorMap[passage.status]}
               size="sm"
@@ -68,45 +60,44 @@ const ViewPassage = ({ id }: ViewPassageProps) => {
             >
               <Chip.Label>{passage.status}</Chip.Label>
             </Chip>
-          </div>
-        )}
-      </div>
+          ) : null}
+        </DetailField>
+      </InfoCard>
 
-      <div>
-        <span className="text-sm font-bold">{t('common.createdBy')}</span>
-        <AuditItem
-          user={passage.auditMetadata?.createdBy}
-          dateTime={passage.auditMetadata?.createdAt}
-        />
-      </div>
-
-      <div>
-        <span className="text-sm font-bold">{t('common.updatedBy')}</span>
-        <AuditItem
-          user={passage.auditMetadata?.updatedBy}
-          dateTime={passage.auditMetadata?.updatedAt}
-        />
-      </div>
-
-      {passage.paragraphs && passage.paragraphs.length > 0 && (
-        <div className="col-span-2 flex flex-col gap-2">
-          <span className="text-sm font-bold">
-            {t('passages.form.paragraphs')}
-          </span>
-          <div className="flex flex-col gap-2">
-            {passage?.paragraphs?.map(({ id, content }, index) => (
-              <p className="text-justify" key={id}>
-                <span className="font-bold">
-                  {getParagraphPrefix(index, passage.markedBy)}{' '}
-                </span>
-                <span>{content}</span>
-              </p>
+      {!!passage?.paragraphs?.length && (
+        <InfoCard title={t('passages.form.paragraphs')} columns={1}>
+          <div className="flex flex-col">
+            {passage.paragraphs.map(({ id, content }, index) => (
+              <div
+                key={id}
+                className="flex gap-3 rounded-lg px-4 text-sm leading-relaxed"
+              >
+                <p className="text-default-800 text-justify">
+                  <span>{getParagraphPrefix(index, passage.markedBy)} </span>
+                  {content}
+                </p>
+              </div>
             ))}
           </div>
-        </div>
+        </InfoCard>
       )}
 
-      <div className="col-span-2 flex justify-end gap-2">
+      <InfoCard title={t('common.audit')}>
+        <DetailField label={t('common.createdBy')}>
+          <AuditItem
+            user={passage.auditMetadata?.createdBy}
+            dateTime={passage.auditMetadata?.createdAt}
+          />
+        </DetailField>
+        <DetailField label={t('common.updatedBy')}>
+          <AuditItem
+            user={passage.auditMetadata?.updatedBy}
+            dateTime={passage.auditMetadata?.updatedAt}
+          />
+        </DetailField>
+      </InfoCard>
+
+      <div className="flex justify-end gap-2 pt-1">
         <Button variant="outline" onPress={() => navigate('/passages')}>
           {t('common.back')}
         </Button>

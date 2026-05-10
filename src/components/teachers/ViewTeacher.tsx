@@ -1,9 +1,10 @@
-import { Button, Chip } from '@heroui/react';
+import { Avatar, Button, Chip } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
-import { LuPencil } from 'react-icons/lu';
+import { LuAward, LuPencil, LuStar } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 
 import MyButton from '@/components/shared/Button';
+import DetailField, { InfoCard } from '@/components/shared/DetailField';
 import { useGetTeacherById } from '@/hooks/apis/teachers';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { formatDateTime } from '@/utils/datetime';
@@ -28,24 +29,39 @@ const ViewTeacher = ({ id }: ViewTeacherProps) => {
     .filter(Boolean)
     .join(' ');
 
+  const initials = [teacher.user?.firstName, teacher.user?.lastName]
+    .filter(Boolean)
+    .map((n) => n![0])
+    .join('')
+    .toUpperCase();
+
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('teachers.table.code')}</span>
-        <span className="text-base">{teacher.code ?? '-'}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">
-          {t('teachers.table.nationality')}
-        </span>
-        <span className="text-base">{teacher.nationality ?? '-'}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('teachers.table.status')}</span>
-        {teacher.status && (
-          <div>
+    <div className="flex flex-col gap-4">
+      <div className="bg-default-50/60 flex items-center gap-4 rounded-xl border p-5">
+        <Avatar
+          className="size-16 shrink-0 rounded-2xl"
+          color="accent"
+          variant="soft"
+        >
+          <Avatar.Image
+            alt={fullName}
+            src={teacher.user?.avatar ?? undefined}
+          />
+          <Avatar.Fallback className="rounded-2xl text-xl font-semibold">
+            {initials || '?'}
+          </Avatar.Fallback>
+        </Avatar>
+        <div className="min-w-0 flex-1">
+          <p className="text-default-900 text-base font-semibold">
+            {fullName || '-'}
+          </p>
+          <p className="text-default-500 mt-0.5 text-sm">
+            {teacher.user?.email ?? '-'}
+          </p>
+          <p className="text-default-400 font-mono text-xs">{teacher.code}</p>
+        </div>
+        <div className="flex shrink-0 flex-col items-end gap-2">
+          {teacher.status && (
             <Chip
               color={statusColorMap[teacher.status]}
               size="sm"
@@ -53,126 +69,138 @@ const ViewTeacher = ({ id }: ViewTeacherProps) => {
             >
               <Chip.Label>{teacher.status}</Chip.Label>
             </Chip>
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('teachers.table.name')}</span>
-        <span className="text-base">{fullName || '-'}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('cmsUsers.form.email')}</span>
-        <span className="text-base">{teacher.user?.email ?? '-'}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('cmsUsers.form.phone')}</span>
-        <span className="text-base">{teacher.user?.phone ?? '-'}</span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">
-          {t('cmsUsers.form.dateOfBirth')}
-        </span>
-        <span className="text-base">
-          {formatDateTime(teacher.user?.dateOfBirth ?? undefined)}
-        </span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('cmsUsers.form.gender')}</span>
-        <span className="text-base">{teacher.user?.gender ?? '-'}</span>
-      </div>
-
-      <div className="col-span-2 flex flex-col gap-1">
-        <span className="text-sm font-bold">{t('cmsUsers.form.address')}</span>
-        <span className="text-base">{teacher.user?.address ?? '-'}</span>
-      </div>
-
-      {teacher.user?.avatar && (
-        <div className="col-span-2 flex flex-col gap-1">
-          <span className="text-sm font-bold">{t('cmsUsers.form.avatar')}</span>
-          <img
-            src={teacher.user.avatar}
-            alt="avatar"
-            className="h-16 w-16 rounded-full object-cover"
-          />
+          )}
+          {teacher.nationality && (
+            <Chip size="sm" variant="soft">
+              <Chip.Label>{teacher.nationality}</Chip.Label>
+            </Chip>
+          )}
         </div>
-      )}
-
-      <div>
-        <span className="text-sm font-bold">{t('common.createdBy')}</span>
-        <AuditItem
-          user={teacher.auditMetadata?.createdBy}
-          dateTime={teacher.auditMetadata?.createdAt}
-        />
       </div>
 
-      <div>
-        <span className="text-sm font-bold">{t('common.updatedBy')}</span>
-        <AuditItem
-          user={teacher.auditMetadata?.updatedBy}
-          dateTime={teacher.auditMetadata?.updatedAt}
-        />
-      </div>
+      <InfoCard title={t('common.basicInfo')}>
+        <DetailField label={t('cmsUsers.form.email')}>
+          {teacher.user?.email ?? ''}
+        </DetailField>
+        <DetailField label={t('cmsUsers.form.phone')}>
+          {teacher.user?.phone ?? ''}
+        </DetailField>
+        <DetailField label={t('cmsUsers.form.dateOfBirth')}>
+          {formatDateTime(teacher.user?.dateOfBirth ?? undefined) ?? ''}
+        </DetailField>
+        <DetailField label={t('cmsUsers.form.gender')}>
+          {teacher.user?.gender ?? ''}
+        </DetailField>
+        <DetailField label={t('teachers.table.nationality')}>
+          {teacher.nationality ?? ''}
+        </DetailField>
+        <DetailField label={t('teachers.table.code')}>
+          <span className="font-mono text-sm">{teacher.code ?? ''}</span>
+        </DetailField>
+        <DetailField label={t('cmsUsers.form.address')} span="full">
+          {teacher.user?.address ?? ''}
+        </DetailField>
+      </InfoCard>
 
-      {teacher.skills && teacher.skills.length > 0 && (
-        <div className="col-span-2 flex flex-col gap-2">
-          <span className="text-sm font-bold">{t('teachers.form.skills')}</span>
+      {!!teacher?.skills?.length && (
+        <div className="bg-default-50/60 rounded-xl border p-5">
+          <div className="mb-4 flex items-center gap-2">
+            <LuStar className="text-default-400 size-3.5" />
+            <p className="text-default-400 font-semibold">
+              {t('teachers.form.skills')}
+            </p>
+          </div>
           <div className="flex flex-col gap-2">
             {teacher.skills.map((skill) => (
               <div
                 key={skill.id}
-                className="flex gap-3 rounded-lg border p-3 text-sm"
+                className="flex items-center gap-3 rounded-lg border px-4 py-3"
               >
-                <span>{skill.level}</span>
-                {skill.skillArea && <span>· {skill.skillArea}</span>}
-                {skill.targetAudience && <span>· {skill.targetAudience}</span>}
+                <span className="text-default-800 text-sm font-semibold">
+                  {skill.level}
+                </span>
+                {skill.skillArea && (
+                  <>
+                    <span className="text-default-300">·</span>
+                    <span className="text-default-600 text-sm">
+                      {skill.skillArea}
+                    </span>
+                  </>
+                )}
+                {skill.targetAudience && (
+                  <>
+                    <span className="text-default-300">·</span>
+                    <span className="text-default-500 text-sm">
+                      {skill.targetAudience}
+                    </span>
+                  </>
+                )}
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {teacher.certificates && teacher.certificates.length > 0 && (
-        <div className="col-span-2 flex flex-col gap-2">
-          <span className="text-sm font-bold">
-            {t('teachers.form.certificates')}
-          </span>
+      {teacher?.certificates?.length > 0 && (
+        <div className="bg-default-50/60 rounded-xl border p-5">
+          <div className="mb-4 flex items-center gap-2">
+            <LuAward className="text-default-400 size-3.5" />
+            <p className="text-default-400 font-semibold">
+              {t('teachers.form.certificates')}
+            </p>
+          </div>
           <div className="flex flex-col gap-2">
             {teacher.certificates.map((cert) => (
-              <div
-                key={cert.id}
-                className="flex flex-col gap-1 rounded-lg border p-3 text-sm"
-              >
-                <span className="font-medium">{cert.name}</span>
-                {cert.issuer && <span>{cert.issuer}</span>}
-                {cert.score && (
-                  <span>
-                    {t('teachers.form.certScore')}: {cert.score}
-                  </span>
-                )}
-                {cert.issueDate && (
-                  <span>
-                    {t('teachers.form.certIssueDate')}:{' '}
-                    {formatDateTime(cert.issueDate)}
-                  </span>
-                )}
-                {cert.expiryDate && (
-                  <span>
-                    {t('teachers.form.certExpiryDate')}:{' '}
-                    {formatDateTime(cert.expiryDate)}
-                  </span>
-                )}
+              <div key={cert.id} className="rounded-lg border p-4">
+                <p className="text-default-900 text-sm font-semibold">
+                  {cert.name}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                  {cert.issuer && (
+                    <span className="text-default-500 text-xs">
+                      {cert.issuer}
+                    </span>
+                  )}
+                  {cert.score && (
+                    <span className="text-default-500 text-xs">
+                      {t('teachers.form.certScore')}: {cert.score}
+                    </span>
+                  )}
+                  {cert.issueDate && (
+                    <span className="text-default-500 text-xs">
+                      {t('teachers.form.certIssueDate')}:{' '}
+                      {formatDateTime(cert.issueDate)}
+                    </span>
+                  )}
+                  {cert.expiryDate && (
+                    <span className="text-default-500 text-xs">
+                      {t('teachers.form.certExpiryDate')}:{' '}
+                      {formatDateTime(cert.expiryDate)}
+                    </span>
+                  )}
+                </div>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      <div className="col-span-2 flex justify-end gap-2">
+      <InfoCard title={t('common.audit')}>
+        <DetailField label={t('common.createdBy')}>
+          <AuditItem
+            user={teacher.auditMetadata?.createdBy}
+            dateTime={teacher.auditMetadata?.createdAt}
+          />
+        </DetailField>
+        <DetailField label={t('common.updatedBy')}>
+          <AuditItem
+            user={teacher.auditMetadata?.updatedBy}
+            dateTime={teacher.auditMetadata?.updatedAt}
+          />
+        </DetailField>
+      </InfoCard>
+
+      <div className="flex justify-end gap-2 pt-1">
         <Button variant="outline" onPress={() => navigate('/teachers')}>
           {t('common.back')}
         </Button>

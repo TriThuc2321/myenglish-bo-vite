@@ -6,3 +6,4 @@ export { default as questionGroupApi } from './questionGroup';
 export { default as passageApi } from './passage';
 export { default as roleApi } from './role';
 export { default as permissionApi } from './permission';
+export { default as teacherApi } from './teacher';

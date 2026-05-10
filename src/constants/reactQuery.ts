@@ -35,4 +35,8 @@ export const REACT_QUERY_KEYS = {
   PERMISSION: {
     LIST: 'permission.list',
   },
+  TEACHER: {
+    LIST: 'teacher.list',
+    BY_ID: 'teacher.byId',
+  },
 };

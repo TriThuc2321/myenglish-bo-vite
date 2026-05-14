@@ -109,6 +109,7 @@ const TeacherForm = ({
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 isInvalid={!!errors.code}
+                isRequired
               >
                 <Label>{t('teachers.form.code')}</Label>
                 <Input
@@ -200,6 +201,7 @@ const TeacherForm = ({
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 isInvalid={!!errors.user?.firstName}
+                isRequired
               >
                 <Label>{t('cmsUsers.form.firstName')}</Label>
                 <Input
@@ -223,6 +225,7 @@ const TeacherForm = ({
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 isInvalid={!!errors.user?.lastName}
+                isRequired
               >
                 <Label>{t('cmsUsers.form.lastName')}</Label>
                 <Input
@@ -247,6 +250,7 @@ const TeacherForm = ({
                 onBlur={field.onBlur}
                 isInvalid={!!errors.user?.email}
                 isDisabled={isEdit}
+                isRequired
               >
                 <Label>{t('cmsUsers.form.email')}</Label>
                 <Input
@@ -271,6 +275,7 @@ const TeacherForm = ({
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 isInvalid={!!errors.user?.phone}
+                isRequired
               >
                 <Label>{t('cmsUsers.form.phone')}</Label>
                 <Input

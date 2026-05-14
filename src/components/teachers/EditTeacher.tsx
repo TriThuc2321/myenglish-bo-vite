@@ -75,7 +75,14 @@ const EditTeacher = ({ id }: EditTeacherProps) => {
 
   const onSubmit = async (payload: CreateEditTeacherFormData) => {
     try {
-      await editTeacher({ id, ...payload });
+      await editTeacher({
+        id,
+        ...payload,
+        user: {
+          ...payload.user,
+          dateOfBirth: payload.user.dateOfBirth || undefined,
+        },
+      });
       navigate('/teachers');
     } catch (error) {
       console.error(error);

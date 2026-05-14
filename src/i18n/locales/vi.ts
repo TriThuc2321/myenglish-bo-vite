@@ -124,6 +124,10 @@ const vi = {
       name: 'Họ và tên',
       nationality: 'Quốc tịch',
       status: 'Trạng thái',
+      skills: 'Kỹ năng',
+      phone: 'Điện thoại',
+      dateOfBirth: 'Ngày sinh',
+      certificates: 'Chứng chỉ',
     },
     form: {
       basicInfo: 'Thông tin cơ bản',

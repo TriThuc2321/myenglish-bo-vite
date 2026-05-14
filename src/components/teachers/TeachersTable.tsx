@@ -1,4 +1,4 @@
-import { Chip } from '@heroui/react';
+import { Avatar, Chip } from '@heroui/react';
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -18,8 +18,9 @@ import TanstackTable from '@/components/shared/table/TanstackTable';
 import ConfirmWrapper from '@/configs/ConfirmWrapper';
 import { useDeleteTeacher } from '@/hooks/apis/teachers';
 import { PermissionAction, SubjectName } from '@/types/auth';
+import { formatDateTime } from '@/utils/datetime';
 
-import { statusColorMap } from './constants';
+import { skillAreaColorMap, statusColorMap } from './constants';
 
 const columnHelper = createColumnHelper<Teacher>();
 
@@ -55,17 +56,90 @@ export default function TeachersTable({
         cell: (info) => {
           const user = info.getValue();
           if (!user) return '-';
-          const name = [user.firstName, user.lastName]
+          const fullName = [user.firstName, user.lastName]
             .filter(Boolean)
             .join(' ');
+          const firstInitial = user.firstName?.charAt(0) ?? '';
+          const lastInitial = user.lastName?.charAt(0) ?? '';
+          const fallbackInitials = (
+            firstInitial + lastInitial || 'ME'
+          ).toUpperCase();
+          const fallbackName = fullName || user.email || 'MyEnglish Teacher';
           return (
-            <div className="flex flex-col">
-              <span>{name || '-'}</span>
-              {user.email && (
-                <span className="text-content2-foreground text-xs">
-                  {user.email}
+            <div className="flex gap-2">
+              <Avatar className="rounded-2xl" variant="soft" color="accent">
+                <Avatar.Image
+                  alt={fallbackName}
+                  src={user.avatar ?? undefined}
+                />
+                <Avatar.Fallback className="rounded-2xl">
+                  {fallbackInitials}
+                </Avatar.Fallback>
+              </Avatar>
+              <div>
+                <p className="text-sm font-semibold">{fallbackName}</p>
+                <p className="text-xs text-gray-500">{user.email ?? ''}</p>
+              </div>
+            </div>
+          );
+        },
+      }),
+      columnHelper.accessor('user', {
+        enableSorting: false,
+        id: 'phone',
+        header: t('teachers.table.phone'),
+        cell: (info) => info.getValue()?.phone ?? '-',
+      }),
+      columnHelper.accessor('user', {
+        enableSorting: false,
+        id: 'dateOfBirth',
+        header: t('teachers.table.dateOfBirth'),
+        cell: (info) =>
+          formatDateTime(info.getValue()?.dateOfBirth ?? undefined),
+      }),
+      columnHelper.accessor('skills', {
+        enableSorting: false,
+        header: t('teachers.table.skills'),
+        cell: (info) => {
+          const skills = info.getValue();
+          if (!skills?.length) return '-';
+          return (
+            <div className="flex flex-wrap gap-1">
+              {skills.map((skill) => (
+                <Chip
+                  key={skill.id}
+                  color={
+                    skill.skillArea
+                      ? skillAreaColorMap[skill.skillArea]
+                      : 'default'
+                  }
+                  size="sm"
+                  variant="soft"
+                >
+                  <Chip.Label>
+                    {[skill.skillArea, skill.level, skill.targetAudience]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </Chip.Label>
+                </Chip>
+              ))}
+            </div>
+          );
+        },
+      }),
+      columnHelper.accessor('certificates', {
+        enableSorting: false,
+        header: t('teachers.table.certificates'),
+        cell: (info) => {
+          const certs = info.getValue();
+          if (!certs?.length) return '-';
+          return (
+            <div className="flex flex-col gap-0.5">
+              {certs.map((cert) => (
+                <span key={cert.id} className="text-sm">
+                  {[cert.name, cert.score].filter(Boolean).join(' - ')}
                 </span>
-              )}
+              ))}
             </div>
           );
         },

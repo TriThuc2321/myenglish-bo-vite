@@ -20,11 +20,14 @@ export const createEditTeacherSchema = yup.object().shape({
   user: yup
     .object()
     .shape({
-      firstName: yup.string().defined(),
-      lastName: yup.string().defined(),
-      email: yup.string().email(VALIDATION_MESSAGE.INVALID_EMAIL).defined(),
+      firstName: yup.string().required(VALIDATION_MESSAGE.REQUIRED),
+      lastName: yup.string().required(VALIDATION_MESSAGE.REQUIRED),
+      email: yup
+        .string()
+        .email(VALIDATION_MESSAGE.INVALID_EMAIL)
+        .required(VALIDATION_MESSAGE.REQUIRED),
       avatar: yup.string().defined(),
-      phone: yup.string().defined(),
+      phone: yup.string().required(VALIDATION_MESSAGE.REQUIRED),
       dateOfBirth: yup.string().defined(),
       gender: yup
         .mixed<Gender>()

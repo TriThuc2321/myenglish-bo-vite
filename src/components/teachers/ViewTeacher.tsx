@@ -1,6 +1,6 @@
 import { Avatar, Button, Chip } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
-import { LuAward, LuPencil, LuStar } from 'react-icons/lu';
+import { LuPencil } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 
 import MyButton from '@/components/shared/Button';
@@ -103,19 +103,10 @@ const ViewTeacher = ({ id }: ViewTeacherProps) => {
       </InfoCard>
 
       {!!teacher?.skills?.length && (
-        <div className="bg-default-50/60 rounded-xl border p-5">
-          <div className="mb-4 flex items-center gap-2">
-            <LuStar className="text-default-400 size-3.5" />
-            <p className="text-default-400 font-semibold">
-              {t('teachers.form.skills')}
-            </p>
-          </div>
+        <InfoCard columns={1} title={t('teachers.form.skills')}>
           <div className="flex flex-col gap-2">
             {teacher.skills.map((skill) => (
-              <div
-                key={skill.id}
-                className="flex items-center gap-3 rounded-lg border px-4 py-3"
-              >
+              <div key={skill.id} className="flex items-center gap-3 p-2">
                 <span className="text-default-800 text-sm font-semibold">
                   {skill.level}
                 </span>
@@ -138,42 +129,34 @@ const ViewTeacher = ({ id }: ViewTeacherProps) => {
               </div>
             ))}
           </div>
-        </div>
+        </InfoCard>
       )}
 
       {teacher?.certificates?.length > 0 && (
-        <div className="bg-default-50/60 rounded-xl border p-5">
-          <div className="mb-4 flex items-center gap-2">
-            <LuAward className="text-default-400 size-3.5" />
-            <p className="text-default-400 font-semibold">
-              {t('teachers.form.certificates')}
-            </p>
-          </div>
+        <InfoCard columns={1} title={t('teachers.form.certificates')}>
           <div className="flex flex-col gap-2">
             {teacher.certificates.map((cert) => (
-              <div key={cert.id} className="rounded-lg border p-4">
-                <p className="text-default-900 text-sm font-semibold">
-                  {cert.name}
-                </p>
+              <div key={cert.id} className="p-2">
+                <p className="text-sm font-semibold">{cert.name}</p>
                 <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
                   {cert.issuer && (
-                    <span className="text-default-500 text-xs">
+                    <span className="text-default-500 text-sm">
                       {cert.issuer}
                     </span>
                   )}
                   {cert.score && (
-                    <span className="text-default-500 text-xs">
+                    <span className="text-default-500 text-sm">
                       {t('teachers.form.certScore')}: {cert.score}
                     </span>
                   )}
                   {cert.issueDate && (
-                    <span className="text-default-500 text-xs">
+                    <span className="text-default-500 text-sm">
                       {t('teachers.form.certIssueDate')}:{' '}
                       {formatDateTime(cert.issueDate)}
                     </span>
                   )}
                   {cert.expiryDate && (
-                    <span className="text-default-500 text-xs">
+                    <span className="text-default-500 text-sm">
                       {t('teachers.form.certExpiryDate')}:{' '}
                       {formatDateTime(cert.expiryDate)}
                     </span>
@@ -182,7 +165,7 @@ const ViewTeacher = ({ id }: ViewTeacherProps) => {
               </div>
             ))}
           </div>
-        </div>
+        </InfoCard>
       )}
 
       <InfoCard title={t('common.audit')}>

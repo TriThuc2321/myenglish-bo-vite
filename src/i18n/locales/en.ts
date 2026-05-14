@@ -124,6 +124,10 @@ const en = {
       name: 'Full Name',
       nationality: 'Nationality',
       status: 'Status',
+      skills: 'Skills',
+      phone: 'Phone',
+      dateOfBirth: 'Date of Birth',
+      certificates: 'Certificates',
     },
     form: {
       basicInfo: 'Basic Info',

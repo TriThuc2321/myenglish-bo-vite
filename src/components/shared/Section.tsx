@@ -10,7 +10,7 @@ type SectionProps = {
 const Section = ({ title, children, className, columns = 2 }: SectionProps) => (
   <section className={cn('flex flex-col gap-4', className)}>
     {title && (
-      <h3 className="text-default-500 text-xs font-semibold tracking-[0.12em] uppercase">
+      <h3 className="text-foreground/50 text-sm font-semibold uppercase">
         {title}
       </h3>
     )}

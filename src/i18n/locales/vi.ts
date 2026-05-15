@@ -191,6 +191,14 @@ const vi = {
       genderOther: 'Khác',
       address: 'Địa chỉ',
     },
+    section: {
+      identity: 'Thông tin',
+      contact: 'Liên hệ',
+      access: 'Phân quyền',
+    },
+    preview: {
+      newUser: 'Người dùng mới',
+    },
   },
   roles: {
     createTitle: 'Tạo vai trò',

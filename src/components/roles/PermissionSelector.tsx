@@ -4,6 +4,7 @@ import {
   Accordion,
   Checkbox,
   CheckboxGroup,
+  Chip,
   Label,
   Spinner,
 } from '@heroui/react';
@@ -123,98 +124,99 @@ const PermissionSelectorContent = ({
   }, [value, fullPermissionId]);
 
   return (
-    <>
-      <label className="mb-2 block text-sm font-medium">
-        {t('roles.form.permissions')}
-      </label>
-      <div className="w-full">
-        {fullPermissionId != null && (
-          <Checkbox
-            id={`full-permissions-${fullPermissionId}`}
-            className="py-3"
-            isSelected={isDisableAll}
-            onChange={(isSelected) =>
-              handleSelectAll(isSelected, fullPermissionId)
-            }
-          >
-            <Checkbox.Control>
-              <Checkbox.Indicator />
-            </Checkbox.Control>
-            <Checkbox.Content>
-              <Label
-                htmlFor={`full-permissions-${fullPermissionId}`}
-                className="text-base font-semibold capitalize"
-              >
-                {t('roles.form.fullPermissions')}
-              </Label>
-            </Checkbox.Content>
-          </Checkbox>
-        )}
+    <div className="w-full">
+      {fullPermissionId != null && (
+        <Checkbox
+          id={`full-permissions-${fullPermissionId}`}
+          className="py-2.5"
+          isSelected={isDisableAll}
+          onChange={(isSelected) =>
+            handleSelectAll(isSelected, fullPermissionId)
+          }
+        >
+          <Checkbox.Control>
+            <Checkbox.Indicator />
+          </Checkbox.Control>
+          <Checkbox.Content>
+            <Label
+              htmlFor={`full-permissions-${fullPermissionId}`}
+              className="text-sm font-medium capitalize"
+            >
+              {t('roles.form.fullPermissions')}
+            </Label>
+          </Checkbox.Content>
+        </Checkbox>
+      )}
 
-        <Accordion allowsMultipleExpanded className="w-full">
-          {Object.entries(permissionGroups).map(([key, values]) => {
-            const isIndeterminate =
-              values.some((p) => selected.includes(p.id)) &&
-              !values.every((p) => selected.includes(p.id));
+      <Accordion allowsMultipleExpanded className="w-full">
+        {Object.entries(permissionGroups).map(([key, values]) => {
+          const isIndeterminate =
+            values.some((p) => selected.includes(p.id)) &&
+            !values.every((p) => selected.includes(p.id));
+          const selectedCount = values.filter((p) =>
+            selected.includes(p.id),
+          ).length;
 
-            return (
-              <Accordion.Item key={key} id={key}>
-                <Accordion.Heading>
-                  <Accordion.Trigger className="flex w-full items-center gap-2 py-2">
-                    <span
-                      className="inline-flex shrink-0"
-                      onPointerDown={(e) => e.stopPropagation()}
+          return (
+            <Accordion.Item key={key} id={key}>
+              <Accordion.Heading>
+                <Accordion.Trigger className="flex w-full items-center gap-2 py-2.5">
+                  <span
+                    className="inline-flex shrink-0"
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
+                    <Checkbox
+                      aria-label={`Select all ${key.replaceAll('_', ' ')}`}
+                      isIndeterminate={isIndeterminate}
+                      isSelected={groupSelected.includes(key)}
+                      isDisabled={isDisableAll}
+                      onChange={(isSelected) =>
+                        handleGroupSelect(isSelected, key)
+                      }
                     >
-                      <Checkbox
-                        aria-label={`Select all ${key.replaceAll('_', ' ')}`}
-                        isIndeterminate={isIndeterminate}
-                        isSelected={groupSelected.includes(key)}
-                        isDisabled={isDisableAll}
-                        onChange={(isSelected) =>
-                          handleGroupSelect(isSelected, key)
-                        }
-                      >
+                      <Checkbox.Control>
+                        <Checkbox.Indicator />
+                      </Checkbox.Control>
+                    </Checkbox>
+                  </span>
+                  <span className="text-default-800 min-w-0 flex-1 text-start text-sm font-medium capitalize">
+                    {key.replaceAll('_', ' ')}
+                  </span>
+                  <Chip size="sm" variant="soft">
+                    <Chip.Label>
+                      {selectedCount}/{values.length}
+                    </Chip.Label>
+                  </Chip>
+                  <Accordion.Indicator>
+                    <LuChevronDown className="text-muted size-4" />
+                  </Accordion.Indicator>
+                </Accordion.Trigger>
+              </Accordion.Heading>
+              <Accordion.Panel>
+                <Accordion.Body className="ml-6">
+                  <CheckboxGroup
+                    isDisabled={isDisableAll}
+                    value={selected.map(String)}
+                    onChange={(next) => handleSingleSelect(next.map(Number))}
+                  >
+                    {values.map(({ id, action }) => (
+                      <Checkbox key={id} value={String(id)}>
                         <Checkbox.Control>
                           <Checkbox.Indicator />
                         </Checkbox.Control>
+                        <Checkbox.Content>
+                          <Label className="text-sm capitalize">{action}</Label>
+                        </Checkbox.Content>
                       </Checkbox>
-                    </span>
-                    <span className="min-w-0 flex-1 text-start text-base font-semibold capitalize">
-                      {key.replaceAll('_', ' ')}
-                    </span>
-                    <Accordion.Indicator>
-                      <LuChevronDown className="text-muted size-4" />
-                    </Accordion.Indicator>
-                  </Accordion.Trigger>
-                </Accordion.Heading>
-                <Accordion.Panel>
-                  <Accordion.Body className="ml-6">
-                    <CheckboxGroup
-                      isDisabled={isDisableAll}
-                      value={selected.map(String)}
-                      onChange={(next) => handleSingleSelect(next.map(Number))}
-                    >
-                      {values.map(({ id, action }) => (
-                        <Checkbox key={id} value={String(id)}>
-                          <Checkbox.Control>
-                            <Checkbox.Indicator />
-                          </Checkbox.Control>
-                          <Checkbox.Content>
-                            <Label className="text-sm capitalize">
-                              {action}
-                            </Label>
-                          </Checkbox.Content>
-                        </Checkbox>
-                      ))}
-                    </CheckboxGroup>
-                  </Accordion.Body>
-                </Accordion.Panel>
-              </Accordion.Item>
-            );
-          })}
-        </Accordion>
-      </div>
-    </>
+                    ))}
+                  </CheckboxGroup>
+                </Accordion.Body>
+              </Accordion.Panel>
+            </Accordion.Item>
+          );
+        })}
+      </Accordion>
+    </div>
   );
 };
 

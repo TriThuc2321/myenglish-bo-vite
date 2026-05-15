@@ -14,6 +14,7 @@ import { LuPlus, LuTrash2 } from 'react-icons/lu';
 
 import type { CreateEditPassageFormData } from '@/schemas/passage';
 
+import Section from '@/components/shared/Section';
 import { MarkedBy, Status } from '@/types/common';
 
 type PassageFormProps = {
@@ -54,124 +55,125 @@ const PassageForm = ({
   });
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto flex w-full max-w-3xl flex-col gap-4"
-    >
-      <Controller
-        name="title"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            fullWidth
-            name={field.name}
-            value={field.value ?? ''}
-            onChange={field.onChange}
-            onBlur={field.onBlur}
-            isInvalid={!!errors.title}
-          >
-            <Label>{t('passages.form.title')}</Label>
-            <Input ref={field.ref} placeholder={t('passages.form.title')} />
-            <FieldError>{errors.title?.message}</FieldError>
-          </TextField>
-        )}
-      />
-      <Controller
-        name="subtitle"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            fullWidth
-            name={field.name}
-            value={field.value ?? ''}
-            onChange={field.onChange}
-            onBlur={field.onBlur}
-            isInvalid={!!errors.subtitle}
-          >
-            <Label>{t('passages.form.subtitle')}</Label>
-            <Input ref={field.ref} placeholder={t('passages.form.subtitle')} />
-            <FieldError>{errors.subtitle?.message}</FieldError>
-          </TextField>
-        )}
-      />
-      <Controller
-        name="markedBy"
-        control={control}
-        render={({ field }) => (
-          <Select
-            placeholder={t('passages.form.markedBy.label')}
-            fullWidth
-            selectedKey={field.value}
-            onSelectionChange={(key) => {
-              if (key == null) return;
-              field.onChange(key as MarkedBy);
-            }}
-            isInvalid={!!errors.markedBy}
-          >
-            <Label>{t('passages.form.markedBy.label')}</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {markedByItems.map((item) => (
-                  <ListBox.Item
-                    key={item.value}
-                    id={item.value}
-                    textValue={item.label}
-                  >
-                    {item.label}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-            <FieldError>{errors.markedBy?.message}</FieldError>
-          </Select>
-        )}
-      />
-      <Controller
-        name="status"
-        control={control}
-        render={({ field }) => (
-          <Select
-            placeholder={t('passages.form.status')}
-            fullWidth
-            selectedKey={field.value}
-            onSelectionChange={(key) => {
-              if (key == null) return;
-              field.onChange(key as Status);
-            }}
-            isInvalid={!!errors.status}
-          >
-            <Label>{t('passages.form.status')}</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {statusItems.map((item) => (
-                  <ListBox.Item
-                    key={item.value}
-                    id={item.value}
-                    textValue={item.label}
-                  >
-                    {item.label}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-            <FieldError>{errors.status?.message}</FieldError>
-          </Select>
-        )}
-      />
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <Section title={t('common.basicInfo')}>
+        <Controller
+          name="title"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.title}
+            >
+              <Label>{t('passages.form.title')}</Label>
+              <Input ref={field.ref} placeholder={t('passages.form.title')} />
+              <FieldError>{errors.title?.message}</FieldError>
+            </TextField>
+          )}
+        />
+        <Controller
+          name="subtitle"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.subtitle}
+            >
+              <Label>{t('passages.form.subtitle')}</Label>
+              <Input
+                ref={field.ref}
+                placeholder={t('passages.form.subtitle')}
+              />
+              <FieldError>{errors.subtitle?.message}</FieldError>
+            </TextField>
+          )}
+        />
+        <Controller
+          name="markedBy"
+          control={control}
+          render={({ field }) => (
+            <Select
+              placeholder={t('passages.form.markedBy.label')}
+              fullWidth
+              selectedKey={field.value}
+              onSelectionChange={(key) => {
+                if (key == null) return;
+                field.onChange(key as MarkedBy);
+              }}
+              isInvalid={!!errors.markedBy}
+            >
+              <Label>{t('passages.form.markedBy.label')}</Label>
+              <Select.Trigger>
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
+              <Select.Popover>
+                <ListBox>
+                  {markedByItems.map((item) => (
+                    <ListBox.Item
+                      key={item.value}
+                      id={item.value}
+                      textValue={item.label}
+                    >
+                      {item.label}
+                      <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                  ))}
+                </ListBox>
+              </Select.Popover>
+              <FieldError>{errors.markedBy?.message}</FieldError>
+            </Select>
+          )}
+        />
+        <Controller
+          name="status"
+          control={control}
+          render={({ field }) => (
+            <Select
+              placeholder={t('passages.form.status')}
+              fullWidth
+              selectedKey={field.value}
+              onSelectionChange={(key) => {
+                if (key == null) return;
+                field.onChange(key as Status);
+              }}
+              isInvalid={!!errors.status}
+            >
+              <Label>{t('passages.form.status')}</Label>
+              <Select.Trigger>
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
+              <Select.Popover>
+                <ListBox>
+                  {statusItems.map((item) => (
+                    <ListBox.Item
+                      key={item.value}
+                      id={item.value}
+                      textValue={item.label}
+                    >
+                      {item.label}
+                      <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                  ))}
+                </ListBox>
+              </Select.Popover>
+              <FieldError>{errors.status?.message}</FieldError>
+            </Select>
+          )}
+        />
+      </Section>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <Label>{t('passages.form.paragraphs')}</Label>
+      <Section title={t('passages.form.paragraphs')} columns={1}>
+        <div className="flex justify-end">
           <Button
             type="button"
             variant="outline"
@@ -215,9 +217,9 @@ const PassageForm = ({
             </Button>
           </div>
         ))}
-      </div>
+      </Section>
 
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-2 pt-1">
         {onCancel && (
           <Button type="button" variant="outline" onPress={onCancel}>
             {t('common.cancel')}

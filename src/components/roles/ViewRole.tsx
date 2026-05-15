@@ -61,7 +61,7 @@ const ViewRole = ({ id }: ViewRoleProps) => {
 
   if (isLoading) {
     return (
-      <div className="flex h-[360px] items-center justify-center">
+      <div className="flex h-90 items-center justify-center">
         <Loader />
       </div>
     );

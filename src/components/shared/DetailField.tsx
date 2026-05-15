@@ -16,7 +16,7 @@ const DetailField = ({
   <div
     className={cn(
       'flex flex-col gap-1.5',
-      span === 'full' && 'col-span-2',
+      span === 'full' && 'sm:col-span-2',
       className,
     )}
   >

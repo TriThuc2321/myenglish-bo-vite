@@ -19,6 +19,7 @@ import { LuPlus, LuTrash2 } from 'react-icons/lu';
 
 import type { CreateEditTeacherFormData } from '@/schemas/teacher';
 
+import Section from '@/components/shared/Section';
 import { Gender } from '@/types/common';
 import {
   SkillArea,
@@ -88,311 +89,292 @@ const TeacherForm = ({
   } = useFieldArray({ control, name: 'certificates' });
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto flex w-full max-w-3xl flex-col gap-6"
-    >
-      <div className="flex flex-col gap-4">
-        <h3 className="text-sm font-semibold">
-          {t('teachers.form.basicInfo')}
-        </h3>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <Section title={t('teachers.form.basicInfo')}>
+        <Controller
+          name="code"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.code}
+            >
+              <Label>{t('teachers.form.code')}</Label>
+              <Input ref={field.ref} placeholder={t('teachers.form.code')} />
+              <FieldError>{errors.code?.message}</FieldError>
+            </TextField>
+          )}
+        />
 
-        <div className="grid grid-cols-2 gap-4">
-          <Controller
-            name="code"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                fullWidth
-                name={field.name}
-                value={field.value ?? ''}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                isInvalid={!!errors.code}
-              >
-                <Label>{t('teachers.form.code')}</Label>
-                <Input ref={field.ref} placeholder={t('teachers.form.code')} />
-                <FieldError>{errors.code?.message}</FieldError>
-              </TextField>
-            )}
-          />
+        <Controller
+          name="nationality"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.nationality}
+            >
+              <Label>{t('teachers.form.nationality')}</Label>
+              <Input
+                ref={field.ref}
+                placeholder={t('teachers.form.nationality')}
+              />
+              <FieldError>{errors.nationality?.message}</FieldError>
+            </TextField>
+          )}
+        />
 
-          <Controller
-            name="nationality"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                fullWidth
-                name={field.name}
-                value={field.value ?? ''}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                isInvalid={!!errors.nationality}
-              >
-                <Label>{t('teachers.form.nationality')}</Label>
-                <Input
-                  ref={field.ref}
-                  placeholder={t('teachers.form.nationality')}
-                />
-                <FieldError>{errors.nationality?.message}</FieldError>
-              </TextField>
-            )}
-          />
+        <Controller
+          name="status"
+          control={control}
+          render={({ field }) => (
+            <Select
+              placeholder={t('teachers.form.status')}
+              fullWidth
+              selectedKey={field.value}
+              onSelectionChange={(key) => {
+                if (key == null) return;
+                field.onChange(key as TeacherStatus);
+              }}
+              isInvalid={!!errors.status}
+            >
+              <Label>{t('teachers.form.status')}</Label>
+              <Select.Trigger>
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
+              <Select.Popover>
+                <ListBox>
+                  {STATUS_ITEMS.map((item) => (
+                    <ListBox.Item
+                      key={item.value}
+                      id={item.value}
+                      textValue={item.label}
+                    >
+                      {item.label}
+                      <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                  ))}
+                </ListBox>
+              </Select.Popover>
+              <FieldError>{errors.status?.message}</FieldError>
+            </Select>
+          )}
+        />
+      </Section>
 
-          <Controller
-            name="status"
-            control={control}
-            render={({ field }) => (
-              <Select
-                placeholder={t('teachers.form.status')}
-                fullWidth
-                selectedKey={field.value}
-                onSelectionChange={(key) => {
-                  if (key == null) return;
-                  field.onChange(key as TeacherStatus);
-                }}
-                isInvalid={!!errors.status}
-              >
-                <Label>{t('teachers.form.status')}</Label>
-                <Select.Trigger>
-                  <Select.Value />
-                  <Select.Indicator />
-                </Select.Trigger>
-                <Select.Popover>
-                  <ListBox>
-                    {STATUS_ITEMS.map((item) => (
-                      <ListBox.Item
-                        key={item.value}
-                        id={item.value}
-                        textValue={item.label}
-                      >
-                        {item.label}
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                    ))}
-                  </ListBox>
-                </Select.Popover>
-                <FieldError>{errors.status?.message}</FieldError>
-              </Select>
-            )}
-          />
-        </div>
-      </div>
+      <Section title={t('teachers.form.userInfo')}>
+        <Controller
+          name="user.firstName"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.user?.firstName}
+            >
+              <Label>{t('cmsUsers.form.firstName')}</Label>
+              <Input
+                ref={field.ref}
+                placeholder={t('cmsUsers.form.firstName')}
+              />
+              <FieldError>{errors.user?.firstName?.message}</FieldError>
+            </TextField>
+          )}
+        />
 
-      <div className="flex flex-col gap-4">
-        <h3 className="text-sm font-semibold">{t('teachers.form.userInfo')}</h3>
+        <Controller
+          name="user.lastName"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.user?.lastName}
+            >
+              <Label>{t('cmsUsers.form.lastName')}</Label>
+              <Input
+                ref={field.ref}
+                placeholder={t('cmsUsers.form.lastName')}
+              />
+              <FieldError>{errors.user?.lastName?.message}</FieldError>
+            </TextField>
+          )}
+        />
 
-        <div className="grid grid-cols-2 gap-4">
-          <Controller
-            name="user.firstName"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                fullWidth
-                name={field.name}
-                value={field.value ?? ''}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                isInvalid={!!errors.user?.firstName}
-              >
-                <Label>{t('cmsUsers.form.firstName')}</Label>
-                <Input
-                  ref={field.ref}
-                  placeholder={t('cmsUsers.form.firstName')}
-                />
-                <FieldError>{errors.user?.firstName?.message}</FieldError>
-              </TextField>
-            )}
-          />
+        <Controller
+          name="user.email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.user?.email}
+              isDisabled={isEdit}
+            >
+              <Label>{t('cmsUsers.form.email')}</Label>
+              <Input
+                ref={field.ref}
+                placeholder={t('cmsUsers.form.email')}
+                type="email"
+              />
+              <FieldError>{errors.user?.email?.message}</FieldError>
+            </TextField>
+          )}
+        />
 
-          <Controller
-            name="user.lastName"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                fullWidth
-                name={field.name}
-                value={field.value ?? ''}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                isInvalid={!!errors.user?.lastName}
-              >
-                <Label>{t('cmsUsers.form.lastName')}</Label>
-                <Input
-                  ref={field.ref}
-                  placeholder={t('cmsUsers.form.lastName')}
-                />
-                <FieldError>{errors.user?.lastName?.message}</FieldError>
-              </TextField>
-            )}
-          />
+        <Controller
+          name="user.phone"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.user?.phone}
+            >
+              <Label>{t('cmsUsers.form.phone')}</Label>
+              <Input ref={field.ref} placeholder={t('cmsUsers.form.phone')} />
+              <FieldError>{errors.user?.phone?.message}</FieldError>
+            </TextField>
+          )}
+        />
 
-          <Controller
-            name="user.email"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                fullWidth
-                name={field.name}
-                value={field.value ?? ''}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                isInvalid={!!errors.user?.email}
-                isDisabled={isEdit}
-              >
-                <Label>{t('cmsUsers.form.email')}</Label>
-                <Input
-                  ref={field.ref}
-                  placeholder={t('cmsUsers.form.email')}
-                  type="email"
-                />
-                <FieldError>{errors.user?.email?.message}</FieldError>
-              </TextField>
-            )}
-          />
+        <Controller
+          name="user.dateOfBirth"
+          control={control}
+          render={({ field }) => (
+            <DatePicker
+              className="w-full"
+              name={field.name}
+              value={field.value ? parseDate(field.value.split('T')[0]) : null}
+              onChange={(date: DateValue | null) =>
+                field.onChange(date?.toString() ?? undefined)
+              }
+              isInvalid={!!errors.user?.dateOfBirth}
+            >
+              <Label>{t('cmsUsers.form.dateOfBirth')}</Label>
+              <DateField.Group fullWidth ref={field.ref}>
+                <DateField.Input>
+                  {(segment) => <DateField.Segment segment={segment} />}
+                </DateField.Input>
+                <DateField.Suffix>
+                  <DatePicker.Trigger>
+                    <DatePicker.TriggerIndicator />
+                  </DatePicker.Trigger>
+                </DateField.Suffix>
+              </DateField.Group>
+              <FieldError>{errors.user?.dateOfBirth?.message}</FieldError>
+              <DatePicker.Popover>
+                <Calendar aria-label="Date of birth">
+                  <Calendar.Header>
+                    <Calendar.YearPickerTrigger>
+                      <Calendar.YearPickerTriggerHeading />
+                      <Calendar.YearPickerTriggerIndicator />
+                    </Calendar.YearPickerTrigger>
+                    <Calendar.NavButton slot="previous" />
+                    <Calendar.NavButton slot="next" />
+                  </Calendar.Header>
+                  <Calendar.Grid>
+                    <Calendar.GridHeader>
+                      {(day) => (
+                        <Calendar.HeaderCell>{day}</Calendar.HeaderCell>
+                      )}
+                    </Calendar.GridHeader>
+                    <Calendar.GridBody>
+                      {(date) => <Calendar.Cell date={date} />}
+                    </Calendar.GridBody>
+                  </Calendar.Grid>
+                  <Calendar.YearPickerGrid>
+                    <Calendar.YearPickerGridBody>
+                      {({ year }) => <Calendar.YearPickerCell year={year} />}
+                    </Calendar.YearPickerGridBody>
+                  </Calendar.YearPickerGrid>
+                </Calendar>
+              </DatePicker.Popover>
+            </DatePicker>
+          )}
+        />
 
-          <Controller
-            name="user.phone"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                fullWidth
-                name={field.name}
-                value={field.value ?? ''}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                isInvalid={!!errors.user?.phone}
-              >
-                <Label>{t('cmsUsers.form.phone')}</Label>
-                <Input ref={field.ref} placeholder={t('cmsUsers.form.phone')} />
-                <FieldError>{errors.user?.phone?.message}</FieldError>
-              </TextField>
-            )}
-          />
+        <Controller
+          name="user.gender"
+          control={control}
+          render={({ field }) => (
+            <Select
+              placeholder={t('cmsUsers.form.gender')}
+              fullWidth
+              selectedKey={field.value ?? null}
+              onSelectionChange={(key) => {
+                field.onChange(key ?? null);
+              }}
+              isInvalid={!!errors.user?.gender}
+            >
+              <Label>{t('cmsUsers.form.gender')}</Label>
+              <Select.Trigger>
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
+              <Select.Popover>
+                <ListBox>
+                  {genderItems.map((item) => (
+                    <ListBox.Item
+                      key={item.value}
+                      id={item.value}
+                      textValue={item.label}
+                    >
+                      {item.label}
+                      <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                  ))}
+                </ListBox>
+              </Select.Popover>
+              <FieldError>{errors.user?.gender?.message}</FieldError>
+            </Select>
+          )}
+        />
 
-          <Controller
-            name="user.dateOfBirth"
-            control={control}
-            render={({ field }) => (
-              <DatePicker
-                className="w-full"
-                name={field.name}
-                value={
-                  field.value ? parseDate(field.value.split('T')[0]) : null
-                }
-                onChange={(date: DateValue | null) =>
-                  field.onChange(date?.toString() ?? undefined)
-                }
-                isInvalid={!!errors.user?.dateOfBirth}
-              >
-                <Label>{t('cmsUsers.form.dateOfBirth')}</Label>
-                <DateField.Group fullWidth ref={field.ref}>
-                  <DateField.Input>
-                    {(segment) => <DateField.Segment segment={segment} />}
-                  </DateField.Input>
-                  <DateField.Suffix>
-                    <DatePicker.Trigger>
-                      <DatePicker.TriggerIndicator />
-                    </DatePicker.Trigger>
-                  </DateField.Suffix>
-                </DateField.Group>
-                <FieldError>{errors.user?.dateOfBirth?.message}</FieldError>
-                <DatePicker.Popover>
-                  <Calendar aria-label="Date of birth">
-                    <Calendar.Header>
-                      <Calendar.YearPickerTrigger>
-                        <Calendar.YearPickerTriggerHeading />
-                        <Calendar.YearPickerTriggerIndicator />
-                      </Calendar.YearPickerTrigger>
-                      <Calendar.NavButton slot="previous" />
-                      <Calendar.NavButton slot="next" />
-                    </Calendar.Header>
-                    <Calendar.Grid>
-                      <Calendar.GridHeader>
-                        {(day) => (
-                          <Calendar.HeaderCell>{day}</Calendar.HeaderCell>
-                        )}
-                      </Calendar.GridHeader>
-                      <Calendar.GridBody>
-                        {(date) => <Calendar.Cell date={date} />}
-                      </Calendar.GridBody>
-                    </Calendar.Grid>
-                    <Calendar.YearPickerGrid>
-                      <Calendar.YearPickerGridBody>
-                        {({ year }) => <Calendar.YearPickerCell year={year} />}
-                      </Calendar.YearPickerGridBody>
-                    </Calendar.YearPickerGrid>
-                  </Calendar>
-                </DatePicker.Popover>
-              </DatePicker>
-            )}
-          />
+        <Controller
+          name="user.address"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              fullWidth
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.user?.address}
+              className="col-span-2"
+            >
+              <Label>{t('cmsUsers.form.address')}</Label>
+              <Input ref={field.ref} placeholder={t('cmsUsers.form.address')} />
+              <FieldError>{errors.user?.address?.message}</FieldError>
+            </TextField>
+          )}
+        />
+      </Section>
 
-          <Controller
-            name="user.gender"
-            control={control}
-            render={({ field }) => (
-              <Select
-                placeholder={t('cmsUsers.form.gender')}
-                fullWidth
-                selectedKey={field.value ?? null}
-                onSelectionChange={(key) => {
-                  field.onChange(key ?? null);
-                }}
-                isInvalid={!!errors.user?.gender}
-              >
-                <Label>{t('cmsUsers.form.gender')}</Label>
-                <Select.Trigger>
-                  <Select.Value />
-                  <Select.Indicator />
-                </Select.Trigger>
-                <Select.Popover>
-                  <ListBox>
-                    {genderItems.map((item) => (
-                      <ListBox.Item
-                        key={item.value}
-                        id={item.value}
-                        textValue={item.label}
-                      >
-                        {item.label}
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                    ))}
-                  </ListBox>
-                </Select.Popover>
-                <FieldError>{errors.user?.gender?.message}</FieldError>
-              </Select>
-            )}
-          />
-
-          <Controller
-            name="user.address"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                fullWidth
-                name={field.name}
-                value={field.value ?? ''}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                isInvalid={!!errors.user?.address}
-                className="col-span-2"
-              >
-                <Label>{t('cmsUsers.form.address')}</Label>
-                <Input
-                  ref={field.ref}
-                  placeholder={t('cmsUsers.form.address')}
-                />
-                <FieldError>{errors.user?.address?.message}</FieldError>
-              </TextField>
-            )}
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold">{t('teachers.form.skills')}</h3>
+      <Section title={t('teachers.form.skills')} columns={1}>
+        <div className="flex justify-end">
           <Button
             type="button"
             variant="outline"
@@ -533,13 +515,10 @@ const TeacherForm = ({
             />
           </div>
         ))}
-      </div>
+      </Section>
 
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold">
-            {t('teachers.form.certificates')}
-          </h3>
+      <Section title={t('teachers.form.certificates')} columns={1}>
+        <div className="flex justify-end">
           <Button
             type="button"
             variant="outline"
@@ -775,9 +754,9 @@ const TeacherForm = ({
             />
           </div>
         ))}
-      </div>
+      </Section>
 
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-2 pt-1">
         {onCancel && (
           <Button type="button" variant="outline" onPress={onCancel}>
             {t('common.cancel')}

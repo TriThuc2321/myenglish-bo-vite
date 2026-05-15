@@ -191,6 +191,14 @@ const en = {
       genderOther: 'Other',
       address: 'Address',
     },
+    section: {
+      identity: 'Identity',
+      contact: 'Contact',
+      access: 'Access',
+    },
+    preview: {
+      newUser: 'New user',
+    },
   },
   roles: {
     createTitle: 'Create Role',

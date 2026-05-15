@@ -9,7 +9,7 @@ import {
   type LinksFunction,
 } from 'react-router';
 
-import './index.css';
+import './styles/index.css';
 
 import '@/i18n';
 import Loader from '@/components/shared/Loader';

@@ -61,7 +61,7 @@ const RoleForm = ({
             isInvalid={!!errors.name}
           >
             <Label>{t('roles.form.name')}</Label>
-            <Input ref={field.ref} variant="secondary" />
+            <Input ref={field.ref} />
             <FieldError>{errors.name?.message}</FieldError>
           </TextField>
         )}
@@ -79,7 +79,7 @@ const RoleForm = ({
             isInvalid={!!errors.code}
           >
             <Label>{t('roles.form.code')}</Label>
-            <Input ref={field.ref} variant="secondary" />
+            <Input ref={field.ref} />
             <FieldError>{errors.code?.message}</FieldError>
           </TextField>
         )}
@@ -89,7 +89,6 @@ const RoleForm = ({
         control={control}
         render={({ field }) => (
           <Select
-            variant="secondary"
             fullWidth
             selectedKey={field.value}
             onSelectionChange={(key) => {

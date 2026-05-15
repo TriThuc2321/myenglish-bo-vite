@@ -71,7 +71,7 @@ const UserForm = ({
             isDisabled={isEditing}
           >
             <Label>{t('cmsUsers.form.email')}</Label>
-            <Input ref={field.ref} variant="secondary" />
+            <Input ref={field.ref} />
             <FieldError>{errors.email?.message}</FieldError>
           </TextField>
         )}
@@ -89,7 +89,7 @@ const UserForm = ({
             isInvalid={!!errors.firstName}
           >
             <Label>{t('cmsUsers.form.firstName')}</Label>
-            <Input ref={field.ref} variant="secondary" />
+            <Input ref={field.ref} />
             <FieldError>{errors.firstName?.message}</FieldError>
           </TextField>
         )}
@@ -107,7 +107,7 @@ const UserForm = ({
             isInvalid={!!errors.lastName}
           >
             <Label>{t('cmsUsers.form.lastName')}</Label>
-            <Input ref={field.ref} variant="secondary" />
+            <Input ref={field.ref} />
             <FieldError>{errors.lastName?.message}</FieldError>
           </TextField>
         )}
@@ -117,7 +117,6 @@ const UserForm = ({
         control={control}
         render={({ field }) => (
           <Select
-            variant="secondary"
             fullWidth
             selectedKey={field.value != null ? String(field.value) : null}
             onSelectionChange={(key) => {
@@ -162,7 +161,7 @@ const UserForm = ({
             isInvalid={!!errors.phone}
           >
             <Label>{t('cmsUsers.form.phone')}</Label>
-            <Input type="tel" ref={field.ref} variant="secondary" />
+            <Input type="tel" ref={field.ref} />
             <FieldError>{errors.phone?.message}</FieldError>
           </TextField>
         )}
@@ -182,7 +181,7 @@ const UserForm = ({
             isRequired
           >
             <Label>{t('cmsUsers.form.dateOfBirth')}</Label>
-            <DateField.Group fullWidth ref={field.ref} variant="secondary">
+            <DateField.Group fullWidth ref={field.ref}>
               <DateField.Input>
                 {(segment) => <DateField.Segment segment={segment} />}
               </DateField.Input>
@@ -226,7 +225,6 @@ const UserForm = ({
         control={control}
         render={({ field }) => (
           <Select
-            variant="secondary"
             fullWidth
             selectedKey={field.value ?? null}
             onSelectionChange={(key) => {
@@ -269,7 +267,7 @@ const UserForm = ({
             isInvalid={!!errors.address}
           >
             <Label>{t('cmsUsers.form.address')}</Label>
-            <Input ref={field.ref} variant="secondary" />
+            <Input ref={field.ref} />
             <FieldError>{errors.address?.message}</FieldError>
           </TextField>
         )}

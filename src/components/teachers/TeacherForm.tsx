@@ -109,14 +109,9 @@ const TeacherForm = ({
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 isInvalid={!!errors.code}
-                isRequired
               >
                 <Label>{t('teachers.form.code')}</Label>
-                <Input
-                  ref={field.ref}
-                  variant="secondary"
-                  placeholder={t('teachers.form.code')}
-                />
+                <Input ref={field.ref} placeholder={t('teachers.form.code')} />
                 <FieldError>{errors.code?.message}</FieldError>
               </TextField>
             )}
@@ -137,7 +132,6 @@ const TeacherForm = ({
                 <Label>{t('teachers.form.nationality')}</Label>
                 <Input
                   ref={field.ref}
-                  variant="secondary"
                   placeholder={t('teachers.form.nationality')}
                 />
                 <FieldError>{errors.nationality?.message}</FieldError>
@@ -151,7 +145,6 @@ const TeacherForm = ({
             render={({ field }) => (
               <Select
                 placeholder={t('teachers.form.status')}
-                variant="secondary"
                 fullWidth
                 selectedKey={field.value}
                 onSelectionChange={(key) => {
@@ -201,12 +194,10 @@ const TeacherForm = ({
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 isInvalid={!!errors.user?.firstName}
-                isRequired
               >
                 <Label>{t('cmsUsers.form.firstName')}</Label>
                 <Input
                   ref={field.ref}
-                  variant="secondary"
                   placeholder={t('cmsUsers.form.firstName')}
                 />
                 <FieldError>{errors.user?.firstName?.message}</FieldError>
@@ -225,12 +216,10 @@ const TeacherForm = ({
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 isInvalid={!!errors.user?.lastName}
-                isRequired
               >
                 <Label>{t('cmsUsers.form.lastName')}</Label>
                 <Input
                   ref={field.ref}
-                  variant="secondary"
                   placeholder={t('cmsUsers.form.lastName')}
                 />
                 <FieldError>{errors.user?.lastName?.message}</FieldError>
@@ -250,12 +239,10 @@ const TeacherForm = ({
                 onBlur={field.onBlur}
                 isInvalid={!!errors.user?.email}
                 isDisabled={isEdit}
-                isRequired
               >
                 <Label>{t('cmsUsers.form.email')}</Label>
                 <Input
                   ref={field.ref}
-                  variant="secondary"
                   placeholder={t('cmsUsers.form.email')}
                   type="email"
                 />
@@ -275,14 +262,9 @@ const TeacherForm = ({
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 isInvalid={!!errors.user?.phone}
-                isRequired
               >
                 <Label>{t('cmsUsers.form.phone')}</Label>
-                <Input
-                  ref={field.ref}
-                  variant="secondary"
-                  placeholder={t('cmsUsers.form.phone')}
-                />
+                <Input ref={field.ref} placeholder={t('cmsUsers.form.phone')} />
                 <FieldError>{errors.user?.phone?.message}</FieldError>
               </TextField>
             )}
@@ -304,7 +286,7 @@ const TeacherForm = ({
                 isInvalid={!!errors.user?.dateOfBirth}
               >
                 <Label>{t('cmsUsers.form.dateOfBirth')}</Label>
-                <DateField.Group fullWidth ref={field.ref} variant="secondary">
+                <DateField.Group fullWidth ref={field.ref}>
                   <DateField.Input>
                     {(segment) => <DateField.Segment segment={segment} />}
                   </DateField.Input>
@@ -352,7 +334,6 @@ const TeacherForm = ({
             render={({ field }) => (
               <Select
                 placeholder={t('cmsUsers.form.gender')}
-                variant="secondary"
                 fullWidth
                 selectedKey={field.value ?? null}
                 onSelectionChange={(key) => {
@@ -400,7 +381,6 @@ const TeacherForm = ({
                 <Label>{t('cmsUsers.form.address')}</Label>
                 <Input
                   ref={field.ref}
-                  variant="secondary"
                   placeholder={t('cmsUsers.form.address')}
                 />
                 <FieldError>{errors.user?.address?.message}</FieldError>
@@ -452,7 +432,6 @@ const TeacherForm = ({
               render={({ field: f }) => (
                 <Select
                   placeholder={t('teachers.form.targetAudience')}
-                  variant="secondary"
                   fullWidth
                   selectedKey={f.value ?? null}
                   onSelectionChange={(key) => f.onChange(key ?? null)}
@@ -486,7 +465,6 @@ const TeacherForm = ({
               render={({ field: f }) => (
                 <Select
                   placeholder={t('teachers.form.skillArea')}
-                  variant="secondary"
                   fullWidth
                   selectedKey={f.value ?? null}
                   onSelectionChange={(key) => f.onChange(key ?? null)}
@@ -520,7 +498,6 @@ const TeacherForm = ({
               render={({ field: f }) => (
                 <Select
                   placeholder={t('teachers.form.skillLevel')}
-                  variant="secondary"
                   fullWidth
                   selectedKey={f.value}
                   onSelectionChange={(key) => {
@@ -615,7 +592,6 @@ const TeacherForm = ({
                   <Label>{t('teachers.form.certName')}</Label>
                   <Input
                     ref={f.ref}
-                    variant="secondary"
                     placeholder={t('teachers.form.certName')}
                   />
                   <FieldError>
@@ -639,7 +615,6 @@ const TeacherForm = ({
                   <Label>{t('teachers.form.certIssuer')}</Label>
                   <Input
                     ref={f.ref}
-                    variant="secondary"
                     placeholder={t('teachers.form.certIssuer')}
                   />
                 </TextField>
@@ -660,7 +635,6 @@ const TeacherForm = ({
                   <Label>{t('teachers.form.certScore')}</Label>
                   <Input
                     ref={f.ref}
-                    variant="secondary"
                     placeholder={t('teachers.form.certScore')}
                   />
                 </TextField>
@@ -680,7 +654,7 @@ const TeacherForm = ({
                   }
                 >
                   <Label>{t('teachers.form.certIssueDate')}</Label>
-                  <DateField.Group fullWidth ref={f.ref} variant="secondary">
+                  <DateField.Group fullWidth ref={f.ref}>
                     <DateField.Input>
                       {(segment) => <DateField.Segment segment={segment} />}
                     </DateField.Input>
@@ -736,7 +710,7 @@ const TeacherForm = ({
                   }
                 >
                   <Label>{t('teachers.form.certExpiryDate')}</Label>
-                  <DateField.Group fullWidth ref={f.ref} variant="secondary">
+                  <DateField.Group fullWidth ref={f.ref}>
                     <DateField.Input>
                       {(segment) => <DateField.Segment segment={segment} />}
                     </DateField.Input>
@@ -794,7 +768,6 @@ const TeacherForm = ({
                   <Label>{t('teachers.form.certFileUrl')}</Label>
                   <Input
                     ref={f.ref}
-                    variant="secondary"
                     placeholder={t('teachers.form.certFileUrl')}
                   />
                 </TextField>

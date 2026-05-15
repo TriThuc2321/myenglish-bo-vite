@@ -44,7 +44,6 @@ export default function UsersPage() {
           >
             <Label>{t('common.search')}</Label>
             <Input
-              variant="secondary"
               className="ml-0.5 w-64"
               placeholder={t('cmsUsers.searchPlaceholder')}
             />

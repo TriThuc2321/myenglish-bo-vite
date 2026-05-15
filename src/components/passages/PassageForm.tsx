@@ -71,11 +71,7 @@ const PassageForm = ({
             isInvalid={!!errors.title}
           >
             <Label>{t('passages.form.title')}</Label>
-            <Input
-              ref={field.ref}
-              variant="secondary"
-              placeholder={t('passages.form.title')}
-            />
+            <Input ref={field.ref} placeholder={t('passages.form.title')} />
             <FieldError>{errors.title?.message}</FieldError>
           </TextField>
         )}
@@ -93,11 +89,7 @@ const PassageForm = ({
             isInvalid={!!errors.subtitle}
           >
             <Label>{t('passages.form.subtitle')}</Label>
-            <Input
-              ref={field.ref}
-              variant="secondary"
-              placeholder={t('passages.form.subtitle')}
-            />
+            <Input ref={field.ref} placeholder={t('passages.form.subtitle')} />
             <FieldError>{errors.subtitle?.message}</FieldError>
           </TextField>
         )}
@@ -108,7 +100,6 @@ const PassageForm = ({
         render={({ field }) => (
           <Select
             placeholder={t('passages.form.markedBy.label')}
-            variant="secondary"
             fullWidth
             selectedKey={field.value}
             onSelectionChange={(key) => {
@@ -146,7 +137,6 @@ const PassageForm = ({
         render={({ field }) => (
           <Select
             placeholder={t('passages.form.status')}
-            variant="secondary"
             fullWidth
             selectedKey={field.value}
             onSelectionChange={(key) => {
@@ -206,7 +196,7 @@ const PassageForm = ({
                   onBlur={f.onBlur}
                   isInvalid={!!errors.paragraphs?.[index]?.content}
                 >
-                  <TextArea ref={f.ref} variant="secondary" rows={5} />
+                  <TextArea ref={f.ref} rows={5} />
                   <FieldError>
                     {errors.paragraphs?.[index]?.content?.message}
                   </FieldError>

@@ -48,7 +48,6 @@ export default function PassagesPage() {
           >
             <Label>{t('common.search')}</Label>
             <Input
-              variant="secondary"
               className="ml-0.5 w-64"
               placeholder={t('passages.searchPlaceholder')}
             />

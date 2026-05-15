@@ -130,7 +130,6 @@ const PermissionSelectorContent = ({
       <div className="w-full">
         {fullPermissionId != null && (
           <Checkbox
-            variant="secondary"
             id={`full-permissions-${fullPermissionId}`}
             className="py-3"
             isSelected={isDisableAll}
@@ -167,7 +166,6 @@ const PermissionSelectorContent = ({
                       onPointerDown={(e) => e.stopPropagation()}
                     >
                       <Checkbox
-                        variant="secondary"
                         aria-label={`Select all ${key.replaceAll('_', ' ')}`}
                         isIndeterminate={isIndeterminate}
                         isSelected={groupSelected.includes(key)}
@@ -197,11 +195,7 @@ const PermissionSelectorContent = ({
                       onChange={(next) => handleSingleSelect(next.map(Number))}
                     >
                       {values.map(({ id, action }) => (
-                        <Checkbox
-                          key={id}
-                          value={String(id)}
-                          variant="secondary"
-                        >
+                        <Checkbox key={id} value={String(id)}>
                           <Checkbox.Control>
                             <Checkbox.Indicator />
                           </Checkbox.Control>

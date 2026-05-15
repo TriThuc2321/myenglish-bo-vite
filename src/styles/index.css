@@ -1,12 +1,7 @@
 @import 'tailwindcss';
 @import '@heroui/styles';
 
-/*
- * HeroUI Theme Customization
- * Add this to your global.css after importing @heroui/styles
- * Only includes base variables from variables.css
- * @see https://heroui.com/docs/react/getting-started/theming
- */
+@import './customComponent.css' layer(components);
 
 :root,
 .light,
@@ -88,4 +83,24 @@
   --surface-tertiary-foreground: oklch(94% 0.008 55);
   --warning: oklch(76% 0.148 68);
   --warning-foreground: oklch(14% 0.04 68);
+}
+
+@layer components {
+  .input {
+    @apply border-border border bg-transparent shadow-none;
+
+    &:hover,
+    &[data-hovered='true'] {
+      @apply border-accent! border bg-transparent!;
+    }
+
+    &:focus-visible,
+    &[data-focus-visible='true'] {
+      @apply border-accent ring-accent-soft-hover ring-2;
+    }
+
+    &[data-invalid='true'] {
+      @apply border-danger bg-danger text-danger;
+    }
+  }
 }

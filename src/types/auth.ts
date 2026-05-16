@@ -16,6 +16,8 @@ export enum SubjectName {
   Questions = 'questions',
   Users = 'users',
   Roles = 'roles',
+  Campuses = 'campus',
+  Programs = 'program',
 }
 
 export interface IRequestLogin {

@@ -1,6 +1,8 @@
 import { IoDocumentTextOutline, IoHelpCircleOutline } from 'react-icons/io5';
 import {
+  LuBookMarked,
   LuBookOpen,
+  LuBuilding2,
   LuClipboardList,
   LuLayoutDashboard,
   LuRadius,
@@ -71,5 +73,19 @@ export const MENU_LIST = [
     route: '/roles',
     icon: LuRadius,
     object: SubjectName.Roles,
+  },
+  {
+    id: 6,
+    title: 'campuses',
+    route: '/campuses',
+    icon: LuBuilding2,
+    object: SubjectName.Campuses,
+  },
+  {
+    id: 7,
+    title: 'programs',
+    route: '/programs',
+    icon: LuBookMarked,
+    object: SubjectName.Programs,
   },
 ];

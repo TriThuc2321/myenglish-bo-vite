@@ -39,4 +39,12 @@ export const REACT_QUERY_KEYS = {
     LIST: 'teacher.list',
     BY_ID: 'teacher.byId',
   },
+  CAMPUS: {
+    LIST: 'campus.list',
+    BY_ID: 'campus.byId',
+  },
+  PROGRAM: {
+    LIST: 'program.list',
+    BY_ID: 'program.byId',
+  },
 };

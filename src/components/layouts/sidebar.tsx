@@ -62,9 +62,9 @@ export default function Sidebar({
     <>
       <div
         className={cn(
-          'bg-surface md:transition-width border-border absolute -left-75 z-10 flex h-full flex-col rounded-r-3xl border-r p-2 transition-transform duration-300 max-md:max-h-[calc(100vh-32px)] lg:relative lg:left-0',
+          'bg-surface md:transition-width border-border absolute z-40 flex h-full flex-col rounded-r-3xl border-r p-2 transition-transform duration-300 max-md:-translate-x-60 lg:relative',
           {
-            'left-4': isOpen,
+            'max-md:translate-x-0': isOpen,
             'w-19': !showFullMenu,
             'w-60 min-w-60': showFullMenu,
           },
@@ -139,7 +139,7 @@ export default function Sidebar({
       <RenderIf condition={isOpen}>
         <button
           aria-label="Close menu"
-          className="absolute inset-0 z-1000 bg-white/30 backdrop-blur-sm"
+          className="absolute inset-0 z-30 bg-white/30 backdrop-blur-sm"
           tabIndex={-1}
           type="button"
           onClick={() => handleOpen(false)}

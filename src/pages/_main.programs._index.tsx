@@ -37,7 +37,7 @@ export default function ProgramsPage() {
   return (
     <div className="flex flex-col gap-6">
       <Card>
-        <Card.Header className="flex-row items-end justify-between gap-3">
+        <Card.Header className="flex-col justify-between gap-3 md:flex-row md:items-end">
           <TextField
             value={search}
             onChange={setSearch}
@@ -45,12 +45,13 @@ export default function ProgramsPage() {
           >
             <Label>{t('common.search')}</Label>
             <Input
-              className="ml-0.5 w-64"
+              className="ml-0.5 md:w-64"
               placeholder={t('programs.searchPlaceholder')}
             />
           </TextField>
 
           <MyButton
+            className="self-end"
             I={PermissionAction.Create}
             a={SubjectName.Programs}
             variant="primary"

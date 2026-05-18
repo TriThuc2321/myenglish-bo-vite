@@ -25,7 +25,7 @@ export default function MainLayout({
         initialShowFullMenu={initialShowFullMenu}
       />
 
-      <div className="bg-background flex h-full w-full flex-col gap-4 overflow-hidden rounded-xl px-6 py-5">
+      <div className="bg-background flex h-full w-full flex-col gap-4 overflow-hidden rounded-xl p-2 md:px-6 md:py-5">
         <Header onChangeOpenSidebar={onChangeOpenSidebar} />
 
         <div className="h-full overflow-y-auto">{children}</div>

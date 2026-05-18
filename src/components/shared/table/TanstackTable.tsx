@@ -32,15 +32,15 @@ function TanstackTable<T>({
   isLoading,
   emptyContent = 'No data found',
   footer,
-  maxHeight = 'calc(100vh - 260px)',
+  maxHeight,
 }: TanstackTableProps<T>) {
   const rows = table.getRowModel().rows;
 
   return (
     <div className={cn('relative flex flex-col gap-2', className)}>
       <div
-        className="overflow-auto [&_.table-root]:grid-cols-[auto] [&_.table-root]:overflow-visible [&_table]:min-w-max [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-20"
-        style={{ maxHeight }}
+        className="max-h-[calc(100vh-284px)] overflow-auto md:max-h-[calc(100vh-260px)] [&_.table-root]:grid-cols-[auto] [&_.table-root]:overflow-visible [&_table]:min-w-max [&_thead]:sticky [&_thead]:top-0 [&_thead]:z-20"
+        style={maxHeight ? { maxHeight } : undefined}
       >
         <Table variant="secondary">
           <Table.Content

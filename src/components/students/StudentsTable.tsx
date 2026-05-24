@@ -1,10 +1,10 @@
-import { AlertDialog, Button, Chip, Dropdown } from '@heroui/react';
+import { Button, Chip, Dropdown } from '@heroui/react';
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuEllipsisVertical, LuEye, LuPencil, LuTrash2 } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
@@ -16,6 +16,7 @@ import MyButton from '@/components/shared/Button';
 import FooterTable from '@/components/shared/table/FooterTable';
 import TanstackTable from '@/components/shared/table/TanstackTable';
 import { useCan } from '@/configs/casl/can.config';
+import ConfirmWrapper from '@/configs/ConfirmWrapper';
 import { useDeleteStudent } from '@/hooks/apis/students';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { formatDateTime } from '@/utils/datetime';
@@ -39,12 +40,10 @@ function StudentActionsCell({
   isDeleting,
   t,
 }: StudentActionsCellProps) {
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const ability = useCan();
 
   const handleDelete = () => {
     deleteStudent([row.original.id]);
-    setDeleteOpen(false);
   };
 
   return (
@@ -71,26 +70,35 @@ function StudentActionsCell({
         >
           <LuPencil className="size-4" />
         </MyButton>
-        <MyButton
-          I={PermissionAction.Delete}
-          a={SubjectName.Students}
-          isIconOnly
-          size="sm"
-          variant="outline"
-          isDisabled={isDeleting}
-          onPress={() => setDeleteOpen(true)}
+        <ConfirmWrapper
+          title={t('students.deleteTitle')}
+          description={t('students.deleteConfirm', {
+            name: row.original.user?.firstName ?? row.original.studentCode,
+          })}
+          onConfirm={handleDelete}
         >
-          <LuTrash2 className="text-danger size-4" />
-        </MyButton>
+          <MyButton
+            I={PermissionAction.Delete}
+            a={SubjectName.Students}
+            isIconOnly
+            size="sm"
+            variant="outline"
+            isDisabled={isDeleting}
+          >
+            <LuTrash2 className="text-danger size-4" />
+          </MyButton>
+        </ConfirmWrapper>
       </div>
 
       {/* Mobile */}
       <div className="md:hidden">
         <Dropdown>
-          <Button isIconOnly size="sm" variant="tertiary">
-            <LuEllipsisVertical className="size-4" />
-          </Button>
-          <Dropdown.Popover placement="bottom end">
+          <Dropdown.Trigger>
+            <Button isIconOnly size="sm" variant="tertiary">
+              <LuEllipsisVertical className="size-4" />
+            </Button>
+          </Dropdown.Trigger>
+          <Dropdown.Popover placement="left">
             <Dropdown.Menu aria-label={t('common.actions')}>
               {ability.can(PermissionAction.Read, SubjectName.Students) && (
                 <Dropdown.Item
@@ -122,56 +130,27 @@ function StudentActionsCell({
                   textValue={t('common.delete')}
                   className="text-danger"
                   isDisabled={isDeleting}
-                  onPress={() => setDeleteOpen(true)}
                 >
-                  <span className="flex items-center gap-2">
-                    <LuTrash2 className="size-4" />
-                    {t('common.delete')}
-                  </span>
+                  <ConfirmWrapper
+                    title={t('students.deleteTitle')}
+                    description={t('students.deleteConfirm', {
+                      name:
+                        row.original.user?.firstName ??
+                        row.original.studentCode,
+                    })}
+                    onConfirm={handleDelete}
+                  >
+                    <span className="flex items-center gap-2">
+                      <LuTrash2 className="size-4" />
+                      {t('common.delete')}
+                    </span>
+                  </ConfirmWrapper>
                 </Dropdown.Item>
               )}
             </Dropdown.Menu>
           </Dropdown.Popover>
         </Dropdown>
       </div>
-
-      <AlertDialog isOpen={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialog.Backdrop isDismissable />
-        <AlertDialog.Container size="sm">
-          <AlertDialog.Dialog>
-            <AlertDialog.Header>
-              <AlertDialog.Heading>
-                {t('students.deleteTitle')}
-              </AlertDialog.Heading>
-            </AlertDialog.Header>
-            <AlertDialog.Body>
-              <p className="text-muted text-sm">
-                {t('students.deleteConfirm', {
-                  name:
-                    row.original.user?.firstName ?? row.original.studentCode,
-                })}
-              </p>
-            </AlertDialog.Body>
-            <AlertDialog.Footer>
-              <Button
-                size="sm"
-                variant="tertiary"
-                onPress={() => setDeleteOpen(false)}
-              >
-                {t('common.cancel')}
-              </Button>
-              <Button
-                size="sm"
-                variant="danger"
-                isDisabled={isDeleting}
-                onPress={handleDelete}
-              >
-                {t('common.delete')}
-              </Button>
-            </AlertDialog.Footer>
-          </AlertDialog.Dialog>
-        </AlertDialog.Container>
-      </AlertDialog>
     </>
   );
 }

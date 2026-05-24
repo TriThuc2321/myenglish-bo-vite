@@ -1,6 +1,6 @@
 import type { SortingState } from '@tanstack/react-table';
 
-import { AlertDialog, Avatar, Button, Chip, Dropdown } from '@heroui/react';
+import { Avatar, Button, Chip, Dropdown } from '@heroui/react';
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -18,6 +18,7 @@ import MyButton from '@/components/shared/Button';
 import FooterTable from '@/components/shared/table/FooterTable';
 import TanstackTable from '@/components/shared/table/TanstackTable';
 import { useCan } from '@/configs/casl/can.config';
+import ConfirmWrapper from '@/configs/ConfirmWrapper';
 import { useDeleteUser } from '@/hooks/apis/users';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { formatDateTime } from '@/utils/datetime';
@@ -43,12 +44,10 @@ function UserActionsCell({
   isDeleting,
   t,
 }: UserActionsCellProps) {
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const ability = useCan();
 
   const handleDelete = () => {
     deleteUser([row.original.id]);
-    setDeleteOpen(false);
   };
 
   return (
@@ -75,26 +74,35 @@ function UserActionsCell({
         >
           <LuPencil className="size-4" />
         </MyButton>
-        <MyButton
-          I={PermissionAction.Delete}
-          a={SubjectName.Users}
-          isIconOnly
-          size="sm"
-          variant="outline"
-          isDisabled={isDeleting}
-          onPress={() => setDeleteOpen(true)}
+        <ConfirmWrapper
+          title={t('cmsUsers.deleteTitle')}
+          description={t('cmsUsers.deleteConfirm', {
+            name: row.original.email,
+          })}
+          onConfirm={handleDelete}
         >
-          <LuTrash2 className="text-danger size-4" />
-        </MyButton>
+          <MyButton
+            I={PermissionAction.Delete}
+            a={SubjectName.Users}
+            isIconOnly
+            size="sm"
+            variant="outline"
+            isDisabled={isDeleting}
+          >
+            <LuTrash2 className="text-danger size-4" />
+          </MyButton>
+        </ConfirmWrapper>
       </div>
 
       {/* Mobile */}
       <div className="md:hidden">
         <Dropdown>
-          <Button isIconOnly size="sm" variant="tertiary">
-            <LuEllipsisVertical className="size-4" />
-          </Button>
-          <Dropdown.Popover placement="bottom end">
+          <Dropdown.Trigger>
+            <Button isIconOnly size="sm" variant="tertiary">
+              <LuEllipsisVertical className="size-4" />
+            </Button>
+          </Dropdown.Trigger>
+          <Dropdown.Popover placement="left">
             <Dropdown.Menu aria-label={t('common.actions')}>
               {ability.can(PermissionAction.Read, SubjectName.Users) && (
                 <Dropdown.Item
@@ -126,53 +134,25 @@ function UserActionsCell({
                   textValue={t('common.delete')}
                   className="text-danger"
                   isDisabled={isDeleting}
-                  onPress={() => setDeleteOpen(true)}
                 >
-                  <span className="flex items-center gap-2">
-                    <LuTrash2 className="size-4" />
-                    {t('common.delete')}
-                  </span>
+                  <ConfirmWrapper
+                    title={t('cmsUsers.deleteTitle')}
+                    description={t('cmsUsers.deleteConfirm', {
+                      name: row.original.email,
+                    })}
+                    onConfirm={handleDelete}
+                  >
+                    <span className="flex items-center gap-2">
+                      <LuTrash2 className="size-4" />
+                      {t('common.delete')}
+                    </span>
+                  </ConfirmWrapper>
                 </Dropdown.Item>
               )}
             </Dropdown.Menu>
           </Dropdown.Popover>
         </Dropdown>
       </div>
-
-      <AlertDialog isOpen={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialog.Backdrop isDismissable />
-        <AlertDialog.Container size="sm">
-          <AlertDialog.Dialog>
-            <AlertDialog.Header>
-              <AlertDialog.Heading>
-                {t('cmsUsers.deleteTitle')}
-              </AlertDialog.Heading>
-            </AlertDialog.Header>
-            <AlertDialog.Body>
-              <p className="text-muted text-sm">
-                {t('cmsUsers.deleteConfirm', { name: row.original.email })}
-              </p>
-            </AlertDialog.Body>
-            <AlertDialog.Footer>
-              <Button
-                size="sm"
-                variant="tertiary"
-                onPress={() => setDeleteOpen(false)}
-              >
-                {t('common.cancel')}
-              </Button>
-              <Button
-                size="sm"
-                variant="danger"
-                isDisabled={isDeleting}
-                onPress={handleDelete}
-              >
-                {t('common.delete')}
-              </Button>
-            </AlertDialog.Footer>
-          </AlertDialog.Dialog>
-        </AlertDialog.Container>
-      </AlertDialog>
     </>
   );
 }

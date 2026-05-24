@@ -12,7 +12,7 @@ import logoHorizontalUrl from '@/assets/icons/logo-horizontal.svg?url';
 import logoUrl from '@/assets/icons/logo.svg?url';
 import RenderIf from '@/components/shared/RenderIf';
 import { Can } from '@/configs/casl/can.config';
-import { MENU_LIST } from '@/configs/menu';
+import { MENU_GROUPS, type IMenuGroup } from '@/configs/menu';
 import {
   SHOW_FULL_MENU_KEY,
   readShowFullMenuFromStorage,
@@ -106,18 +106,13 @@ export default function Sidebar({
         </Link>
 
         <div className="mt-2 flex h-full flex-col gap-2 overflow-y-auto py-4">
-          {MENU_LIST.map((menu) => (
-            <Can
-              I={PermissionAction.Read}
-              a={menu.object as SubjectType}
-              key={menu.id}
-            >
-              <MenuItem
-                {...menu}
-                handleOpen={handleOpen}
-                showFullMenu={showFullMenu}
-              />
-            </Can>
+          {MENU_GROUPS.map((group, groupIndex) => (
+            <MenuGroup
+              key={groupIndex}
+              group={group}
+              handleOpen={handleOpen}
+              showFullMenu={showFullMenu}
+            />
           ))}
         </div>
 
@@ -148,6 +143,51 @@ export default function Sidebar({
     </>
   );
 }
+
+const MenuGroup = ({
+  group,
+  handleOpen,
+  showFullMenu,
+}: {
+  group: IMenuGroup;
+  handleOpen: (isOpen: boolean) => void;
+  showFullMenu: boolean;
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="flex flex-col gap-1">
+      {group.label && (
+        <div
+          className={cn('flex items-center gap-2 px-2 pt-2', {
+            'justify-center': !showFullMenu,
+          })}
+        >
+          {showFullMenu ? (
+            <p className="text-content3-foreground text-[10px] font-semibold tracking-widest uppercase">
+              {t(group.label)}
+            </p>
+          ) : (
+            <div className="border-border w-full border-t" />
+          )}
+        </div>
+      )}
+      {group.items.map((menu) => (
+        <Can
+          I={PermissionAction.Read}
+          a={menu.object as SubjectType}
+          key={menu.id}
+        >
+          <MenuItem
+            {...menu}
+            handleOpen={handleOpen}
+            showFullMenu={showFullMenu}
+          />
+        </Can>
+      ))}
+    </div>
+  );
+};
 
 type ISubMenu = {
   id: number;
@@ -229,7 +269,7 @@ const MenuItem = ({
         <div
           className={cn('overflow-hidden transition-all duration-200', {
             'max-h-0 opacity-0': !isSubMenuOpen,
-            'max-h-[500px] opacity-100': isSubMenuOpen,
+            'max-h-125 opacity-100': isSubMenuOpen,
           })}
         >
           <div className="ml-4 flex flex-col gap-1 border-l-2 border-gray-200 pl-4 dark:border-gray-700">

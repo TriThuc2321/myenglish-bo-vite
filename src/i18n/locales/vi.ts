@@ -51,6 +51,12 @@ const vi = {
     campuses: 'Cơ sở',
     programs: 'Chương trình',
     levels: 'Cấp độ',
+    group: {
+      academic: 'Học vụ',
+      assessment: 'Kiểm tra',
+      hr: 'Nhân sự',
+      access: 'Truy cập',
+    },
   },
   auth: {
     login: 'Đăng nhập',

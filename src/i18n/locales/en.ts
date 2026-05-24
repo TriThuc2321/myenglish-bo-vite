@@ -51,6 +51,12 @@ const en = {
     campuses: 'Campuses',
     programs: 'Programs',
     levels: 'Levels',
+    group: {
+      academic: 'Academic',
+      assessment: 'Assessment',
+      hr: 'HR',
+      access: 'Access',
+    },
   },
   auth: {
     login: 'Login',

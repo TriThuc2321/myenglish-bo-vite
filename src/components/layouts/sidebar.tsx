@@ -258,7 +258,7 @@ const MenuItem = ({
         onClick={() => handleOpen(false)}
       >
         <Link
-          className="flex w-full items-center justify-start gap-4 py-6 font-medium"
+          className="flex w-full items-center justify-center gap-4 py-6 font-medium"
           to={navTarget}
         >
           <Icon className="text-xl" />

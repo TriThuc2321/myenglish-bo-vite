@@ -23,7 +23,7 @@ export default function ViewTeacherPage() {
         <Breadcrumbs.Item>{t('teachers.detailTitle')}</Breadcrumbs.Item>
       </Breadcrumbs>
 
-      <Card>
+      <Card className="mx-auto w-full max-w-3xl">
         <Card.Content>{id && <ViewTeacher id={id} />}</Card.Content>
       </Card>
     </div>

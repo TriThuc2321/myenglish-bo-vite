@@ -1,4 +1,5 @@
 import type { Audit, Params, Response } from './common';
+import type { LevelSummary } from './level';
 
 export enum ProgramStatus {
   ACTIVE = 'ACTIVE',
@@ -12,6 +13,7 @@ export type Program = {
   name: string;
   description?: string | null;
   status: ProgramStatus;
+  levels?: LevelSummary[];
   auditMetadata?: Audit;
 };
 

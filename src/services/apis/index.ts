@@ -10,3 +10,4 @@ export { default as teacherApi } from './teacher';
 export { default as studentApi } from './student';
 export { default as campusApi } from './campus';
 export { default as programApi } from './program';
+export { default as levelApi } from './level';

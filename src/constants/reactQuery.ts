@@ -51,4 +51,8 @@ export const REACT_QUERY_KEYS = {
     LIST: 'program.list',
     BY_ID: 'program.byId',
   },
+  LEVEL: {
+    LIST: 'level.list',
+    BY_ID: 'level.byId',
+  },
 };

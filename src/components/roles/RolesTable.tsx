@@ -1,6 +1,6 @@
 import type { SortingState } from '@tanstack/react-table';
 
-import { Chip } from '@heroui/react';
+import { AlertDialog, Button, Chip, Dropdown } from '@heroui/react';
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LuEye, LuPencil, LuTrash2 } from 'react-icons/lu';
+import { LuEllipsisVertical, LuEye, LuPencil, LuTrash2 } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
 
 import type { Role } from '@/types/role';
@@ -18,7 +18,7 @@ import AuditItem from '@/components/shared/AuditItem';
 import MyButton from '@/components/shared/Button';
 import FooterTable from '@/components/shared/table/FooterTable';
 import TanstackTable from '@/components/shared/table/TanstackTable';
-import ConfirmWrapper from '@/configs/ConfirmWrapper';
+import { useCan } from '@/configs/casl/can.config';
 import { useDeleteRole } from '@/hooks/apis/roles';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { RoleStatus } from '@/types/role';
@@ -31,6 +31,155 @@ const statusColorMap: Record<RoleStatus, 'success' | 'danger' | 'default'> = {
 };
 
 const columnHelper = createColumnHelper<Role>();
+
+type RoleActionsCellProps = {
+  row: { original: Role };
+  navigate: ReturnType<typeof useNavigate>;
+  deleteRole: (ids: number[]) => void;
+  isDeleting: boolean;
+  t: ReturnType<typeof useTranslation>['t'];
+};
+
+function RoleActionsCell({
+  row,
+  navigate,
+  deleteRole,
+  isDeleting,
+  t,
+}: RoleActionsCellProps) {
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const ability = useCan();
+
+  const handleDelete = () => {
+    deleteRole([row.original.id]);
+    setDeleteOpen(false);
+  };
+
+  return (
+    <>
+      {/* Desktop */}
+      <div className="hidden items-center gap-2 md:flex">
+        <MyButton
+          I={PermissionAction.Read}
+          a={SubjectName.Roles}
+          isIconOnly
+          size="sm"
+          variant="outline"
+          onPress={() => navigate(`/roles/${row.original.id}`)}
+        >
+          <LuEye className="size-4" />
+        </MyButton>
+        <MyButton
+          I={PermissionAction.Update}
+          a={SubjectName.Roles}
+          isIconOnly
+          size="sm"
+          variant="outline"
+          onPress={() => navigate(`/roles/${row.original.id}/edit`)}
+        >
+          <LuPencil className="size-4" />
+        </MyButton>
+        <MyButton
+          I={PermissionAction.Delete}
+          a={SubjectName.Roles}
+          isIconOnly
+          size="sm"
+          variant="outline"
+          isDisabled={isDeleting}
+          onPress={() => setDeleteOpen(true)}
+        >
+          <LuTrash2 className="text-danger size-4" />
+        </MyButton>
+      </div>
+
+      {/* Mobile */}
+      <div className="md:hidden">
+        <Dropdown>
+          <Button isIconOnly size="sm" variant="tertiary">
+            <LuEllipsisVertical className="size-4" />
+          </Button>
+          <Dropdown.Popover placement="bottom end">
+            <Dropdown.Menu aria-label={t('common.actions')}>
+              {ability.can(PermissionAction.Read, SubjectName.Roles) && (
+                <Dropdown.Item
+                  id="view"
+                  textValue={t('common.view')}
+                  onPress={() => navigate(`/roles/${row.original.id}`)}
+                >
+                  <span className="flex items-center gap-2">
+                    <LuEye className="size-4" />
+                    {t('common.view')}
+                  </span>
+                </Dropdown.Item>
+              )}
+              {ability.can(PermissionAction.Update, SubjectName.Roles) && (
+                <Dropdown.Item
+                  id="edit"
+                  textValue={t('common.edit')}
+                  onPress={() => navigate(`/roles/${row.original.id}/edit`)}
+                >
+                  <span className="flex items-center gap-2">
+                    <LuPencil className="size-4" />
+                    {t('common.edit')}
+                  </span>
+                </Dropdown.Item>
+              )}
+              {ability.can(PermissionAction.Delete, SubjectName.Roles) && (
+                <Dropdown.Item
+                  id="delete"
+                  textValue={t('common.delete')}
+                  className="text-danger"
+                  isDisabled={isDeleting}
+                  onPress={() => setDeleteOpen(true)}
+                >
+                  <span className="flex items-center gap-2">
+                    <LuTrash2 className="size-4" />
+                    {t('common.delete')}
+                  </span>
+                </Dropdown.Item>
+              )}
+            </Dropdown.Menu>
+          </Dropdown.Popover>
+        </Dropdown>
+      </div>
+
+      <AlertDialog isOpen={deleteOpen} onOpenChange={setDeleteOpen}>
+        <AlertDialog.Backdrop isDismissable />
+        <AlertDialog.Container size="sm">
+          <AlertDialog.Dialog>
+            <AlertDialog.Header>
+              <AlertDialog.Heading>
+                {t('roles.deleteTitle')}
+              </AlertDialog.Heading>
+            </AlertDialog.Header>
+            <AlertDialog.Body>
+              <p className="text-muted text-sm">
+                {t('roles.deleteConfirm', { name: row.original.name })}
+              </p>
+            </AlertDialog.Body>
+            <AlertDialog.Footer>
+              <Button
+                size="sm"
+                variant="tertiary"
+                onPress={() => setDeleteOpen(false)}
+              >
+                {t('common.cancel')}
+              </Button>
+              <Button
+                size="sm"
+                variant="danger"
+                isDisabled={isDeleting}
+                onPress={handleDelete}
+              >
+                {t('common.delete')}
+              </Button>
+            </AlertDialog.Footer>
+          </AlertDialog.Dialog>
+        </AlertDialog.Container>
+      </AlertDialog>
+    </>
+  );
+}
 
 interface RolesTableProps {
   data: Role[];
@@ -116,47 +265,13 @@ export default function RolesTable({
         id: 'actions',
         header: t('common.actions'),
         cell: ({ row }) => (
-          <div className="flex items-center gap-2">
-            <MyButton
-              I={PermissionAction.Read}
-              a={SubjectName.Roles}
-              isIconOnly
-              size="sm"
-              variant="outline"
-              onPress={() => navigate(`/roles/${row.original.id}`)}
-            >
-              <LuEye className="size-4" />
-            </MyButton>
-            <MyButton
-              I={PermissionAction.Update}
-              a={SubjectName.Roles}
-              isIconOnly
-              size="sm"
-              variant="outline"
-              onPress={() => navigate(`/roles/${row.original.id}/edit`)}
-            >
-              <LuPencil className="size-4" />
-            </MyButton>
-            <ConfirmWrapper
-              title={t('roles.deleteTitle')}
-              description={t('roles.deleteConfirm', {
-                name: row.original.name,
-              })}
-              confirmText={t('common.delete')}
-              onConfirm={() => deleteRole([row.original.id])}
-            >
-              <MyButton
-                I={PermissionAction.Delete}
-                a={SubjectName.Roles}
-                isIconOnly
-                size="sm"
-                variant="outline"
-                isDisabled={isDeleting}
-              >
-                <LuTrash2 className="text-danger size-4" />
-              </MyButton>
-            </ConfirmWrapper>
-          </div>
+          <RoleActionsCell
+            row={row}
+            navigate={navigate}
+            deleteRole={deleteRole}
+            isDeleting={isDeleting}
+            t={t}
+          />
         ),
       }),
     ],

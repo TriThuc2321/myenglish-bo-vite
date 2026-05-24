@@ -4,6 +4,7 @@ const en = {
     cancel: 'Cancel',
     confirm: 'Confirm',
     delete: 'Delete',
+    view: 'View',
     edit: 'Edit',
     create: 'Create',
     search: 'Search',

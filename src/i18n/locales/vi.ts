@@ -4,6 +4,7 @@ const vi = {
     cancel: 'Hủy',
     confirm: 'Xác nhận',
     delete: 'Xóa',
+    view: 'Xem',
     edit: 'Chỉnh sửa',
     create: 'Tạo mới',
     search: 'Tìm kiếm',

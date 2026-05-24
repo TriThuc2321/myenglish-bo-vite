@@ -66,6 +66,11 @@ const en = {
     forgotPassword: 'Forgot password?',
     loginTitle: 'Sign in to your account',
     loginButton: 'Sign in',
+    welcomeBack: 'Welcome back',
+    welcomeSubtitle:
+      'Streamline your English classes with our comprehensive management platform',
+    continueWithGoogle: 'Continue with Google',
+    loginFooter: 'Sign in to access My English management dashboard and tools',
   },
   theme: {
     light: 'Light',

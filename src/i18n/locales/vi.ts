@@ -66,6 +66,11 @@ const vi = {
     forgotPassword: 'Quên mật khẩu?',
     loginTitle: 'Đăng nhập vào tài khoản',
     loginButton: 'Đăng nhập',
+    welcomeBack: 'Chào mừng trở lại',
+    welcomeSubtitle:
+      'Quản lý lớp học tiếng Anh dễ dàng với nền tảng quản trị toàn diện của chúng tôi',
+    continueWithGoogle: 'Tiếp tục với Google',
+    loginFooter: 'Đăng nhập để truy cập bảng điều khiển quản trị My English',
   },
   theme: {
     light: 'Sáng',

@@ -1,4 +1,4 @@
-import { Button, Chip } from '@heroui/react';
+import { Button } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
 import { LuPencil } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
@@ -9,7 +9,6 @@ import { useGetCampusById } from '@/hooks/apis/campuses';
 import { PermissionAction, SubjectName } from '@/types/auth';
 
 import AuditItem from '../shared/AuditItem';
-import { statusColorMap } from './constants';
 import CampusSkeleton from './Skeleton';
 
 type ViewCampusProps = {
@@ -33,17 +32,7 @@ const ViewCampus = ({ id }: ViewCampusProps) => {
           </p>
           <p className="text-default-400 font-mono text-xs">{campus.code}</p>
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-2">
-          {campus.status && (
-            <Chip
-              color={statusColorMap[campus.status]}
-              size="sm"
-              variant="soft"
-            >
-              <Chip.Label>{campus.status}</Chip.Label>
-            </Chip>
-          )}
-        </div>
+        <div className="flex shrink-0 flex-col items-end gap-2"></div>
       </div>
 
       <InfoCard title={t('common.basicInfo')}>
@@ -55,9 +44,6 @@ const ViewCampus = ({ id }: ViewCampusProps) => {
         </DetailField>
         <DetailField label={t('campuses.form.phone')}>
           {campus.phone ?? ''}
-        </DetailField>
-        <DetailField label={t('campuses.form.status')}>
-          {campus.status ?? ''}
         </DetailField>
         <DetailField label={t('campuses.form.address')} span="full">
           {campus.address ?? ''}

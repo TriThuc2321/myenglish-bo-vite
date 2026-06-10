@@ -1,23 +1,10 @@
-import {
-  Button,
-  FieldError,
-  Input,
-  Label,
-  ListBox,
-  Select,
-  TextField,
-} from '@heroui/react';
+import { Button, FieldError, Input, Label, TextField } from '@heroui/react';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import type { CreateEditCampusFormData } from '@/schemas/campus';
 
 import Section from '@/components/shared/Section';
-import { CampusStatus } from '@/types/campus';
-
-const STATUS_ITEMS = Object.values(CampusStatus)
-  .filter((v) => v !== CampusStatus.DELETED)
-  .map((v) => ({ label: v, value: v }));
 
 type CampusFormProps = {
   form: UseFormReturn<CreateEditCampusFormData>;
@@ -96,44 +83,6 @@ const CampusForm = ({
               <Input ref={field.ref} placeholder={t('campuses.form.phone')} />
               <FieldError>{errors.phone?.message}</FieldError>
             </TextField>
-          )}
-        />
-
-        <Controller
-          name="status"
-          control={control}
-          render={({ field }) => (
-            <Select
-              placeholder={t('campuses.form.status')}
-              fullWidth
-              selectedKey={field.value}
-              onSelectionChange={(key) => {
-                if (key == null) return;
-                field.onChange(key as CampusStatus);
-              }}
-              isInvalid={!!errors.status}
-            >
-              <Label>{t('campuses.form.status')}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {STATUS_ITEMS.map((item) => (
-                    <ListBox.Item
-                      key={item.value}
-                      id={item.value}
-                      textValue={item.label}
-                    >
-                      {item.label}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-              <FieldError>{errors.status?.message}</FieldError>
-            </Select>
           )}
         />
 

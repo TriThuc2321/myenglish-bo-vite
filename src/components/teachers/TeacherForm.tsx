@@ -21,16 +21,7 @@ import type { CreateEditTeacherFormData } from '@/schemas/teacher';
 
 import Section from '@/components/shared/Section';
 import { Gender } from '@/types/common';
-import {
-  SkillArea,
-  SkillLevel,
-  SkillTargetAudience,
-  TeacherStatus,
-} from '@/types/teacher';
-
-const STATUS_ITEMS = Object.values(TeacherStatus)
-  .filter((v) => v !== TeacherStatus.DELETED)
-  .map((v) => ({ label: v, value: v }));
+import { SkillArea, SkillLevel, SkillTargetAudience } from '@/types/teacher';
 
 const TARGET_AUDIENCE_ITEMS = Object.values(SkillTargetAudience).map((v) => ({
   label: v,
@@ -129,44 +120,6 @@ const TeacherForm = ({
               />
               <FieldError>{errors.nationality?.message}</FieldError>
             </TextField>
-          )}
-        />
-
-        <Controller
-          name="status"
-          control={control}
-          render={({ field }) => (
-            <Select
-              placeholder={t('teachers.form.status')}
-              fullWidth
-              selectedKey={field.value}
-              onSelectionChange={(key) => {
-                if (key == null) return;
-                field.onChange(key as TeacherStatus);
-              }}
-              isInvalid={!!errors.status}
-            >
-              <Label>{t('teachers.form.status')}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {STATUS_ITEMS.map((item) => (
-                    <ListBox.Item
-                      key={item.value}
-                      id={item.value}
-                      textValue={item.label}
-                    >
-                      {item.label}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-              <FieldError>{errors.status?.message}</FieldError>
-            </Select>
           )}
         />
       </Section>

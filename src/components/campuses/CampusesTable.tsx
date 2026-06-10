@@ -1,4 +1,4 @@
-import { Button, Chip, Dropdown } from '@heroui/react';
+import { Button, Dropdown } from '@heroui/react';
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -19,8 +19,6 @@ import { useCan } from '@/configs/casl/can.config';
 import ConfirmWrapper from '@/configs/ConfirmWrapper';
 import { useDeleteCampus } from '@/hooks/apis/campuses';
 import { PermissionAction, SubjectName } from '@/types/auth';
-
-import { statusColorMap } from './constants';
 
 const columnHelper = createColumnHelper<Campus>();
 
@@ -188,19 +186,6 @@ export default function CampusesTable({
         enableSorting: false,
         header: t('campuses.table.phone'),
         cell: (info) => info.getValue() ?? '-',
-      }),
-      columnHelper.accessor('status', {
-        enableSorting: false,
-        header: t('campuses.table.status'),
-        cell: (info) => {
-          const value = info.getValue();
-          if (!value) return '-';
-          return (
-            <Chip color={statusColorMap[value]} size="sm" variant="soft">
-              <Chip.Label>{value}</Chip.Label>
-            </Chip>
-          );
-        },
       }),
       columnHelper.accessor('auditMetadata', {
         enableSorting: false,

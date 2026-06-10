@@ -21,15 +21,7 @@ import type { CreateEditStudentFormData } from '@/schemas/student';
 
 import Section from '@/components/shared/Section';
 import { Gender } from '@/types/common';
-import {
-  ParentRelationship,
-  StudentSegment,
-  StudentStatus,
-} from '@/types/student';
-
-const STATUS_ITEMS = Object.values(StudentStatus)
-  .filter((v) => v !== StudentStatus.DELETED)
-  .map((v) => ({ label: v, value: v }));
+import { ParentRelationship, StudentSegment } from '@/types/student';
 
 const SEGMENT_ITEMS = Object.values(StudentSegment).map((v) => ({
   label: v,
@@ -179,44 +171,6 @@ const StudentForm = ({
                 </ListBox>
               </Select.Popover>
               <FieldError>{errors.segment?.message}</FieldError>
-            </Select>
-          )}
-        />
-
-        <Controller
-          name="status"
-          control={control}
-          render={({ field }) => (
-            <Select
-              placeholder={t('students.form.status')}
-              fullWidth
-              selectedKey={field.value}
-              onSelectionChange={(key) => {
-                if (key == null) return;
-                field.onChange(key as StudentStatus);
-              }}
-              isInvalid={!!errors.status}
-            >
-              <Label>{t('students.form.status')}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {STATUS_ITEMS.map((item) => (
-                    <ListBox.Item
-                      key={item.value}
-                      id={item.value}
-                      textValue={item.label}
-                    >
-                      {item.label}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-              <FieldError>{errors.status?.message}</FieldError>
             </Select>
           )}
         />

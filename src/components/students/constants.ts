@@ -1,13 +1,4 @@
-import { StudentSegment, StudentStatus } from '@/types/student';
-
-export const statusColorMap: Record<
-  StudentStatus,
-  'success' | 'warning' | 'default'
-> = {
-  [StudentStatus.ACTIVE]: 'success',
-  [StudentStatus.INACTIVE]: 'warning',
-  [StudentStatus.DELETED]: 'default',
-};
+import { StudentSegment } from '@/types/student';
 
 export const segmentColorMap: Record<
   StudentSegment,

@@ -3,8 +3,6 @@ import {
   FieldError,
   Input,
   Label,
-  ListBox,
-  Select,
   TextArea,
   TextField,
 } from '@heroui/react';
@@ -14,11 +12,6 @@ import { useTranslation } from 'react-i18next';
 import type { CreateEditProgramFormData } from '@/schemas/program';
 
 import Section from '@/components/shared/Section';
-import { ProgramStatus } from '@/types/program';
-
-const STATUS_ITEMS = Object.values(ProgramStatus)
-  .filter((v) => v !== ProgramStatus.DELETED)
-  .map((v) => ({ label: v, value: v }));
 
 type ProgramFormProps = {
   form: UseFormReturn<CreateEditProgramFormData>;
@@ -78,45 +71,6 @@ const ProgramForm = ({
               <Input ref={field.ref} placeholder={t('programs.form.name')} />
               <FieldError>{errors.name?.message}</FieldError>
             </TextField>
-          )}
-        />
-
-        <Controller
-          name="status"
-          control={control}
-          render={({ field }) => (
-            <Select
-              placeholder={t('programs.form.status')}
-              fullWidth
-              selectedKey={field.value}
-              onSelectionChange={(key) => {
-                if (key == null) return;
-                field.onChange(key as ProgramStatus);
-              }}
-              isInvalid={!!errors.status}
-              className="col-span-2"
-            >
-              <Label>{t('programs.form.status')}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {STATUS_ITEMS.map((item) => (
-                    <ListBox.Item
-                      key={item.value}
-                      id={item.value}
-                      textValue={item.label}
-                    >
-                      {item.label}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-              <FieldError>{errors.status?.message}</FieldError>
-            </Select>
           )}
         />
 

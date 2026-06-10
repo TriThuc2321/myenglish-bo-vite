@@ -21,7 +21,7 @@ import { useDeleteStudent } from '@/hooks/apis/students';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { formatDateTime } from '@/utils/datetime';
 
-import { segmentColorMap, statusColorMap } from './constants';
+import { segmentColorMap } from './constants';
 
 const columnHelper = createColumnHelper<Student>();
 
@@ -229,19 +229,6 @@ export default function StudentsTable({
         enableSorting: false,
         header: t('students.table.dob'),
         cell: (info) => formatDateTime(info.getValue() ?? undefined),
-      }),
-      columnHelper.accessor('status', {
-        enableSorting: false,
-        header: t('students.table.status'),
-        cell: (info) => {
-          const value = info.getValue();
-          if (!value) return '-';
-          return (
-            <Chip color={statusColorMap[value]} size="sm" variant="soft">
-              <Chip.Label>{value}</Chip.Label>
-            </Chip>
-          );
-        },
       }),
       columnHelper.accessor('auditMetadata', {
         enableSorting: false,

@@ -1,4 +1,4 @@
-import { Button, Chip } from '@heroui/react';
+import { Button } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
 import { LuPencil, LuPlus } from 'react-icons/lu';
 import { useNavigate } from 'react-router';
@@ -11,7 +11,6 @@ import { useGetProgramById } from '@/hooks/apis/programs';
 import { PermissionAction, SubjectName } from '@/types/auth';
 
 import AuditItem from '../shared/AuditItem';
-import { statusColorMap } from './constants';
 import ProgramSkeleton from './Skeleton';
 
 type ViewProgramProps = {
@@ -40,17 +39,7 @@ const ViewProgram = ({ id }: ViewProgramProps) => {
           </p>
           <p className="text-default-400 font-mono text-xs">{program.code}</p>
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-2">
-          {program.status && (
-            <Chip
-              color={statusColorMap[program.status]}
-              size="sm"
-              variant="soft"
-            >
-              <Chip.Label>{program.status}</Chip.Label>
-            </Chip>
-          )}
-        </div>
+        <div className="flex shrink-0 flex-col items-end gap-2"></div>
       </div>
 
       <InfoCard title={t('common.basicInfo')}>
@@ -59,9 +48,6 @@ const ViewProgram = ({ id }: ViewProgramProps) => {
         </DetailField>
         <DetailField label={t('programs.form.name')}>
           {program.name ?? ''}
-        </DetailField>
-        <DetailField label={t('programs.form.status')}>
-          {program.status ?? ''}
         </DetailField>
         <DetailField label={t('programs.form.description')} span="full">
           {program.description ?? ''}

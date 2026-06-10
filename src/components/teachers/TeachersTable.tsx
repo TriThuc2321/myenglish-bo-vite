@@ -21,7 +21,7 @@ import { useDeleteTeacher } from '@/hooks/apis/teachers';
 import { PermissionAction, SubjectName } from '@/types/auth';
 import { formatDateTime } from '@/utils/datetime';
 
-import { skillAreaColorMap, statusColorMap } from './constants';
+import { skillAreaColorMap } from './constants';
 
 const columnHelper = createColumnHelper<Teacher>();
 
@@ -275,19 +275,6 @@ export default function TeachersTable({
         enableSorting: false,
         header: t('teachers.table.nationality'),
         cell: (info) => info.getValue() ?? '-',
-      }),
-      columnHelper.accessor('status', {
-        enableSorting: false,
-        header: t('teachers.table.status'),
-        cell: (info) => {
-          const value = info.getValue();
-          if (!value) return '-';
-          return (
-            <Chip color={statusColorMap[value]} size="sm" variant="soft">
-              <Chip.Label>{value}</Chip.Label>
-            </Chip>
-          );
-        },
       }),
       columnHelper.accessor('auditMetadata', {
         enableSorting: false,

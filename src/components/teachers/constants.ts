@@ -1,13 +1,4 @@
-import { SkillArea, TeacherStatus } from '@/types/teacher';
-
-export const statusColorMap: Record<
-  TeacherStatus,
-  'success' | 'warning' | 'default'
-> = {
-  [TeacherStatus.ACTIVE]: 'success',
-  [TeacherStatus.INACTIVE]: 'warning',
-  [TeacherStatus.DELETED]: 'default',
-};
+import { SkillArea } from '@/types/teacher';
 
 export const skillAreaColorMap: Record<
   SkillArea,

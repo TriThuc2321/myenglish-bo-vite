@@ -10,7 +10,6 @@ import { PermissionAction, SubjectName } from '@/types/auth';
 import { formatDateTime } from '@/utils/datetime';
 
 import AuditItem from '../shared/AuditItem';
-import { statusColorMap } from './constants';
 import TeacherSkeleton from './Skeleton';
 
 type ViewTeacherProps = {
@@ -61,15 +60,6 @@ const ViewTeacher = ({ id }: ViewTeacherProps) => {
           <p className="text-default-400 font-mono text-xs">{teacher.code}</p>
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
-          {teacher.status && (
-            <Chip
-              color={statusColorMap[teacher.status]}
-              size="sm"
-              variant="soft"
-            >
-              <Chip.Label>{teacher.status}</Chip.Label>
-            </Chip>
-          )}
           {teacher.nationality && (
             <Chip size="sm" variant="soft">
               <Chip.Label>{teacher.nationality}</Chip.Label>

@@ -11,7 +11,7 @@ import { StudentSegment } from '@/types/student';
 import { formatDateTime } from '@/utils/datetime';
 
 import AuditItem from '../shared/AuditItem';
-import { segmentColorMap, statusColorMap } from './constants';
+import { segmentColorMap } from './constants';
 import StudentSkeleton from './Skeleton';
 
 type ViewStudentProps = {
@@ -47,15 +47,6 @@ const ViewStudent = ({ id }: ViewStudentProps) => {
           </p>
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
-          {student.status && (
-            <Chip
-              color={statusColorMap[student.status]}
-              size="sm"
-              variant="soft"
-            >
-              <Chip.Label>{student.status}</Chip.Label>
-            </Chip>
-          )}
           {student.segment && (
             <Chip
               color={segmentColorMap[student.segment]}
@@ -77,9 +68,6 @@ const ViewStudent = ({ id }: ViewStudentProps) => {
         </DetailField>
         <DetailField label={t('students.table.entryLevel')}>
           {student.entryLevelCode ?? '-'}
-        </DetailField>
-        <DetailField label={t('students.form.status')}>
-          {student.status}
         </DetailField>
       </InfoCard>
 

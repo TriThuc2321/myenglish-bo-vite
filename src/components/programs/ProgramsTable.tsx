@@ -1,4 +1,4 @@
-import { Button, Chip, Dropdown } from '@heroui/react';
+import { Button, Dropdown } from '@heroui/react';
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -19,8 +19,6 @@ import { useCan } from '@/configs/casl/can.config';
 import ConfirmWrapper from '@/configs/ConfirmWrapper';
 import { useDeleteProgram } from '@/hooks/apis/programs';
 import { PermissionAction, SubjectName } from '@/types/auth';
-
-import { statusColorMap } from './constants';
 
 const columnHelper = createColumnHelper<Program>();
 
@@ -186,19 +184,6 @@ export default function ProgramsTable({
           const value = info.getValue();
           if (!value) return '-';
           return <span className="line-clamp-2 max-w-md text-sm">{value}</span>;
-        },
-      }),
-      columnHelper.accessor('status', {
-        enableSorting: false,
-        header: t('programs.table.status'),
-        cell: (info) => {
-          const value = info.getValue();
-          if (!value) return '-';
-          return (
-            <Chip color={statusColorMap[value]} size="sm" variant="soft">
-              <Chip.Label>{value}</Chip.Label>
-            </Chip>
-          );
         },
       }),
       columnHelper.accessor('auditMetadata', {

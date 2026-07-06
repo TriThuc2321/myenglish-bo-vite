@@ -1,15 +1,18 @@
 import { toast } from '@heroui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 import { REACT_QUERY_KEYS } from '@/constants/reactQuery';
 import { questionGroupApi } from '@/services/apis';
 
 const useEditQuestionGroup = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   return useMutation({
     mutationFn: questionGroupApi.edit,
     onSuccess: () => {
+      toast.success(t('tests.toast.groupUpdateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.QUESTION_GROUP.LIST],
       });
@@ -21,7 +24,7 @@ const useEditQuestionGroup = () => {
       });
     },
     onError: (err) => {
-      toast.danger('Edit question group failed', {
+      toast.danger(t('tests.toast.groupUpdateError'), {
         description: err.message,
       });
     },

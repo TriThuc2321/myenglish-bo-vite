@@ -1,16 +1,16 @@
-# Phase 6 — HR mở rộng (Vòng giáo viên)
+# Phase 7 — HR mở rộng (Vòng giáo viên)
 
 > Tính lương, quản lý hợp đồng giáo viên.
 
 ---
 
-## 6.1. ~~Module `teacher-availability`~~ _(đã chuyển sang Phase 2.8)_
+## 7.1. ~~Module `teacher-availability`~~ _(đã chuyển sang Phase 3.8)_
 
-> Đã đẩy lên P2 vì `slot-booking` phụ thuộc. Phase 6 chỉ còn contract / timesheet / payroll.
+> Đã đẩy lên P3 vì `slot-booking` phụ thuộc. Phase 7 chỉ còn contract / timesheet / payroll.
 
 ---
 
-## 6.2. Module `contract`
+## 7.2. Module `contract`
 
 ### Entity `TeacherContract`
 
@@ -21,7 +21,7 @@
 
 ---
 
-## 6.3. Module `timesheet`
+## 7.3. Module `timesheet`
 
 ### Entity `Timesheet`
 
@@ -35,7 +35,7 @@
 
 ---
 
-## 6.4. Module `payroll`
+## 7.4. Module `payroll`
 
 ### Entity `PayrollPeriod`
 

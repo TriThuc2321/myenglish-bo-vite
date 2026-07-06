@@ -1,15 +1,18 @@
 import { toast } from '@heroui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 import { REACT_QUERY_KEYS } from '@/constants/reactQuery';
 import { testSectionApi } from '@/services/apis';
 
 const useCreateTestSection = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   return useMutation({
     mutationFn: testSectionApi.create,
     onSuccess: () => {
+      toast.success(t('tests.toast.sectionCreateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.TEST_SECTION.LIST],
       });
@@ -18,7 +21,7 @@ const useCreateTestSection = () => {
       });
     },
     onError: (err) => {
-      toast.danger('Create test section failed', {
+      toast.danger(t('tests.toast.sectionCreateError'), {
         description: err.message,
       });
     },

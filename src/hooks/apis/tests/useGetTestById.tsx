@@ -7,6 +7,7 @@ const useGetTestById = (id: string) =>
   useQuery({
     queryKey: [REACT_QUERY_KEYS.TEST.BY_ID, id],
     queryFn: () => testApi.getById(id),
+    enabled: !!id,
   });
 
 export default useGetTestById;

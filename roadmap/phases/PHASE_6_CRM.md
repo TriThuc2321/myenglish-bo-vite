@@ -1,10 +1,10 @@
-# Phase 5 — CRM & Admission (Đầu phễu)
+# Phase 6 — CRM & Admission (Đầu phễu)
 
 > Quản lý từ lúc khách quan tâm đến lúc đóng tiền.
 
 ---
 
-## 5.1. Module `lead`
+## 6.1. Module `lead`
 
 ### Entity `Lead`
 
@@ -18,7 +18,7 @@
 
 ---
 
-## 5.2. Module `consultation`
+## 6.2. Module `consultation`
 
 ### Entity `Consultation`
 
@@ -28,13 +28,15 @@
 
 ---
 
-## 5.3. Module `placement-test`
+## 6.3. Module `placement-test` _(CRM wrapper — dùng lại engine P2)_
 
-- Reuse `test` module với `test_attempt.purpose = PLACEMENT` (§4.1 — không dùng boolean `is_placement_test` nữa).
+> Engine auto-scoring và `TestResult` đã có ở P2. P6 chỉ thêm CRM context: lưu lịch sử tư vấn, liên kết lead, snapshot level đề xuất.
+
+- Reuse `test` module với `test_attempt.purpose = PLACEMENT`.
 
 ### Entity `PlacementResult`
 
-- `test_attempt_id` (unique — 1 result / attempt)
+- `test_attempt_id` (unique — 1 result / attempt; `TestResult` đã tính band ở P2)
 - `lead_id` (nullable — placement có thể chạy cho lead hoặc student đã có)
 - `student_id` (nullable — set khi convert lead → student)
 - `recommended_level_id`
@@ -47,7 +49,7 @@
 
 ---
 
-## 5.4. Conversion funnel
+## 6.4. Conversion funnel
 
 ### Analytics endpoint
 

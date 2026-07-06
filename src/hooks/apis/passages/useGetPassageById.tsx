@@ -7,6 +7,7 @@ const useGetPassageById = (id: string) =>
   useQuery({
     queryKey: [REACT_QUERY_KEYS.PASSAGE.BY_ID, id],
     queryFn: () => passageApi.getById(id),
+    enabled: !!id,
   });
 
 export default useGetPassageById;

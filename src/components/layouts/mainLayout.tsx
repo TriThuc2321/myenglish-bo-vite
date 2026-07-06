@@ -28,7 +28,7 @@ export default function MainLayout({
       <div className="bg-background flex h-full w-full flex-col gap-4 overflow-hidden rounded-xl p-2 md:px-6 md:py-5">
         <Header onChangeOpenSidebar={onChangeOpenSidebar} />
 
-        <div className="h-full overflow-y-auto">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
       </div>
     </div>
   );

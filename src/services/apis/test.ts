@@ -2,7 +2,7 @@ import type { Message } from '@/types/common';
 import type {
   CreateTestPayload,
   EditTestPayload,
-  GetTestParams,
+  GetTestsParams,
   GetTestsResponse,
   Test,
 } from '@/types/test';
@@ -10,7 +10,7 @@ import type {
 import axiosInstance from '@/services/axios-instance';
 
 const testApi = {
-  getAll: (params: GetTestParams): Promise<GetTestsResponse> =>
+  getAll: (params: GetTestsParams): Promise<GetTestsResponse> =>
     axiosInstance.get('/tests', { params }),
   getById: (id: string): Promise<Test> => axiosInstance.get(`/tests/${id}`),
   create: (payload: CreateTestPayload): Promise<Test> =>

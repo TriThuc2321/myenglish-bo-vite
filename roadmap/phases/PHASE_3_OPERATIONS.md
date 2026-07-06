@@ -1,10 +1,12 @@
-# Phase 2 — Operations (Vận hành lớp)
+# Phase 3 — Operations (Vận hành lớp)
 
 > **Mục tiêu**: Một khoá học chạy được trọn vẹn trên hệ thống. Bao gồm requirement đặc thù Online 1:1 (§4 DATA_CENTER) và homework (§5).
+>
+> **Pre-condition**: `suggested_level` từ P2 (IELTS Test Flow) để xếp lớp; `campus`, `course`, `enrollment` skeleton từ P1.
 
 ---
 
-## 2.1. Module `room`
+## 3.1. Module `room`
 
 ### Entity `Room`
 
@@ -16,7 +18,7 @@
 
 ---
 
-## 2.2. Module `class`
+## 3.2. Module `class`
 
 ### Entity `Class`
 
@@ -34,10 +36,11 @@
 ### Business rule
 
 - **Capacity check**: từ chối enrollment khi `current_enrollment_count >= max_students`. Override yêu cầu permission `class.over_capacity`.
+- **Xếp lớp**: ưu tiên khớp `suggested_level_id` từ `TestResult` (P2.5) với `class.course.level_id`.
 
 ---
 
-## 2.3. Module `schedule`
+## 3.3. Module `schedule`
 
 ### Entity `ClassSession`
 
@@ -60,14 +63,14 @@
 
 ---
 
-## 2.4. Module `enrollment` _(mở rộng từ skeleton P1.2)_
+## 3.4. Module `enrollment` _(mở rộng từ skeleton P1.2)_
 
 ### Entity `Enrollment` (extend từ P1.2)
 
 > 1 student có thể học song song nhiều skill IELTS — §3.5 + §8.1.
 
 - `student_id`, `course_id` (từ P1)
-- `class_id` (thêm ở P2 — nullable cho PENDING/RESERVED)
+- `class_id` (thêm ở P3 — nullable cho PENDING/RESERVED)
 - `enrolled_at`, `start_date`, `end_date`
 - `status`: `PENDING | RESERVED | ACTIVE | TRANSFERRED | DEFERRED | DROPPED | COMPLETED`
 - `target_outcome`, `commitment_policy_code`, `is_retake` (từ P1)
@@ -88,7 +91,7 @@
 
 ---
 
-## 2.5. Module `attendance`
+## 3.5. Module `attendance`
 
 ### Entity `Attendance`
 
@@ -102,7 +105,7 @@
 
 ---
 
-## 2.6. Module `make-up-class`
+## 3.6. Module `make-up-class`
 
 ### Entity `MakeUp`
 
@@ -114,7 +117,7 @@
 
 ---
 
-## 2.7. Module `homework` _(bổ sung từ §5 DATA_CENTER)_
+## 3.7. Module `homework` _(bổ sung từ §5 DATA_CENTER)_
 
 ### Entity `Homework`
 
@@ -130,7 +133,7 @@
 
 ---
 
-## 2.8. Module `teacher-availability` _(kéo lên từ P6 vì slot-booking phụ thuộc)_
+## 3.8. Module `teacher-availability` _(kéo lên từ P7 vì slot-booking phụ thuộc)_
 
 ### Entity `TeacherAvailability`
 
@@ -138,17 +141,17 @@
 - `weekday` HOẶC `specific_date`
 - `start_time`, `end_time`, `is_recurring`
 
-> Trước đây ở P6.1. Đẩy lên P2 vì `slot-booking` (2.9) không thể chạy nếu thiếu availability. P6 sẽ chỉ còn contract/timesheet/payroll.
+> Trước đây ở P7.1. Đẩy lên P3 vì `slot-booking` (3.9) không thể chạy nếu thiếu availability. P7 sẽ chỉ còn contract/timesheet/payroll.
 
 ---
 
-## 2.9. Module `slot-booking` _(cho Online 1:1 — §4)_
+## 3.9. Module `slot-booking` _(cho Online 1:1 — §4)_
 
 ### Entity `SlotBooking`
 
 - `teacher_id`, `enrollment_id` (bắt buộc — không booking tự do, phải gắn enrollment đã đóng tiền)
 - `start_at`, `end_at`, `status`, `meeting_url`
-- Tiêu thụ slot từ `teacher-availability` (2.8) — validate không trùng + nằm trong availability window.
+- Tiêu thụ slot từ `teacher-availability` (3.8) — validate không trùng + nằm trong availability window.
 
 ---
 

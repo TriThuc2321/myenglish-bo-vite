@@ -1,20 +1,20 @@
-# Phase 4 — Bridge Assessment (Gắn ngân hàng đề vào lớp)
+# Phase 5 — Bridge Assessment (Gắn ngân hàng đề vào lớp)
 
-> Tận dụng module `test` đã có, **không xây lại** — chỉ thêm bridge entity.
+> Tận dụng module `test` đã có và engine thi IELTS từ P2, **không xây lại** — chỉ thêm bridge entity để gắn vào lớp học thật (P3) và hoàn thiện grading rubric cho Speaking/Writing.
 
 ---
 
-## 4.1. Liên kết `test-attempt` ↔ `enrollment`
+## 5.1. Liên kết `test-attempt` ↔ `enrollment`
 
 - Thêm cột `enrollment_id` (nullable) và `class_session_id` (nullable) vào `test_attempt`.
-- Migration backfill: attempt cũ giữ null.
-- Thêm cột `purpose`: enum `PLACEMENT | PROGRESS | MIDTERM | FINAL | PRACTICE` (§8.5) — thay cho `is_placement_test` boolean để tránh trùng lặp khái niệm với `PlacementResult` ở P5.
-  - Khi `purpose = PLACEMENT` → `enrollment_id` luôn null; output ghi nhận ở `PlacementResult` (P5.3).
+- Migration backfill: attempt cũ (từ P2) giữ null.
+- `purpose` enum đã có từ P2: `PLACEMENT | PRACTICE | MIDTERM | FINAL | PROGRESS`.
+  - Khi `purpose = PLACEMENT` → `enrollment_id` luôn null; output ghi nhận ở `PlacementResult` (P6.3).
   - Khi `purpose ∈ {MIDTERM, FINAL, PROGRESS}` → bắt buộc `enrollment_id`.
 
 ---
 
-## 4.2. Module `exam-session`
+## 5.2. Module `exam-session`
 
 ### Entity `ExamSession`
 
@@ -29,7 +29,9 @@
 
 ---
 
-## 4.3. Module `grading-rubric`
+## 5.3. Module `grading-rubric`
+
+> Bổ sung cho Writing/Speaking stub từ P2 — P2 lưu nội dung; P5 thêm rubric để chấm theo tiêu chí chuẩn IELTS.
 
 ### Entity `Rubric`
 
@@ -59,23 +61,7 @@
 
 ---
 
-## 4.5. Commitment evaluation engine _(mới — phục vụ USP "cam kết đầu ra")_
-
-### Logic
-
-- Mỗi `Enrollment.target_outcome` chạy đối chiếu với `ReportCard` cuối khóa.
-- Output: `met | not_met | partially_met`.
-- Trigger `RetakePolicy` (link `commitment_policy_code` từ P1.2) — auto tạo enrollment retake hoặc đề xuất refund (P3.5).
-
-### Entity `CommitmentEvaluation`
-
-- `enrollment_id`, `report_card_id`
-- `result`, `decided_action`: `RETAKE_FREE | PARTIAL_REFUND | NONE`
-- `decided_by`, `decided_at`
-
----
-
-## 4.4. Module `report-card`
+## 5.4. Module `report-card`
 
 ### Entity `ReportCard`
 
@@ -87,11 +73,28 @@
 ### Endpoint
 
 - PDF export.
-- Trigger email/notification cho parent (thật sự gửi ở Phase 7).
+- Trigger email/notification cho parent (thật sự gửi ở Phase 8).
+
+---
+
+## 5.5. Commitment evaluation engine _(phục vụ USP "cam kết đầu ra")_
+
+### Logic
+
+- Mỗi `Enrollment.target_outcome` chạy đối chiếu với `ReportCard` cuối khóa.
+- Output: `met | not_met | partially_met`.
+- Trigger `RetakePolicy` (link `commitment_policy_code` từ P1.2) — auto tạo enrollment retake hoặc đề xuất refund (P4.5).
+
+### Entity `CommitmentEvaluation`
+
+- `enrollment_id`, `report_card_id`
+- `result`, `decided_action`: `RETAKE_FREE | PARTIAL_REFUND | NONE`
+- `decided_by`, `decided_at`
 
 ---
 
 ## Deliverable
 
 - Học viên thi xong có điểm theo rubric chuẩn IELTS/Cambridge.
-- Phụ huynh nhận report card (gửi tay phase này, auto Phase 7).
+- Phụ huynh nhận report card (gửi tay phase này, auto Phase 8).
+- Hệ thống tự đánh giá cam kết đầu ra + trigger retake / refund.

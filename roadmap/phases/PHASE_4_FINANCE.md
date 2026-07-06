@@ -1,10 +1,10 @@
-# Phase 3 — Finance (Dòng tiền)
+# Phase 4 — Finance (Dòng tiền)
 
 > **Pre-condition**: đóng open questions về học phí, chính sách giảm giá, hoàn tiền, kênh thanh toán (§9 DATA_CENTER).
 
 ---
 
-## 3.1. Module `tuition`
+## 4.1. Module `tuition`
 
 ### Entity `TuitionPlan` (hỗ trợ 2 mô hình — §8.6)
 
@@ -15,7 +15,7 @@
 
 ---
 
-## 3.2. Module `invoice`
+## 4.2. Module `invoice`
 
 ### Entity `Invoice`
 
@@ -43,7 +43,7 @@
 
 ---
 
-## 3.3. Module `payment`
+## 4.3. Module `payment`
 
 ### Entity `Payment`
 
@@ -57,7 +57,7 @@
 
 ---
 
-## 3.4. Module `discount` / `voucher`
+## 4.4. Module `discount` / `voucher`
 
 ### Entity `Voucher`
 
@@ -72,7 +72,7 @@
 
 ---
 
-## 3.5. Module `refund`
+## 4.5. Module `refund`
 
 ### Entity `Refund`
 
@@ -81,19 +81,21 @@
 - `processed_at`, `processed_by`
 - `policy_applied` (link tới chính sách hoàn tiền — cần input nghiệp vụ)
 
+> Refund có thể được trigger bởi `commitment-evaluation` engine ở P5.
+
 ---
 
-## 3.6. Báo cáo cơ bản
+## 4.6. Báo cáo cơ bản
 
 - Doanh thu theo period / course / **campus_id** (đã có FK Campus từ P1).
 - Công nợ học viên (balance > 0).
-- Phân bổ doanh thu accrual (nếu chọn — §3.2).
+- Phân bổ doanh thu accrual (nếu chọn — §4.2).
 
 ---
 
-## 3.7. Audit log bật từ phase này
+## 4.7. Audit log bật từ phase này
 
-- Subscriber TypeORM cho `Invoice`, `Payment`, `Refund`, `VoucherRedemption`, `Enrollment` ghi `before/after` vào bảng `audit_log` (entity chính thức ra ở P7.6, nhưng bảng + subscriber tạo từ P3).
+- Subscriber TypeORM cho `Invoice`, `Payment`, `Refund`, `VoucherRedemption`, `Enrollment` ghi `before/after` vào bảng `audit_log` (entity chính thức ra ở P8.6, nhưng bảng + subscriber tạo từ P4).
 
 ---
 

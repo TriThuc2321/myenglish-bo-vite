@@ -414,6 +414,8 @@ const en = {
       save: 'Save',
       saving: 'Saving…',
       saved: 'Saved',
+      publish: 'Publish',
+      unpublish: 'Unpublish',
       rail: {
         title: 'Sections',
         section: 'Section {{order}}',

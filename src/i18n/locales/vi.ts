@@ -414,6 +414,8 @@ const vi = {
       save: 'Lưu',
       saving: 'Đang lưu…',
       saved: 'Đã lưu',
+      publish: 'Xuất bản',
+      unpublish: 'Hủy xuất bản',
       rail: {
         title: 'Các phần',
         section: 'Phần {{order}}',

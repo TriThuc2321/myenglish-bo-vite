@@ -15,7 +15,7 @@ export const createEditTestSchema = yup.object().shape({
   publishStatus: yup
     .mixed<PublishStatus>()
     .oneOf(Object.values(PublishStatus))
-    .required(VALIDATION_MESSAGE.REQUIRED),
+    .default(PublishStatus.DRAFT),
 });
 
 export type CreateEditTestFormData = {
@@ -26,5 +26,5 @@ export type CreateEditTestFormData = {
   band?: string;
   durationMin?: number;
   totalQuestions?: number;
-  publishStatus: PublishStatus;
+  publishStatus?: PublishStatus;
 };

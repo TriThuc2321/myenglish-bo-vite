@@ -28,6 +28,7 @@ const TopBar = ({ id, test, totalQuestions, sectionCount }: TopBarProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { mutateAsync: editTest, isPending: isSaving } = useEditTest();
+  const { mutateAsync: toggleStatus, isPending: isToggling } = useEditTest();
 
   const form = useCreateEditTestForm({
     defaultValues: {
@@ -61,6 +62,18 @@ const TopBar = ({ id, test, totalQuestions, sectionCount }: TopBarProps) => {
   };
 
   const publishStatus = test?.publishStatus ?? PublishStatus.DRAFT;
+
+  const handleTogglePublish = async () => {
+    const next =
+      publishStatus === PublishStatus.PUBLISHED
+        ? PublishStatus.DRAFT
+        : PublishStatus.PUBLISHED;
+    try {
+      await toggleStatus({ id, publishStatus: next });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <form
@@ -135,6 +148,22 @@ const TopBar = ({ id, test, totalQuestions, sectionCount }: TopBarProps) => {
         >
           <Chip.Label>{publishStatus}</Chip.Label>
         </Chip>
+
+        <MyButton
+          I={PermissionAction.Update}
+          a={SubjectName.Tests}
+          type="button"
+          size="sm"
+          variant={
+            publishStatus === PublishStatus.DRAFT ? 'outline' : 'danger-soft'
+          }
+          isPending={isToggling}
+          onPress={handleTogglePublish}
+        >
+          {publishStatus === PublishStatus.DRAFT
+            ? t('tests.builder.publish')
+            : t('tests.builder.unpublish')}
+        </MyButton>
 
         <MyButton
           I={PermissionAction.Update}

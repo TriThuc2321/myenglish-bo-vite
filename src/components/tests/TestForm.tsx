@@ -13,14 +13,9 @@ import { useTranslation } from 'react-i18next';
 import type { CreateEditTestFormData } from '@/schemas/test';
 
 import Section from '@/components/shared/Section';
-import { IELTSSkill, PublishStatus, TestType } from '@/types/test';
+import { IELTSSkill } from '@/types/test';
 
 const SKILL_ITEMS = Object.values(IELTSSkill).map((v) => ({
-  label: v,
-  value: v,
-}));
-const TYPE_ITEMS = Object.values(TestType).map((v) => ({ label: v, value: v }));
-const PUBLISH_STATUS_ITEMS = Object.values(PublishStatus).map((v) => ({
   label: v,
   value: v,
 }));
@@ -88,44 +83,6 @@ const TestForm = ({
         />
 
         <Controller
-          name="publishStatus"
-          control={control}
-          render={({ field }) => (
-            <Select
-              placeholder={t('tests.form.publishStatus')}
-              fullWidth
-              selectedKey={field.value ?? null}
-              onSelectionChange={(key) => {
-                if (key == null) return;
-                field.onChange(key as PublishStatus);
-              }}
-              isInvalid={!!errors.publishStatus}
-            >
-              <Label>{t('tests.form.publishStatus')}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {PUBLISH_STATUS_ITEMS.map((item) => (
-                    <ListBox.Item
-                      key={item.value}
-                      id={item.value}
-                      textValue={item.label}
-                    >
-                      {item.label}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-              <FieldError>{errors.publishStatus?.message}</FieldError>
-            </Select>
-          )}
-        />
-
-        <Controller
           name="skill"
           control={control}
           render={({ field }) => (
@@ -155,58 +112,6 @@ const TestForm = ({
                 </ListBox>
               </Select.Popover>
             </Select>
-          )}
-        />
-
-        <Controller
-          name="type"
-          control={control}
-          render={({ field }) => (
-            <Select
-              placeholder={t('tests.form.type')}
-              fullWidth
-              selectedKey={field.value ?? null}
-              onSelectionChange={(key) => field.onChange(key ?? undefined)}
-            >
-              <Label>{t('tests.form.type')}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {TYPE_ITEMS.map((item) => (
-                    <ListBox.Item
-                      key={item.value}
-                      id={item.value}
-                      textValue={item.label}
-                    >
-                      {item.label}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-            </Select>
-          )}
-        />
-
-        <Controller
-          name="band"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              fullWidth
-              name={field.name}
-              value={field.value ?? ''}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              isInvalid={!!errors.band}
-            >
-              <Label>{t('tests.form.band')}</Label>
-              <Input ref={field.ref} placeholder="e.g. 5.0–7.5" />
-              <FieldError>{errors.band?.message}</FieldError>
-            </TextField>
           )}
         />
       </Section>

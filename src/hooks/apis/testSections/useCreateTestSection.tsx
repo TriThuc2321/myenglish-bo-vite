@@ -12,7 +12,6 @@ const useCreateTestSection = () => {
   return useMutation({
     mutationFn: testSectionApi.create,
     onSuccess: () => {
-      toast.success(t('tests.toast.sectionCreateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.TEST_SECTION.LIST],
       });

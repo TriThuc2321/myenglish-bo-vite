@@ -12,7 +12,6 @@ const useCreateQuestionGroup = () => {
   return useMutation({
     mutationFn: questionGroupApi.create,
     onSuccess: () => {
-      toast.success(t('tests.toast.groupCreateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [REACT_QUERY_KEYS.QUESTION_GROUP.LIST],
       });

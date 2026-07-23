@@ -8,6 +8,8 @@ import MyButton from '@/components/shared/Button';
 import ConfirmWrapper from '@/configs/ConfirmWrapper';
 import { PermissionAction, SubjectName } from '@/types/auth';
 
+import { getGroupQuestionCount } from './utils';
+
 type GroupRowProps = {
   group: QuestionGroup;
   index: number;
@@ -28,7 +30,7 @@ const GroupRow = ({
   isDeleting,
 }: GroupRowProps) => {
   const { t } = useTranslation();
-  const count = group.questions?.length ?? 0;
+  const count = getGroupQuestionCount(group);
 
   return (
     <div

@@ -4,7 +4,11 @@ import { LuCheck, LuPlus, LuX } from 'react-icons/lu';
 
 import type { McqOption } from '@/types/test';
 
-import { MAX_MCQ_OPTIONS, MIN_MCQ_OPTIONS } from '../../constants';
+import {
+  MAX_MCQ_OPTIONS,
+  MAX_MULTIPLE_ANSWER_OPTIONS,
+  MIN_MCQ_OPTIONS,
+} from '../../constants';
 
 type McqContent = {
   text: string;
@@ -28,6 +32,7 @@ const relabel = (options: McqOption[]) =>
 const McqForm = ({ content, isMultiple, onChange }: McqFormProps) => {
   const { t } = useTranslation();
   const options = content.options ?? [];
+  const maxOptions = isMultiple ? MAX_MULTIPLE_ANSWER_OPTIONS : MAX_MCQ_OPTIONS;
 
   const isCorrect = (optionId: string) =>
     isMultiple
@@ -75,7 +80,7 @@ const McqForm = ({ content, isMultiple, onChange }: McqFormProps) => {
   };
 
   const addOption = () => {
-    if (options.length >= MAX_MCQ_OPTIONS) return;
+    if (options.length >= maxOptions) return;
     onChange({
       ...content,
       options: relabel([
@@ -149,7 +154,7 @@ const McqForm = ({ content, isMultiple, onChange }: McqFormProps) => {
           </div>
         ))}
 
-        {options.length < MAX_MCQ_OPTIONS && (
+        {options.length < maxOptions && (
           <Button
             size="sm"
             variant="ghost"

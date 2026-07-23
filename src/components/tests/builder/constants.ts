@@ -22,4 +22,5 @@ export const MAX_WORDS_OPTIONS: MaxWords[] = [
 ];
 
 export const MAX_MCQ_OPTIONS = 6;
+export const MAX_MULTIPLE_ANSWER_OPTIONS = 10;
 export const MIN_MCQ_OPTIONS = 2;

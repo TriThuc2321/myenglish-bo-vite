@@ -204,7 +204,6 @@ const TestBuilder = ({ id }: TestBuilderProps) => {
             uuid: question.uuid,
             order: 0,
             content: question.content as Record<string, any>,
-            questionNumber: numbering.total + 1,
           },
         ],
       },

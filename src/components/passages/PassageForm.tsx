@@ -21,6 +21,8 @@ type PassageFormProps = {
   form: UseFormReturn<CreateEditPassageFormData>;
   onSubmit: (data: CreateEditPassageFormData) => void;
   isSubmitting?: boolean;
+  onStatusChange?: (status: Status) => Promise<unknown>;
+  isStatusSubmitting?: boolean;
   onCancel?: () => void;
 };
 
@@ -28,14 +30,11 @@ const PassageForm = ({
   form,
   onSubmit,
   isSubmitting,
+  onStatusChange,
+  isStatusSubmitting,
   onCancel,
 }: PassageFormProps) => {
   const { t } = useTranslation();
-
-  const statusItems = [
-    { label: t('common.active'), value: Status.PUBLISHED },
-    { label: t('common.inactive'), value: Status.DRAFT },
-  ];
 
   const markedByItems = [
     { label: t('passages.form.markedBy.alphabet'), value: MarkedBy.ALPHABET },
@@ -75,27 +74,7 @@ const PassageForm = ({
             </TextField>
           )}
         />
-        <Controller
-          name="subtitle"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              fullWidth
-              name={field.name}
-              value={field.value ?? ''}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              isInvalid={!!errors.subtitle}
-            >
-              <Label>{t('passages.form.subtitle')}</Label>
-              <Input
-                ref={field.ref}
-                placeholder={t('passages.form.subtitle')}
-              />
-              <FieldError>{errors.subtitle?.message}</FieldError>
-            </TextField>
-          )}
-        />
+
         <Controller
           name="markedBy"
           control={control}
@@ -133,41 +112,27 @@ const PassageForm = ({
             </Select>
           )}
         />
+
         <Controller
-          name="status"
+          name="subtitle"
           control={control}
           render={({ field }) => (
-            <Select
-              placeholder={t('passages.form.status')}
+            <TextField
               fullWidth
-              selectedKey={field.value}
-              onSelectionChange={(key) => {
-                if (key == null) return;
-                field.onChange(key as Status);
-              }}
-              isInvalid={!!errors.status}
+              name={field.name}
+              value={field.value ?? ''}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              isInvalid={!!errors.subtitle}
+              className="col-span-2"
             >
-              <Label>{t('passages.form.status')}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {statusItems.map((item) => (
-                    <ListBox.Item
-                      key={item.value}
-                      id={item.value}
-                      textValue={item.label}
-                    >
-                      {item.label}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-              <FieldError>{errors.status?.message}</FieldError>
-            </Select>
+              <Label>{t('passages.form.subtitle')}</Label>
+              <Input
+                ref={field.ref}
+                placeholder={t('passages.form.subtitle')}
+              />
+              <FieldError>{errors.subtitle?.message}</FieldError>
+            </TextField>
           )}
         />
       </Section>
@@ -198,7 +163,7 @@ const PassageForm = ({
                   onBlur={f.onBlur}
                   isInvalid={!!errors.paragraphs?.[index]?.content}
                 >
-                  <TextArea ref={f.ref} rows={5} />
+                  <TextArea ref={f.ref} rows={8} />
                   <FieldError>
                     {errors.paragraphs?.[index]?.content?.message}
                   </FieldError>
@@ -225,7 +190,47 @@ const PassageForm = ({
             {t('common.cancel')}
           </Button>
         )}
-        <Button type="submit" variant="primary" isPending={isSubmitting}>
+        {onStatusChange && (
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => {
+              const nextStatus =
+                field.value === Status.PUBLISHED
+                  ? Status.DRAFT
+                  : Status.PUBLISHED;
+
+              return (
+                <Button
+                  type="button"
+                  variant={
+                    field.value === Status.PUBLISHED ? 'danger-soft' : 'outline'
+                  }
+                  isPending={isStatusSubmitting}
+                  isDisabled={isSubmitting}
+                  onPress={async () => {
+                    try {
+                      await onStatusChange(nextStatus);
+                      field.onChange(nextStatus);
+                    } catch (error) {
+                      console.error(error);
+                    }
+                  }}
+                >
+                  {field.value === Status.PUBLISHED
+                    ? t('passages.form.unpublish')
+                    : t('passages.form.publish')}
+                </Button>
+              );
+            }}
+          />
+        )}
+        <Button
+          type="submit"
+          variant="primary"
+          isPending={isSubmitting}
+          isDisabled={isStatusSubmitting}
+        >
           {t('common.save')}
         </Button>
       </div>

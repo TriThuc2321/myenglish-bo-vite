@@ -118,6 +118,7 @@ export type Question<C = QuestionContent> = {
   uuid: string;
   order: number;
   content: C;
+  /** Inclusive range start; MULTIPLE_ANSWER spans one number per correct option. */
   questionNumber?: number;
   id?: string;
   questionGroupId?: string;
@@ -246,7 +247,6 @@ export type CreateQuestionPayload = {
   uuid: string;
   order: number;
   content: Record<string, any>;
-  questionNumber?: number;
 };
 
 export type CreateQuestionGroupPayload = {

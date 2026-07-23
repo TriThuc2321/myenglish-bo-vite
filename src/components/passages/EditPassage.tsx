@@ -17,6 +17,8 @@ type EditPassageProps = {
 const EditPassage = ({ id }: EditPassageProps) => {
   const navigate = useNavigate();
   const { mutateAsync: editPassage, isPending: isEditing } = useEditPassage();
+  const { mutateAsync: updatePassageStatus, isPending: isUpdatingStatus } =
+    useEditPassage();
 
   const { data: passageData, isLoading } = useGetPassageById(id);
 
@@ -61,6 +63,8 @@ const EditPassage = ({ id }: EditPassageProps) => {
       form={form}
       onSubmit={onSubmit}
       isSubmitting={isEditing}
+      onStatusChange={(status) => updatePassageStatus({ id, status })}
+      isStatusSubmitting={isUpdatingStatus}
       onCancel={() => navigate('/passages')}
     />
   );

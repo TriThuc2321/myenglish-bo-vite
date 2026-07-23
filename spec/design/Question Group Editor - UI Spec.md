@@ -120,7 +120,7 @@ Column, full height; scrollable body + sticky footer.
 
 ### 4.3 Per-type sub-forms
 
-- **MCQForm** (`SINGLE_ANSWER` / `MULTIPLE_ANSWER`) — question text; option rows A–F (**2–6**, add relabels sequentially). Tap the leading control to mark correct: a **circle** (radio, single) or **rounded square** (checkbox, multi). Removing an option prunes any answer refs.
+- **MCQForm** (`SINGLE_ANSWER` / `MULTIPLE_ANSWER`) — question text; single-answer option rows A–F (**2–6**) and multiple-answer option rows A–J (**2–10**), relabelled sequentially. Tap the leading control to mark correct: a **circle** (radio, single) or **rounded square** (checkbox, multi). Removing an option prunes any answer refs.
 - **TFNForm** (`TFN_ANSWER` / `YNN_ANSWER`) — statement textarea + `SegChoice` (TRUE/FALSE/NOT GIVEN or YES/NO/NOT GIVEN).
 - **MatchingForm** — statement + paragraph `<Select>` built from the linked passage's paragraph letters; shows "Link a passage to populate labels" when none.
 - **NoteHintForm** — before/after text, `maxWords` hint select, correct word `<Select>` (from the word bank) + a **live gap preview** (`before [answer] after`).
@@ -187,7 +187,7 @@ Question group editor
 - [ ] `dirty` propagates via `onDirty` and drives the builder's unsaved-changes guard.
 - [ ] Type change confirms, clears questions, and rebuilds correctly (and does not silently drop reusable assets without warning).
 - [ ] Each of the 8 types renders its correct sub-form and produces the documented `content` / `correctAnswer` shapes.
-- [ ] MCQ options are 2–6, relabel on add/remove, and prune answer refs on removal.
+- [ ] MCQ options are 2–6 for single answer and 2–10 for multiple answer, relabel on add/remove, and prune answer refs on removal.
 - [ ] Note-with-hint requires a non-empty word bank; the gap preview reflects the chosen word.
 - [ ] Matching cannot be saved with a null `paragraphLabel` (fix §5.1); missing passage is surfaced.
 - [ ] Diagram: ≥1 label, every label has number + answer; positioned markers place and render.

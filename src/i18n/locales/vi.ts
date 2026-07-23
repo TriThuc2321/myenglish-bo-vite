@@ -114,6 +114,8 @@ const vi = {
         none: 'Không',
       },
       status: 'Trạng thái',
+      publish: 'Xuất bản',
+      unpublish: 'Hủy xuất bản',
       paragraphs: 'Các đoạn văn',
       addParagraph: 'Thêm Đoạn Văn',
     },
@@ -493,6 +495,7 @@ const vi = {
         passageWarning:
           'Liên kết đoạn văn với phần này để tạo danh sách nhãn đoạn.',
         question: 'C{{number}}',
+        questionRange: 'C{{from}}–C{{to}}',
         addQuestion: 'Thêm câu',
         removeQuestion: 'Xóa',
         explanation: 'Giải thích',

@@ -24,6 +24,7 @@ import { QuestionType } from '@/types/test';
 import { QUESTION_TYPES } from '../constants';
 import {
   defaultQuestion,
+  getQuestionRanges,
   isQuestionValid,
   paragraphLabels,
   toEditPayload,
@@ -186,6 +187,15 @@ const QuestionGroupEditor = ({
   const wordBankOK = !isNoteHint || wordBank.length > 0;
   const isValid =
     draft.questions.length > 0 && invalidIndexes.length === 0 && wordBankOK;
+  const questionRanges = getQuestionRanges(
+    draft.questionType,
+    draft.questions,
+    startNumber,
+  );
+  const questionCount = questionRanges.reduce(
+    (total, range) => total + range.count,
+    0,
+  );
 
   const handleSave = () => {
     const stamped = isNoteHint
@@ -198,7 +208,7 @@ const QuestionGroupEditor = ({
         }
       : draft;
 
-    editGroup(toEditPayload(stamped as unknown as QuestionGroup, startNumber), {
+    editGroup(toEditPayload(stamped as unknown as QuestionGroup), {
       onSuccess: () => {
         setDirty(false);
         onDirty(false);
@@ -356,8 +366,7 @@ const QuestionGroupEditor = ({
         <div className="bg-default-200 h-px" />
 
         <QuestionTabs
-          count={draft.questions.length}
-          startNumber={startNumber}
+          ranges={questionRanges}
           activeIndex={activeIndex}
           invalidIndexes={invalidIndexes}
           onSelect={setActiveIndex}
@@ -369,9 +378,14 @@ const QuestionGroupEditor = ({
             <div className="flex items-center justify-between">
               <Chip size="sm" variant="soft" color="accent">
                 <Chip.Label className="font-mono">
-                  {t('tests.builder.editor.question', {
-                    number: startNumber + activeIndex,
-                  })}
+                  {questionRanges[activeIndex]?.count > 1
+                    ? t('tests.builder.editor.questionRange', {
+                        from: questionRanges[activeIndex].start,
+                        to: questionRanges[activeIndex].end,
+                      })
+                    : t('tests.builder.editor.question', {
+                        number: questionRanges[activeIndex]?.start,
+                      })}
                 </Chip.Label>
               </Chip>
               <Button
@@ -409,7 +423,7 @@ const QuestionGroupEditor = ({
       <div className="flex shrink-0 items-center gap-2 border-t p-3">
         <span className="text-default-500 text-xs">
           {t('tests.builder.editor.footerCount', {
-            count: draft.questions.length,
+            count: questionCount,
           })}
         </span>
         {!isValid && (

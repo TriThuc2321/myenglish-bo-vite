@@ -114,6 +114,8 @@ const en = {
         none: 'None',
       },
       status: 'Status',
+      publish: 'Publish',
+      unpublish: 'Unpublish',
       paragraphs: 'Paragraphs',
       addParagraph: 'Add Paragraph',
     },
@@ -497,6 +499,7 @@ const en = {
         passageWarning:
           'Link a passage to this section to populate paragraph labels.',
         question: 'Q{{number}}',
+        questionRange: 'Q{{from}}–Q{{to}}',
         addQuestion: 'Add Q',
         removeQuestion: 'Remove',
         explanation: 'Explanation',

@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { LuPlus } from 'react-icons/lu';
 
+import type { QuestionRange } from '../utils';
+
 type QuestionTabsProps = {
-  count: number;
-  startNumber: number;
+  ranges: QuestionRange[];
   activeIndex: number;
   invalidIndexes: number[];
   onSelect: (index: number) => void;
@@ -11,8 +12,7 @@ type QuestionTabsProps = {
 };
 
 const QuestionTabs = ({
-  count,
-  startNumber,
+  ranges,
   activeIndex,
   invalidIndexes,
   onSelect,
@@ -22,7 +22,7 @@ const QuestionTabs = ({
 
   return (
     <div className="flex flex-wrap items-center gap-1.5">
-      {Array.from({ length: count }, (_, index) => (
+      {ranges.map((range, index) => (
         <button
           key={index}
           type="button"
@@ -33,7 +33,12 @@ const QuestionTabs = ({
               : 'bg-default-100 text-default-600 hover:bg-default-200'
           }`}
         >
-          {t('tests.builder.editor.question', { number: startNumber + index })}
+          {range.count > 1
+            ? t('tests.builder.editor.questionRange', {
+                from: range.start,
+                to: range.end,
+              })
+            : t('tests.builder.editor.question', { number: range.start })}
           {invalidIndexes.includes(index) && (
             <span className="bg-warning absolute -top-0.5 -right-0.5 size-2 rounded-full" />
           )}

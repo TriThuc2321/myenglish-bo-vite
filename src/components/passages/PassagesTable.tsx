@@ -182,10 +182,6 @@ export default function PassagesTable({
         enableSorting: false,
         header: t('passages.table.title'),
       }),
-      columnHelper.accessor('subtitle', {
-        enableSorting: false,
-        header: t('passages.table.subtitle'),
-      }),
       columnHelper.accessor('markedBy', {
         enableSorting: false,
         header: t('passages.table.markedBy'),

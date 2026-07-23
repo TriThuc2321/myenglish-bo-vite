@@ -17,6 +17,12 @@ export type Numbering = {
   total: number;
 };
 
+export type QuestionRange = {
+  start: number;
+  end: number;
+  count: number;
+};
+
 const byOrder = <T extends { order?: number }>(a: T, b: T) =>
   (a.order ?? 0) - (b.order ?? 0);
 
@@ -25,6 +31,42 @@ export const sortSections = (sections: TestSection[]) =>
 
 export const sortGroups = (groups: QuestionGroup[]) =>
   [...groups].sort(byOrder);
+
+export const getQuestionWeight = (
+  type: QuestionType,
+  question: Pick<Question, 'content'>,
+): number => {
+  if (type !== QuestionType.MULTIPLE_ANSWER) return 1;
+
+  const correctOptionIds = (
+    question.content as { answer?: { optionIds?: string[] } }
+  )?.answer?.optionIds;
+  return Array.isArray(correctOptionIds)
+    ? Math.max(new Set(correctOptionIds).size, 1)
+    : 1;
+};
+
+export const getQuestionRanges = (
+  type: QuestionType,
+  questions: Pick<Question, 'content'>[],
+  startNumber: number,
+): QuestionRange[] => {
+  let next = startNumber;
+
+  return questions.map((question) => {
+    const count = getQuestionWeight(type, question);
+    const range = { start: next, end: next + count - 1, count };
+    next = range.end + 1;
+    return range;
+  });
+};
+
+export const getGroupQuestionCount = (group: QuestionGroup): number =>
+  (group.questions as Question[]).reduce(
+    (total, question) =>
+      total + getQuestionWeight(group.questionType, question),
+    0,
+  );
 
 export const buildNumbering = (
   sections: TestSection[],
@@ -38,7 +80,7 @@ export const buildNumbering = (
     let sectionCount = 0;
     for (const group of sortGroups(groupsBySection[section.id] ?? [])) {
       startByGroupId[group.id] = next;
-      const count = group.questions?.length ?? 0;
+      const count = getGroupQuestionCount(group);
       next += count;
       sectionCount += count;
     }
@@ -163,10 +205,9 @@ export const isQuestionValid = (
   }
 };
 
-/** Maps a draft group to the PATCH payload, renumbering questions from startNumber. */
+/** Maps a draft group to the PATCH payload. Numbering is server-managed. */
 export const toEditPayload = (
   group: QuestionGroup,
-  startNumber: number,
 ): EditQuestionGroupPayload => ({
   id: group.id,
   questionType: group.questionType,
@@ -177,6 +218,5 @@ export const toEditPayload = (
       uuid: question.uuid || crypto.randomUUID(),
       order: index,
       content: question.content as Record<string, any>,
-      questionNumber: startNumber + index,
     })),
 });

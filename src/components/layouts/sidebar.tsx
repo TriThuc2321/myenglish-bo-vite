@@ -164,7 +164,7 @@ const MenuGroup = ({
           })}
         >
           {showFullMenu ? (
-            <p className="text-content3-foreground text-[10px] font-semibold tracking-widest uppercase">
+            <p className="text-content3-foreground text-[10px] font-semibold uppercase">
               {t(group.label)}
             </p>
           ) : (

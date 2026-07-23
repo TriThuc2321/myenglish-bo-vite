@@ -153,8 +153,7 @@ Create a new question group. The `order` is auto-assigned as `max(order) + 1` wi
       "content": {
         "text": "What is the capital?",
         "options": ["A", "B", "C", "D"]
-      },
-      "questionNumber": 1
+      }
     }
   ]
 }
@@ -169,14 +168,18 @@ Create a new question group. The `order` is auto-assigned as `max(order) + 1` wi
 
 **CreateQuestionDto**
 
-| Field            | Type           | Required | Constraints                          |
-| ---------------- | -------------- | -------- | ------------------------------------ |
-| `uuid`           | UUID           | Yes      | Frontend sync UUID (globally unique) |
-| `order`          | integer        | Yes      | Min 0, unique within group           |
-| `content`        | object (JSONB) | Yes      | Question-specific data               |
-| `questionNumber` | integer        | No       | Global question number in test       |
+| Field     | Type           | Required | Constraints                          |
+| --------- | -------------- | -------- | ------------------------------------ |
+| `uuid`    | UUID           | Yes      | Frontend sync UUID (globally unique) |
+| `order`   | integer        | Yes      | Min 0, unique within group           |
+| `content` | object (JSONB) | Yes      | Question-specific data               |
 
-**Response `201`** — returns the saved `QuestionGroup` entity (without nested relations).
+`questionNumber` is server-managed and must not be included in create/update
+payloads. In responses it is the inclusive range start. A `MULTIPLE_ANSWER`
+question consumes one number per distinct ID in `content.answer.optionIds`;
+every other question consumes one.
+
+**Response `201`** — returns the saved `QuestionGroup` with its section and renumbered questions.
 
 ---
 
@@ -196,7 +199,7 @@ Update an existing question group. All fields are optional. If `questions` is pr
 
 > **Note:** Omitting `questions` leaves existing questions untouched. Passing `questions: []` deletes all questions in the group.
 
-**Response `200`** — returns the updated `QuestionGroup` entity (without nested relations).
+**Response `200`** — returns the updated `QuestionGroup` with its section and renumbered questions.
 
 **Response `404`** — question group not found.
 
@@ -274,6 +277,9 @@ Hard-delete one or more question groups. Child `questions` are cascade-deleted a
   "auditMetadata": { "...AuditMetadata..." }
 }
 ```
+
+For an eight-option `MULTIPLE_ANSWER` with five correct option IDs,
+`questionNumber: 1` represents Q1–Q5; the next question has `questionNumber: 6`.
 
 ### AuditMetadata
 
